@@ -1,0 +1,360 @@
+id: ep01
+title: "He Warned Them. The Telegram Stopped in Pennsylvania."
+accent: "rust red"
+
+# Scene types:
+#   image    - AI illustration from `prompt`; `actors` adds their reference sheets (max 4)
+#   diagram  - drawn in code by pipeline/diagrams.py (`diagram` names which one)
+#   archival - a real photo you place at episodes/ep01/archival/<id>.jpg;
+#              if it is missing, the `fallback_prompt` illustration is used instead
+#   card     - a text card drawn in code
+# `hold` = seconds for scenes with no narration. `motion` = in | out | left | right.
+
+scenes:
+  - id: S01
+    type: image
+    prompt: >-
+      Extreme close-up of a man's right hand drawing a bridge elevation in pencil on paper.
+      A plain dark iron ring on his little finger brushes the paper. Warm desk lamp light.
+    narration: >-
+      In Canada, when an engineer finishes their training, they're given a ring. It's plain.
+      It isn't gold. It's worn on the little finger of the hand they work with, so it touches
+      every drawing they will ever make.
+    motion: in
+
+  - id: S02
+    type: image
+    prompt: >-
+      A wide river at dusk seen from a high bank, mist on the water, distant hills,
+      a faint silhouette of a half-built steel bridge far away. Melancholy, still.
+    narration: >-
+      People will tell you it's made from the steel of a bridge that fell. That isn't true.
+      But the bridge is real. And so are the seventy-five men who fell with it.
+    motion: out
+
+  - id: S03
+    type: card
+    title: "HELD TOGETHER"
+    subtitle: "Dramatised with illustrated actors. Based on the historical record."
+    hold: 4
+
+  - id: S04
+    type: image
+    prompt: >-
+      Quebec City in the early 1900s from across the St Lawrence River: stone buildings on
+      a cliff, church spires, steamships on the water, a railway line ending at the riverbank.
+    narration: >-
+      At the start of the last century, Quebec had a problem. The St Lawrence River cut it off
+      from the railways to the south. The answer was a bridge. Not just any bridge: the longest
+      of its kind anywhere on Earth.
+    motion: right
+
+  - id: S05
+    type: image
+    actors: [elias]
+    prompt: >-
+      Elias as a distinguished 1900s American engineer in a dark three-piece suit and stiff
+      collar, standing at a drafting table in a wood-panelled New York office, rolled plans,
+      a tall window with early Manhattan buildings behind him. Proud, commanding.
+    narration: >-
+      The man chosen to oversee it was Theodore Cooper, one of the most respected bridge
+      engineers in America. He was in his sixties. He was proud. And he wanted this bridge to
+      be the crowning work of his life.
+    motion: in
+
+  - id: S06
+    type: diagram
+    diagram: span_lengthened
+    narration: >-
+      To save money on the piers standing in the river, Cooper made the main span longer.
+      A longer span means heavier steel. And somewhere along the way, the early weight
+      calculations were never properly checked again.
+
+  - id: S07
+    type: image
+    actors: [elias]
+    prompt: >-
+      Elias as the same 1900s engineer, older and tired, standing by a tall office window at
+      grey dusk, one hand steadying himself on the desk, papers and telegrams scattered.
+      Lonely, unwell.
+    narration: >-
+      Cooper was unwell. Once the steelwork began, he never came to see it. He ran the biggest
+      bridge in the world from an office in New York, through letters, telegrams, and one
+      young man.
+    motion: left
+
+  - id: S08
+    type: image
+    actors: [tom]
+    prompt: >-
+      Tom as a young 1907 engineer in a flat cap, wool jacket and waistcoat, holding a small
+      notebook, standing on the steel deck of a half-built cantilever bridge, massive riveted
+      girders around him, wind in his clothes, the river far below.
+    narration: >-
+      His name was Norman McLure. He was the inspecting engineer on site, Cooper's eyes.
+      And in the summer of 1907, those eyes saw something wrong.
+    motion: in
+
+  - id: S09
+    type: diagram
+    diagram: chord_ripple
+    narration: >-
+      The lower chords, the great steel members carrying the bridge's weight in compression,
+      were bending. Not much. But they were bending.
+
+  - id: S10
+    type: image
+    actors: [tom]
+    prompt: >-
+      Tom as the young 1907 engineer writing a letter by oil lamp in a small wooden site
+      office at night, sketches of steel members pinned to the wall, a telegram form beside him.
+    narration: >-
+      In early August, McLure reported it. Cooper wrote back asking how that could have
+      happened. Some men on site said the bend must have been there since the steel arrived.
+      McLure didn't believe it. He thought it was growing.
+    motion: right
+
+  - id: S11
+    type: image
+    actors: [sam]
+    prompt: >-
+      Sam as a 1907 bridge foreman in work clothes and a cloth cap, shouting directions on
+      high steelwork, riveters working behind him, a steam crane swinging a steel member out
+      over the river. Busy, loud, sunlit.
+    narration: >-
+      Work went on. Every day, more steel was lifted out over the water. More weight on the
+      chords.
+    motion: left
+
+  - id: S12
+    type: image
+    actors: [tom]
+    prompt: >-
+      Close-up of Tom's hands, as the young 1907 engineer, holding a steel straightedge
+      against a massive riveted steel plate that visibly bows away from the edge. Tense,
+      afternoon light.
+    narration: >-
+      On the twenty-seventh of August, he measured again. The bend was bigger.
+    motion: in
+
+  - id: S13
+    type: image
+    actors: [tom]
+    prompt: >-
+      Tom as the young 1907 engineer sitting alone in a night train carriage, his worried face
+      reflected in the dark window, a leather case of papers on his lap, gas lamp glow.
+    narration: >-
+      McLure didn't send a telegram. He wrote a letter, and then took the train to New York
+      to see Cooper himself.
+    motion: right
+
+  - id: S14
+    type: image
+    actors: [elias, tom]
+    prompt: >-
+      Morning light in a wood-panelled 1900s New York office. Elias as the older engineer
+      sits reading notes at his desk, realisation on his face. Tom as the young engineer
+      stands before him, hat in hand, exhausted.
+    narration: >-
+      On the morning of the twenty-ninth, they met. This time, Cooper understood.
+    motion: in
+
+  - id: S15
+    type: image
+    prompt: >-
+      Close-up of a brass telegraph key being tapped in a 1900s telegraph office, a wall clock
+      in the background showing sixteen minutes past twelve, paper message slips.
+    narration: >-
+      At sixteen minutes past twelve, a telegram left New York for the bridge company's office
+      in Pennsylvania. It told them to put no more load on the bridge until the facts had been
+      considered.
+    motion: in
+
+  - id: S16
+    type: image
+    prompt: >-
+      A 1900s company boardroom: several men in suits around a table passing a telegram hand
+      to hand, a wall clock showing a quarter past one, faces calm and unhurried. Seen from
+      behind the men, faces not emphasised.
+    narration: >-
+      It arrived just after one. The men who read it talked it over, and agreed to meet again
+      the next day. The warning was never sent on to Quebec.
+    motion: left
+
+  - id: S17
+    type: image
+    actors: [sam]
+    prompt: >-
+      Late-afternoon golden light on a huge half-built steel cantilever bridge over a river.
+      Workers high on the steel. In the foreground Sam as the foreman shares a piece of bread
+      with another worker and laughs. An ordinary, peaceful moment.
+    narration: >-
+      Hundreds of miles away, on the bridge, it was an ordinary Thursday afternoon. Eighty-six
+      men were out on the steel. Among them were Mohawk ironworkers from Kahnawake, a small
+      community near Montreal, known for their skill and nerve at height.
+    motion: out
+
+  - id: S18
+    type: archival
+    fallback_prompt: >-
+      A simple stone memorial plaque beside a river at dawn with fresh flowers laid at its
+      base, the silhouette of a steel bridge in the far distance. No people. Respectful, quiet.
+    narration: >-
+      Thirty-three of them came from Kahnawake. The youngest was eighteen. The oldest was
+      forty-four.
+    motion: in
+
+  - id: S19
+    type: image
+    prompt: >-
+      Low sun over a huge half-built steel bridge, workers seen small and far away gathering
+      tools at the end of the day, long shadows, calm water below. Quiet before something.
+    narration: >-
+      Just after half past five, the signal went for the end of the shift. Men began to gather
+      their tools.
+    motion: in
+
+  - id: S20
+    type: card
+    title: ""
+    subtitle: ""
+    hold: 2.5
+
+  - id: S21
+    type: diagram
+    diagram: collapse
+    narration: >-
+      It took about fifteen seconds.
+
+  - id: S22
+    type: image
+    prompt: >-
+      Dusk over a wide river. Twisted, broken steel girders rise out of still water where a
+      bridge once stood. No people. Silent, mournful, mist.
+    narration: >-
+      Of the eighty-six men on the bridge, seventy-five were killed.
+    hold_after: 2
+    motion: out
+
+  - id: S23
+    type: image
+    prompt: >-
+      A small village cemetery at dawn with rows of simple crosses made from riveted steel
+      beams, mist, a church in the background. No people.
+    narration: >-
+      In Kahnawake, two dozen women became widows in a single evening. The men were brought
+      home and buried under crosses made from steel beams.
+    motion: in
+
+  - id: S24
+    type: image
+    prompt: >-
+      Dark silhouettes of ironworkers carrying tool bags, walking in small separate groups
+      towards different trains at a station, a rising city skyline of steel skyscrapers
+      behind them. Hopeful, determined. Silhouettes only, no faces.
+    narration: >-
+      Then the community made a decision. They didn't give up the work. Their men would never
+      again all work on the same job at the same time, so that one accident could never take
+      so many of them again. Their ironworkers went on to help raise the skylines of North
+      America.
+    motion: right
+
+  - id: S25
+    type: image
+    prompt: >-
+      A formal 1907 government inquiry room: a long table with documents, fountain pens and a
+      stamped report titled with no readable text, men in dark suits seen from behind.
+    narration: >-
+      A Royal Commission investigated. It found the chords that failed had been badly
+      designed, and it blamed errors of judgment by two men: the designer, Peter Szlapka, and
+      Theodore Cooper.
+    motion: left
+
+  - id: S26
+    type: image
+    actors: [tom]
+    prompt: >-
+      Tom as the young 1907 engineer standing alone on a riverbank, seen from behind and side,
+      looking out at twisted steel wreckage in the river under a grey sky. Grief.
+    narration: >-
+      The young man who saw it coming had done almost everything right. He saw the problem.
+      He measured it. He carried it by hand to the one man who could stop the work. It wasn't
+      enough.
+    hold_after: 1.5
+    motion: out
+
+  - id: S27
+    type: diagram
+    diagram: buckling
+    note: "Engineer's note - Indeepa to review wording before narration"
+    narration: >-
+      Here's what was happening inside that steel. A member in compression doesn't fail like a
+      rope snapping. It buckles: it bows sideways, and once it bows, it gets weaker, so it bows
+      more. The lower chords were built from several plates tied together with light lacing,
+      too light to make them act as one. And the bridge was far heavier than the design
+      assumed. A bend that keeps growing under rising load isn't a flaw you live with. It's the
+      structure telling you it's about to go.
+
+  - id: S28
+    type: image
+    prompt: >-
+      1916: a massive steel bridge centre span being lifted on jacks between two completed
+      cantilever arms over a river, crowds on boats watching. Dramatic sky.
+    narration: >-
+      They built it again. In 1916, as the new centre span was being lifted into place, a piece
+      of the lifting equipment failed. The span fell into the river. Thirteen more men died.
+    motion: in
+
+  - id: S29
+    type: image
+    prompt: >-
+      The completed Quebec cantilever bridge at sunrise, huge steel trusses over a wide calm
+      river, a steam train crossing. Majestic, hopeful.
+    narration: >-
+      The bridge was finished in 1917. Its main span is still the longest cantilever span in
+      the world. Trains still cross it.
+    motion: right
+
+  - id: S30
+    type: image
+    actors: [tom]
+    prompt: >-
+      1925: Tom styled as a young engineering graduate in a 1920s suit, in a candlelit hall,
+      an older engineer's hand placing a plain iron ring on the little finger of Tom's right
+      hand. Solemn ceremony.
+    narration: >-
+      In 1925, Canadian engineers began a new ceremony. Its obligation was written by Rudyard
+      Kipling. At the end, each new engineer receives a ring of iron.
+    motion: in
+
+  - id: S31
+    type: image
+    prompt: >-
+      Extreme close-up of a hand drawing on paper, a plain dark iron ring on the little finger
+      brushing the page, warm lamp light, exactly like the opening shot but at dawn light.
+    narration: >-
+      The rings aren't made from the bridge's steel. That's a myth. But each one carries its
+      lesson. Every time an engineer's hand moves across a drawing, the ring touches the page.
+      A small reminder that behind every calculation are people, who trusted that someone had
+      checked the numbers.
+    motion: in
+
+  - id: S32
+    type: card
+    title: "Seventy-five men in 1907. Thirteen in 1916."
+    subtitle: "Held Together - sources in the description"
+    narration: >-
+      Seventy-five men in 1907. Thirteen in 1916. This one is for them.
+    hold_after: 3
+
+# Vertical cuts for Shorts, TikTok, Reels and Facebook (re-framed from the same scenes).
+cuts:
+  - id: warning
+    scenes: [S08, S09, S10, S11, S12, S13, S14, S15, S16]
+    hook: "He saw it coming. Nobody stopped the work."
+  - id: fifteen_seconds
+    scenes: [S17, S18, S19, S20, S21, S22, S23, S24]
+    hook: "33 men from one small town."
+  - id: the_ring
+    scenes: [S01, S02, S30, S31]
+    hook: "Why every Canadian engineer wears this ring"

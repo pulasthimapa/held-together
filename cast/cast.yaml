@@ -1,0 +1,40 @@
+# Recurring illustrated cast. Faces never change; costumes change per episode.
+# Master sheets are generated once into cast/sheets/<id>.jpg and reused as references.
+
+style: >-
+  Painted 2D illustration in a textured gouache style, muted early-20th-century palette
+  with a single rust-red accent, soft cinematic light, film-still composition,
+  painterly brush texture. No text, no captions, no logos, no watermark.
+
+sheet_prompt: >-
+  Character reference sheet. {description}. Wearing a plain neutral grey shirt.
+  Plain light-grey background. Four views side by side: front, three-quarter left,
+  profile right, three-quarter back. Same face and proportions in every view,
+  soft even studio light.
+
+actors:
+  elias:
+    name: Elias
+    description: >-
+      Man in his early 60s, tall and gaunt, silver swept-back hair, deep-set grey eyes,
+      heavy brow, clean-shaven, thin lips, long narrow face
+  tom:
+    name: Tom
+    description: >-
+      Man in his mid-20s, lean build, dark curly hair, earnest brown eyes, faint freckles
+      across the nose, slightly large ears, clean-shaven, youthful face
+  sam:
+    name: Sam
+    description: >-
+      Man in his late 30s, broad-shouldered and stocky, short dark beard, weathered tanned
+      skin, a small scar through his left eyebrow, strong hands
+  ruth:
+    name: Ruth
+    description: >-
+      Woman in her mid-40s, strong jaw, auburn hair in a low bun, green eyes, laugh lines
+      around the eyes, calm steady expression
+  maya:
+    name: Maya
+    description: >-
+      Woman in her early 30s, short black bob haircut, round wire glasses, sharp dark eyes,
+      slim face, focused expression
