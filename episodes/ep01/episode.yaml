@@ -286,7 +286,7 @@ scenes:
   - id: S27
     type: diagram
     diagram: buckling
-    note: "Engineer's note - Indeepa to review wording before narration"
+    note: "Engineer's note - Indeepa records this in his REAL voice as audio/S27.mp3 (the voice stage skips existing files)"
     narration: >-
       Here's what was happening inside that steel. A member in compression doesn't fail like a
       rope snapping. It buckles: it bows sideways, and once it bows, it gets weaker, so it bows
@@ -356,5 +356,5 @@ cuts:
     scenes: [S17, S18, S19, S20, S21, S22, S23, S24]
     hook: "33 men from one small town."
   - id: the_ring
-    scenes: [S01, S02, S30, S31]
+    scenes: [S01, S02, S29, S30, S31]   # >= 61 s for TikTok Creator Rewards
     hook: "Why every Canadian engineer wears this ring"
