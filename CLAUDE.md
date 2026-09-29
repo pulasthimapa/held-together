@@ -9,6 +9,9 @@ Channel: true stories of the people who built the world, told by a recurring ill
 4. Every episode has an Engineer's note written and recorded by Indeepa in his **real voice**, not the clone. It is the channel's main human signal.
 5. Write the title and thumbnail idea before the script. Drop a story that has no clear thumbnail moment.
 
+5a. After each upload, count comments that mention AI, robots or fake voices. If they appear on two episodes in a row, propose switching the main narration to Indeepa's real voice. Viewers in story niches reject AI narration (research finding 11).
+5b. Lock the story structure (beats and ending) before generating any images.
+
 ## Cast and visuals
 6. The troupe never plays members of a specific Indigenous or cultural community in costume. Those people appear through archival photos or respectful symbols.
 7. Every shot moves, and engineering diagrams are drawn in code. No still-image slideshows.

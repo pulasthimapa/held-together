@@ -4,9 +4,12 @@ Checked 29 September 2026. A finding counts as **Verified** only when two indepe
 
 ## Access limits (read first)
 
-- Reddit is blocked from the workspace. YouTube video pages were rate-limited. X, Facebook and Bluesky refused or were not reachable. Chrome was not connected.
-- So YouTube, Reddit, X and Facebook comment sections were **not** analysed. The only comment threads read were two Hacker News threads, plus the comment section of one Substack post.
-- To fill this gap, connect Claude in Chrome and repeat the comment analysis on the Kurzgesagt video and the top r/NewTubers threads.
+Second pass on 29 September 2026. Every route was tried:
+- **Browsers:** Claude in Chrome was not connected, the Claude desktop app's built-in browser was not connected, and the linked computer was offline.
+- **Reddit:** readable through the public Arctic Shift archive. Its search was rate-limited after a few calls, but comment trees stayed readable. Four r/NewTubers threads were analysed. The large subreddits (r/youtube, r/PartneredYoutube) could not be searched, so the high-engagement threads there are **not** covered.
+- **YouTube:** video metadata was readable, but comments were not. Mirror sites block automated readers, and that block was respected. The official Creator Insider video on the policy ([link](https://www.youtube.com/watch?v=14Vm0CiyUVE)) was found but could not be watched.
+- **X, Facebook, Bluesky:** login walls or refusals; not analysed.
+- To close the gaps, connect Claude in Chrome or open the desktop app, then read the comment sections of the Kurzgesagt and Creator Insider videos and the top r/PartneredYoutube threads.
 
 ## Findings
 
@@ -20,6 +23,10 @@ Checked 29 September 2026. A finding counts as **Verified** only when two indepe
 | 6 | Real primary voices (letters, last words, telegrams) are what make narrated history land emotionally. | Single source | Fall of Civilizations reviews: it reconstructs people's last surviving words (Wikipedia, citing critics) | Use real documents where they exist, such as McLure's letters and Cooper's telegram, paraphrased and credited. Test on Episode 1 before treating this as a rule. |
 | 7 | Titles and thumbnails are designed first; click-through rate and view duration drive distribution. | Single source | MrBeast's internal production guide ([Tubefilter](https://www.tubefilter.com/2024/09/17/mrbeast-internal-production-guide-leaked-key-points/), [Simon Willison](https://simonwillison.net/2024/Sep/15/how-to-succeed-in-mrbeast-production/)). Both describe one document. | Write the title and thumbnail idea before the script, and reject a story that has no clear thumbnail moment. |
 | 8 | TikTok pays only for original videos of 60 seconds or more. Watermarked reposts earn nothing. The UK is eligible (10K followers, 100K views in 30 days). | Single source | [PostLink](https://postlinkapp.com/blog/tiktok-creator-rewards-program), updated July 2026. Confirm on TikTok's own page before relying on it. | Every vertical cut must be at least 61 seconds, and uploaded natively without a YouTube watermark. The Episode 1 "ring" cut was 58 s and has been extended. |
+| 10 | YouTube's own position: AI tools are fine, and "content farming" at volume is the target. The policy judges the output, not the tools used. | Verified | Matt Halprin, YouTube's trust and safety chief, quoted in [TechCrunch](https://techcrunch.com/2026/07/20/youtube-clarifies-policies-around-ai-slop-and-upsetting-videos/); tool-agnostic wording reported by [Quasa](https://quasa.io/media/youtube-inauthentic-content-buckets-explained-in-2026-interview) | Our risk is volume and sameness, not the fact that we use AI. Keep the one-a-week pace. |
+| 11 | Viewers in story niches reject content they recognise as AI, and "real voices matter for storytelling". | Verified (audience sentiment, small samples) | r/NewTubers horror-channel thread: the top comment (10 points) said viewers reject "AI slop", backed by two more. r/NewTubers "Is faceless good": a commenter said they now distrust new faceless channels because of AI. HN Kurzgesagt threads (finding 3). | The cloned voice is our biggest audience risk. Track comments that mention AI. If they recur, switch the main narration to Indeepa's real voice. |
+| 12 | Human-made faceless channels still earn. | Verified | r/NewTubers: a faceless documentary/gaming channel with about 20k subscribers and about $1k a month (9 points). Kurzgesagt and Doctor NOS earn at scale (findings 3 and 5). | The format is viable. Earnings depend on quality and on being judged human-made. |
+| 13 | For faceless documentary makers, the slowest steps are research, turning facts into a story, and finding visuals that aren't the same stock clips as everyone else. | Verified (practitioner reports) | r/NewTubers production-bottleneck thread (21 points, 31 comments): 7 comments on research and script, 6 on visuals, one citing 50+ references per video. Kurzgesagt's 100 research hours (finding 5). | Our pipeline automates the right parts: consistent cast art and code-drawn diagrams instead of stock footage. Story structure is locked before any images are drawn, as one commenter advised. |
 | 9 | Some faceless operators are adding hired on-camera hosts. | Single source | Noah Morris, who runs six channels (Hollywood Reporter) | Not needed for us yet. Indeepa's real recorded voice is the cheaper human signal. Revisit if monetisation is refused. |
 
 ## Comment analysis
@@ -34,10 +41,34 @@ Checked 29 September 2026. A finding counts as **Verified** only when two indepe
 - Commenters called "just don't look like AI" an impossible standard, and warned that false flags will hurt YouTube itself.
 - *Relevance:* we can't control how YouTube's detector reads our content. We can control proof of human work: the credited expert, the sources, the real voice.
 
+**r/NewTubers "For those running faceless/documentary channels, what part of your production takes the most time?"** (21 points, 31 comments)
+- Research and script were the biggest group (7 comments). The highest-scored comment (10 points) cited 50+ references per video.
+- Visuals were next (6): finding footage that isn't the same stock clips as everyone else.
+- One commenter (5 points) advised locking a three-act structure before gathering any assets.
+- One warned that automating the research-to-script step produces generic content.
+- *Relevance:* keep the research human-checked and the story structure fixed before images are generated.
+
+**r/NewTubers "Can Faceless Channels Still Be Monetised Now?"** (15 comments)
+- A faceless channel at about 20k subscribers and about $1k a month reported that quality is what matters (9 points).
+- One sceptic (6 points) asked for evidence of harm. A reply cited Real Engineering and Kurzgesagt as suppressed; that is unverified for Real Engineering.
+- One commenter pointed to YouTube's official Creator Insider explainer.
+- *Relevance:* monetisation is possible, and official YouTube sources should be checked before trusting any rumour.
+
+**r/NewTubers "Is faceless content a good way to start a YouTube channel?"** (33 comments)
+- Most said content quality matters more than showing a face. The top comment (15 points) used Let's Game It Out, 6M+ subscribers, as the example.
+- One advised testing five videos on different topics (8 points).
+- The dissent: showing a face "will always be king", and one person now distrusts new faceless channels because of AI.
+- *Relevance:* the format is fine, but trust must be earned through signs of human work.
+
+**r/NewTubers "New horror stories faceless youtube channel"** (AI voice and stock footage, 8 comments)
+- The top comment (10 points) said to give up because viewers reject "AI slop". Two more agreed (4 and 2 points).
+- Practical replies: judge after five videos, work on thumbnails and retention, avoid repetitive stock visuals, and remember that real voices matter for storytelling.
+- *Relevance:* this is the strongest evidence yet that an AI narrator in a story niche is penalised by viewers, not just by YouTube.
+
 **Substack comments on Ryan McBeth's demonetised video** (about 20 comments)
 - Viewers blamed YouTube's automated moderation and pledged support.
 - *Relevance:* weak. That case was about sensitive topics, not AI. Recorded only because it was read.
 
 ## Sources opened
 
-[Tubefilter policy](https://www.tubefilter.com/2026/07/13/youtube-inauthentic-content-monetization-policy-update/) · [Yahoo Tech](https://tech.yahoo.com/social-media/articles/youtube-reveals-ai-slop-videos-090000379.html) · [Hollywood Reporter](https://www.hollywoodreporter.com/business/digital/faceless-creators-youtube-ai-damage-1236617586/) · [The Next Web](https://thenextweb.com/news/youtube-ai-slop-crackdown-faceless-creators-collateral-damage) · [HackerNoon](https://hackernoon.com/youtubes-ai-slop-crackdown-cant-tell-a-directed-ai-film-from-a-bot-farm) · [Dexerto](https://www.dexerto.com/youtube/youtubes-ai-slop-detector-incorrectly-targets-kurzgesagt-as-other-creators-fear-same-fate-3395930/) · [Kotaku](https://kotaku.com/youtube-mistakenly-penalizes-popular-science-channel-kurzgesagt-for-ai-generated-slop-2000722702) · [Kurzgesagt video summary](https://my.infocaptor.com/hub/summaries/kurzgesagt-in-a-nutshell/ai-slop-is-killing-our-channel-_zfN9wnPvU0) · [HN thread 1](https://news.ycombinator.com/item?id=45504156) · [HN thread 2](https://news.ycombinator.com/item?id=49225764) · [Fall of Civilizations](https://en.wikipedia.org/wiki/Fall_of_Civilizations_(podcast)) · [MrBeast guide, Tubefilter](https://www.tubefilter.com/2024/09/17/mrbeast-internal-production-guide-leaked-key-points/) · [Simon Willison](https://simonwillison.net/2024/Sep/15/how-to-succeed-in-mrbeast-production/) · [PostLink TikTok](https://postlinkapp.com/blog/tiktok-creator-rewards-program) · [Ryan McBeth Substack](https://ryanmcbeth.substack.com/p/youtube-demonitized-my-latest-roundup/comments)
+[Reddit (via Arctic Shift archive): production time](https://www.reddit.com/r/NewTubers/comments/1vteeja/) · [monetisation](https://www.reddit.com/r/NewTubers/comments/1vopp09/) · [is faceless good](https://www.reddit.com/r/NewTubers/comments/1vlhpax/) · [horror AI channel](https://www.reddit.com/r/NewTubers/comments/1vfw38j/) · [TechCrunch, Matt Halprin](https://techcrunch.com/2026/07/20/youtube-clarifies-policies-around-ai-slop-and-upsetting-videos/) · [Quasa](https://quasa.io/media/youtube-inauthentic-content-buckets-explained-in-2026-interview) · [Tubefilter policy](https://www.tubefilter.com/2026/07/13/youtube-inauthentic-content-monetization-policy-update/) · [Yahoo Tech](https://tech.yahoo.com/social-media/articles/youtube-reveals-ai-slop-videos-090000379.html) · [Hollywood Reporter](https://www.hollywoodreporter.com/business/digital/faceless-creators-youtube-ai-damage-1236617586/) · [The Next Web](https://thenextweb.com/news/youtube-ai-slop-crackdown-faceless-creators-collateral-damage) · [HackerNoon](https://hackernoon.com/youtubes-ai-slop-crackdown-cant-tell-a-directed-ai-film-from-a-bot-farm) · [Dexerto](https://www.dexerto.com/youtube/youtubes-ai-slop-detector-incorrectly-targets-kurzgesagt-as-other-creators-fear-same-fate-3395930/) · [Kotaku](https://kotaku.com/youtube-mistakenly-penalizes-popular-science-channel-kurzgesagt-for-ai-generated-slop-2000722702) · [Kurzgesagt video summary](https://my.infocaptor.com/hub/summaries/kurzgesagt-in-a-nutshell/ai-slop-is-killing-our-channel-_zfN9wnPvU0) · [HN thread 1](https://news.ycombinator.com/item?id=45504156) · [HN thread 2](https://news.ycombinator.com/item?id=49225764) · [Fall of Civilizations](https://en.wikipedia.org/wiki/Fall_of_Civilizations_(podcast)) · [MrBeast guide, Tubefilter](https://www.tubefilter.com/2024/09/17/mrbeast-internal-production-guide-leaked-key-points/) · [Simon Willison](https://simonwillison.net/2024/Sep/15/how-to-succeed-in-mrbeast-production/) · [PostLink TikTok](https://postlinkapp.com/blog/tiktok-creator-rewards-program) · [Ryan McBeth Substack](https://ryanmcbeth.substack.com/p/youtube-demonitized-my-latest-roundup/comments)
