@@ -8,7 +8,7 @@ Second pass on 29 September 2026. Every route was tried:
 - **Browsers:** Claude in Chrome was not connected, the Claude desktop app's built-in browser was not connected, and the linked computer was offline.
 - **Reddit:** readable through the public Arctic Shift archive. Its search was rate-limited after a few calls, but comment trees stayed readable. Four r/NewTubers threads were analysed. The large subreddits (r/youtube, r/PartneredYoutube) could not be searched, so the high-engagement threads there are **not** covered.
 - **YouTube:** video metadata was readable, but comments were not. Mirror sites block automated readers, and that block was respected. The official Creator Insider video on the policy ([link](https://www.youtube.com/watch?v=14Vm0CiyUVE)) was found but could not be watched.
-- **X:** signed in by the user on 4 October 2026 and read (see the X section). Facebook and Bluesky: not yet analysed.
+- **X:** signed in by the user on 4 October 2026 and read (see the X section). Facebook: signed in by the user and read, low signal (see the Facebook section). Bluesky: not analysed.
 - To close the gaps, connect Claude in Chrome or open the desktop app, then read the comment sections of the Kurzgesagt and Creator Insider videos and the top r/PartneredYoutube threads.
 
 **Update, 4 October 2026 (third pass):** the desktop app's built-in browser reconnected. YouTube comments are now read first-hand (3 videos below, about 20 top comments each, sorted by YouTube's default "Top"). X showed a login page and was not signed in, so it was skipped. Facebook was not attempted (the connection dropped before sign-in). Reddit is still blocked in that browser. A YouTube "Top" sample is biased toward popular, agreeable comments, so treat it as indicative, not statistical.
@@ -107,6 +107,12 @@ Second pass on 29 September 2026. Every route was tried:
 **Other TeamYouTube replies (June and September 2026)**
 - Same wording each time: manual review, "significant portion" mass-produced. One creator (1 Sep) says they have project files, timelines, scripts and production records and asks whether they can submit them; that thread had no answer when read.
 - *Relevance:* supports rule 5d (keep evidence), but it is not proven that evidence changes the result. Not a guarantee.
+
+### Facebook, read directly on 4 October 2026 (signed in by the user)
+
+- Two searches ("faceless youtube inauthentic content" and "facebook reels unoriginal content reposted reach penalty"). Facebook search shows only truncated snippets; opening each post was not attempted, and individuals' posts are not recorded here.
+- Themes seen in the snippets: individual creators saying YouTube demonetised their channels for "inauthentic content" and that they believe it is a mistake; "free tools only" faceless-channel tips; a post saying faceless channels will struggle in 2027 (same text as the X post); and members of a "Facebook Bonus Program Issues" group reporting lost monetisation or "inauthentic engagement" restrictions.
+- *Relevance:* confirms the same fears exist on Facebook, and that Facebook has its own monetisation restrictions. It adds nothing verified. Before cross-posting, re-check Meta's current rules on original and reposted content (rule 13); that was not done in this pass. No engagement counts were available, so none of this meets the "high engagement" bar and no finding was added.
 
 **New findings from this pass**
 
