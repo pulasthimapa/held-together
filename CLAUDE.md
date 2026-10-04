@@ -11,6 +11,8 @@ Channel: true stories of the people who built the world, told by a recurring ill
 
 5a. After each upload, count comments that mention AI, robots or fake voices. If they appear on two episodes in a row, propose switching the main narration to Indeepa's real voice. Viewers in story niches reject AI narration (research finding 11).
 5b. Lock the story structure (beats and ending) before generating any images.
+5c. End every episode with one open question that invites viewers to share their own version (research finding 15).
+5d. Keep an authorship evidence folder per episode (fact sheet, script drafts, Indeepa's recordings), dated, so a wrongful "inauthentic content" flag can be appealed with proof (finding 16).
 
 ## Cast and visuals
 6. The troupe never plays members of a specific Indigenous or cultural community in costume. Those people appear through archival photos or respectful symbols.
