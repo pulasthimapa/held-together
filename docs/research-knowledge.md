@@ -8,7 +8,7 @@ Second pass on 29 September 2026. Every route was tried:
 - **Browsers:** Claude in Chrome was not connected, the Claude desktop app's built-in browser was not connected, and the linked computer was offline.
 - **Reddit:** readable through the public Arctic Shift archive. Its search was rate-limited after a few calls, but comment trees stayed readable. Four r/NewTubers threads were analysed. The large subreddits (r/youtube, r/PartneredYoutube) could not be searched, so the high-engagement threads there are **not** covered.
 - **YouTube:** video metadata was readable, but comments were not. Mirror sites block automated readers, and that block was respected. The official Creator Insider video on the policy ([link](https://www.youtube.com/watch?v=14Vm0CiyUVE)) was found but could not be watched.
-- **X, Facebook, Bluesky:** login walls or refusals; not analysed.
+- **X:** signed in by the user on 4 October 2026 and read (see the X section). Facebook and Bluesky: not yet analysed.
 - To close the gaps, connect Claude in Chrome or open the desktop app, then read the comment sections of the Kurzgesagt and Creator Insider videos and the top r/PartneredYoutube threads.
 
 **Update, 4 October 2026 (third pass):** the desktop app's built-in browser reconnected. YouTube comments are now read first-hand (3 videos below, about 20 top comments each, sorted by YouTube's default "Top"). X showed a login page and was not signed in, so it was skipped. Facebook was not attempted (the connection dropped before sign-in). Reddit is still blocked in that browser. A YouTube "Top" sample is biased toward popular, agreeable comments, so treat it as indicative, not statistical.
@@ -92,12 +92,29 @@ Second pass on 29 September 2026. Every route was tried:
 - A 26-like comment says the policy contradicts itself: "no templates", yet a recurring series needs a format.
 - *Relevance:* (1) Our recurring cast and fixed episode format sit close to what the detector may call "repetitive", even though the rules allow it. Rule 3 (vary the opening, structure and ending) and rule 5b are our defence. (2) Mitigation to add: keep a dated evidence folder per episode (fact sheet, script drafts, Indeepa's recordings, project files) so an appeal can show human authorship. (3) These are creators' claims, not YouTube's; they are unverified individually. The pattern across hundreds of comments is the signal.
 
+### X (Twitter), read directly on 4 October 2026 (signed in by the user)
+
+**Search "youtube inauthentic content faceless" (Top tab, 9 posts)**
+- Mostly course sellers and fear-bait: "BREAKING" demonetisation waves, "appeal blueprint" bundles, unverifiable claims of "$10,000,000 deleted in one day" or "150 channels in a day". Engagement was low (4 to 92 likes). One post (21 likes) argues faceless channels will struggle in 2027 because supply is exploding.
+- *Relevance:* treat X advice on this topic as marketing, not evidence. None of these claims was used. The only useful signal is that the fear is widespread and monetised by sellers.
+
+**Gato Macabro Miedo (@MacabroGato), 31 May 2026, 262 likes, 132 replies**
+- A Spanish horror-storytelling channel with 170K+ subscribers says it was demonetised for "inauthentic content" and that its appeal failed.
+- @TeamYouTube replied the same day. After a manual review, it said a significant portion of the channel did not align with the policy on mass-produced content, and the channel stayed demonetised.
+- Replies were viewers vouching that the content is original and high quality. One notes each video clearly takes real work.
+- *Relevance:* (1) A storytelling channel with a real audience was still judged mass-produced even after manual review, so story niches are not safe by default. (2) Viewer support did not change the outcome. (3) This is the creator's account plus YouTube's reply; the channel's actual content was not reviewed here, so we cannot say whether the ruling was fair.
+
+**Other TeamYouTube replies (June and September 2026)**
+- Same wording each time: manual review, "significant portion" mass-produced. One creator (1 Sep) says they have project files, timelines, scripts and production records and asks whether they can submit them; that thread had no answer when read.
+- *Relevance:* supports rule 5d (keep evidence), but it is not proven that evidence changes the result. Not a guarantee.
+
 **New findings from this pass**
 
 | # | Finding | Status | Evidence | So what |
 | --- | --- | --- | --- | --- |
 | 14 | Viewers reward visible human authorship and trust. | Verified | Kurzgesagt comments (107K, 24K and 9.1K likes) plus the earlier r/NewTubers horror-channel thread (finding 11). | Keep the real-voice Engineer's note; label AI use openly. |
 | 15 | The audience for a disaster story reacts most to how workers were ignored, and shares personal stories. | Single source (one video's comments; consistent with the Iron Ring tradition) | Brick Immortar Quebec Bridge comments. | Build the emotional peak on the ignored warning; close with an open question. |
+| 17 | Story channels are being flagged "mass-produced" even after YouTube's manual review. | Single source (one 170K-subscriber channel's account plus YouTube's replies on X; matches Creator Insider comments) | @MacabroGato thread and @TeamYouTube replies. | Differentiate each episode; do not rely on a story niche being safe. |
 | 16 | Creators fear automated false flags more than the written policy. | Verified | Creator Insider comments plus the Next Web, Dexerto and Kotaku coverage of Kurzgesagt's false flag (already in sources). | Keep authorship evidence per episode; avoid mass production. |
 
 ## Sources opened
