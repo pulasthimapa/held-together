@@ -303,10 +303,13 @@ def render(ep_id, allow_placeholders=False):
         end_start = max(t - 3, 0)
         style = ("FontName=Inter SemiBold,FontSize=13,Bold=1,PrimaryColour=&H00FFFFFF,"
                  "OutlineColour=&H00000000,BorderStyle=1,Outline=3,Shadow=0,"
-                 "Alignment=2,MarginV=300")
+                 "Alignment=2,MarginV=180")
         # Letterbox rather than crop: a centre crop cut the sides off every diagram.
+        # A mild 1.18x zoom first trims 5% from each side — inside the 110px safe margin
+        # every diagram is drawn with — so the picture fills more of a phone screen.
         # The bands top and bottom are where the hook and the captions live.
-        vf = (f"scale=1080:-2,pad=1080:1920:0:(1920-ih)/2:color=0x11161F,"
+        vf = (f"scale=1274:-2,crop=1080:in_h:(in_w-1080)/2:0,"
+              f"pad=1080:1920:0:420:color=0x11161F,"
               f"subtitles='{ffmpeg_escape(srt)}':force_style='{style}',"
               f"{hook_filters(cut['hook'])},"
               f"drawtext=fontfile={S.UI_BOLD}:text='Full story on the channel':"
