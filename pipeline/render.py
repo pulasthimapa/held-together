@@ -403,9 +403,12 @@ def render(ep_id, allow_placeholders=False):
         srt = build / f"cut_{cut['id']}.srt"
         srt.write_text(captions_for(rows))
         end_start = max(t - 3, 0)
-        style = ("FontName=Inter SemiBold,FontSize=13,Bold=1,PrimaryColour=&H00FFFFFF,"
+        # libass lays out in its own 288px-tall space unless the file says otherwise,
+        # so sizes here are multiplied by 1920/288 on screen: FontSize 11 -> ~73px,
+        # MarginV 34 -> ~227px up from the bottom, which lands in the lower band.
+        style = ("FontName=Inter SemiBold,FontSize=11,Bold=1,PrimaryColour=&H00FFFFFF,"
                  "OutlineColour=&H00000000,BorderStyle=1,Outline=3,Shadow=0,"
-                 "Alignment=2,MarginV=180")
+                 "Alignment=2,MarginV=34")
         # Letterbox rather than crop: a centre crop cut the sides off every diagram.
         # A mild 1.18x zoom first trims 5% from each side — inside the 110px safe margin
         # every diagram is drawn with — so the picture fills more of a phone screen.
@@ -416,7 +419,7 @@ def render(ep_id, allow_placeholders=False):
               f"{hook_filters(cut['hook'])},"
               f"drawtext=fontfile={S.UI_BOLD}:text='Full story on the channel':"
               f"fontsize=52:fontcolor=white:box=1:boxcolor=0xE8192C@0.95:boxborderw=24:"
-              f"x=(w-text_w)/2:y=1560:enable='gte(t,{end_start:.2f})'")
+              f"x=(w-text_w)/2:y=1300:enable='gte(t,{end_start:.2f})'")
         cut_out = out_dir / f"{ep_id}_vertical_{cut['id']}.mp4"
         run(["ffmpeg", "-y", "-i", str(cut_raw), "-vf", vf,
              "-af", "loudnorm=I=-14:TP=-1.5:LRA=11", *VIDEO_ARGS, *AUDIO_ARGS, str(cut_out)])

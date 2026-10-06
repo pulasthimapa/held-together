@@ -467,7 +467,7 @@ scenes:
 
 cuts:
   - id: the_hook
-    scenes: [S01, S02, S04, S12]
+    scenes: [S01, S02, S04, S11, S12]   # S11 keeps this cut over the 61s TikTok floor
     hook: "75 men died because a telegram stopped moving"
   - id: buckling
     scenes: [S10, S11, S12, S13]
