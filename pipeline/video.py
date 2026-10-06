@@ -1,0 +1,105 @@
+"""Optional stage: short AI-generated video clips for a handful of hero moments.
+
+Only scenes that carry a `hero_video:` prompt are generated, and the render falls back
+to the scene's stills if a clip is missing, so this stage is never required.
+
+WARNING — the request shape below follows Google's long-running "predict" pattern for
+Veo but has NOT been verified against the live API in this session (working rule 13).
+If the first run fails, the error prints the raw response: fix MODEL / _request_body /
+_extract_uri here rather than anywhere else, they are the only API-shaped code.
+
+Cost: video is by far the most expensive thing in this pipeline. MAX_CLIPS and
+MAX_SECONDS are hard stops so a bad episode file cannot run up a bill.
+"""
+import os
+import time
+
+import requests
+
+from common import env, episode_dir, load_episode
+
+BASE = "https://generativelanguage.googleapis.com/v1beta"
+MODEL = os.environ.get("VEO_MODEL", "veo-3.1-fast-generate-preview")
+
+MAX_CLIPS = 6          # per episode
+MAX_SECONDS = 8        # per clip
+POLL_SECONDS = 10
+POLL_LIMIT = 60        # give up after ~10 minutes on one clip
+
+
+def _request_body(prompt, seconds):
+    return {"instances": [{"prompt": prompt}],
+            "parameters": {"aspectRatio": "16:9",
+                           "durationSeconds": min(seconds, MAX_SECONDS),
+                           "personGeneration": "allow_adult"}}
+
+
+def _extract_uri(done):
+    """Pull the video download URI out of a finished operation, tolerating shapes."""
+    def walk(node):
+        if isinstance(node, dict):
+            if "uri" in node and isinstance(node["uri"], str):
+                return node["uri"]
+            for v in node.values():
+                hit = walk(v)
+                if hit:
+                    return hit
+        elif isinstance(node, list):
+            for v in node:
+                hit = walk(v)
+                if hit:
+                    return hit
+        return None
+    return walk(done.get("response", done))
+
+
+def _generate(prompt, seconds, key):
+    start = requests.post(f"{BASE}/models/{MODEL}:predictLongRunning",
+                          params={"key": key}, json=_request_body(prompt, seconds),
+                          timeout=120)
+    if start.status_code != 200:
+        raise SystemExit(
+            f"Veo request refused (HTTP {start.status_code}). The API shape in "
+            f"pipeline/video.py may be out of date. Raw response:\n{start.text[:600]}")
+    op = start.json().get("name")
+    if not op:
+        raise SystemExit(f"No operation name in Veo response:\n{start.text[:600]}")
+
+    for _ in range(POLL_LIMIT):
+        time.sleep(POLL_SECONDS)
+        poll = requests.get(f"{BASE}/{op}", params={"key": key}, timeout=60).json()
+        if poll.get("error"):
+            raise SystemExit(f"Veo failed: {poll['error']}")
+        if poll.get("done"):
+            uri = _extract_uri(poll)
+            if not uri:
+                raise SystemExit(f"Veo finished but no video URI found:\n{str(poll)[:600]}")
+            blob = requests.get(uri, params={"key": key}, timeout=300)
+            blob.raise_for_status()
+            return blob.content
+    raise SystemExit("Veo timed out waiting for the clip.")
+
+
+def make_hero_clips(ep_id):
+    ep = load_episode(ep_id)
+    out_dir = episode_dir(ep_id) / "video"
+    out_dir.mkdir(parents=True, exist_ok=True)
+    wanted = [s for s in ep["scenes"] if s.get("hero_video")]
+    if not wanted:
+        print("no scenes carry hero_video; nothing to do")
+        return
+    if len(wanted) > MAX_CLIPS:
+        raise SystemExit(f"{len(wanted)} hero clips requested, limit is {MAX_CLIPS}. "
+                         f"Remove some hero_video entries before running this stage.")
+    key = env("GEMINI_API_KEY")
+    made = 0
+    for scene in wanted:
+        out = out_dir / f"{scene['id']}.mp4"
+        if out.exists():
+            continue
+        seconds = min(float(scene.get("hero_seconds", 6)), MAX_SECONDS)
+        print(f"hero clip {scene['id']}: {seconds:.0f}s …")
+        out.write_bytes(_generate(" ".join(scene["hero_video"].split()), seconds, key))
+        made += 1
+        print(f"hero clip: {out.name}")
+    print(f"hero clips generated this run: {made} (existing files are never redone)")

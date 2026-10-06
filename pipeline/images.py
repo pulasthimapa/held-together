@@ -33,17 +33,17 @@ def make_scene_images(ep_id):
     img_dir = episode_dir(ep_id) / "images"
     img_dir.mkdir(parents=True, exist_ok=True)
     archival_dir = episode_dir(ep_id) / "archival"
+    total = 0
     for scene in ep["scenes"]:
         kind = scene["type"]
-        prompt = None
+        prompts = []
         if kind == "image":
-            prompt = scene["prompt"]
+            # `shots` holds extra angles of the same beat so the edit can cut
+            # within a scene instead of holding one picture for fifteen seconds.
+            prompts = [scene["prompt"]] + list(scene.get("shots", []))
         elif kind == "archival" and not (archival_dir / f"{scene['id']}.jpg").exists():
-            prompt = scene["fallback_prompt"]
-        if not prompt:
-            continue
-        out = img_dir / f"{scene['id']}.jpg"
-        if out.exists():
+            prompts = [scene["fallback_prompt"]]
+        if not prompts:
             continue
         refs = []
         for actor_id in scene.get("actors", []):
@@ -51,13 +51,20 @@ def make_scene_images(ep_id):
             if not sheet.exists():
                 raise SystemExit(f"Missing cast sheet for {actor_id}. Run the 'cast' stage first.")
             refs.append(sheet)
-        full = cast["style"] + " " + clean(prompt)
-        if refs:
-            names = ", ".join(cast["actors"][a]["name"] for a in scene["actors"])
-            full += (f" The reference images show {names}; keep each face, hair and build "
-                     "exactly as in the references, only the costume and setting change.")
-        out.write_bytes(gemini.generate(clean(full), refs=refs, aspect="16:9"))
-        print(f"scene image: {out.name}")
+        for idx, prompt in enumerate(prompts):
+            suffix = "" if idx == 0 else "bcd"[idx - 1]
+            out = img_dir / f"{scene['id']}{suffix}.jpg"
+            if out.exists():
+                continue
+            full = cast["style"] + " " + clean(prompt)
+            if refs:
+                names = ", ".join(cast["actors"][a]["name"] for a in scene["actors"])
+                full += (f" The reference images show {names}; keep each face, hair and build "
+                         "exactly as in the references, only the costume and setting change.")
+            out.write_bytes(gemini.generate(clean(full), refs=refs, aspect="16:9"))
+            total += 1
+            print(f"scene image: {out.name}")
+    print(f"images generated this run: {total}")
     contact_sheet(sorted(img_dir.glob("*.jpg")), episode_dir(ep_id) / "images_review.jpg")
 
 

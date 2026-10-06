@@ -1,12 +1,12 @@
 """Stage 4: assemble the long-form video and the vertical cuts with ffmpeg."""
 import re
 import shutil
-import subprocess
 
 from PIL import Image, ImageDraw
 
 import diagrams
 import style as S
+import web
 from common import (FONT_SANS_BOLD, FPS, H, ROOT, W, clean,
                     duration, episode_dir, load_episode, run)
 
@@ -112,6 +112,43 @@ def name_card_overlay(path, name, role):
     im.save(path)
 
 
+MAX_SHOT = 7.0      # research: change something visually at least this often
+MIN_SHOT = 2.6      # below this a cut reads as a glitch rather than an edit
+
+
+def shot_plan(dur, n_images):
+    """Split a scene into shots so no single picture is held longer than MAX_SHOT.
+
+    Returns a list of (image_index, seconds, motion). Alternating the camera move
+    between shots is what stops a sequence of cuts feeling like a slideshow.
+    """
+    if n_images <= 1 and dur <= MAX_SHOT:
+        return [(0, dur, None)]
+    want = max(1, min(n_images if n_images > 1 else 99,
+                      int(dur // MAX_SHOT) + (1 if dur % MAX_SHOT > MIN_SHOT else 0)))
+    want = max(want, 1)
+    if n_images > 1:
+        want = max(want, n_images)
+    each = dur / want
+    while each < MIN_SHOT and want > 1:
+        want -= 1
+        each = dur / want
+    moves = ["in", "left", "out", "right"]
+    return [(i % max(n_images, 1), each, moves[i % len(moves)]) for i in range(want)]
+
+
+def scene_images(base, sid):
+    """All stills for a scene: S12.jpg, then S12b.jpg, S12c.jpg … for extra angles."""
+    found = []
+    for suffix in ("", "b", "c", "d"):
+        for folder in ("archival", "images"):
+            p = base / folder / f"{sid}{suffix}.jpg"
+            if p.exists():
+                found.append(p)
+                break
+    return found
+
+
 def motion_filter(kind, frames):
     z_end = 1.12
     if kind == "out":
@@ -159,23 +196,82 @@ def still_clip(image, audio, dur, motion, out, name_card=None):
 
 
 def diagram_clip(name, audio, dur, out):
-    frames = int(dur * FPS)
+    """Explainers are HTML/CSS motion graphics rendered by headless Chromium."""
     ain, afilter = audio_inputs(audio, dur)
     silent_video = out.with_suffix(".video.mp4")
-    proc = subprocess.Popen(
-        ["ffmpeg", "-y", "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{W}x{H}",
-         "-r", str(FPS), "-i", "-", *VIDEO_ARGS, str(silent_video)],
-        stdin=subprocess.PIPE, stderr=subprocess.DEVNULL)
-    draw = diagrams.DIAGRAMS[name]
-    for i in range(frames):
-        proc.stdin.write(draw(i / max(frames - 1, 1)).convert("RGB").tobytes())
-    proc.stdin.close()
-    if proc.wait() != 0:
-        raise RuntimeError(f"diagram render failed: {name}")
+    body, css = diagrams.DIAGRAMS[name](dur)
+    web.render_markup(body, dur, silent_video, css)
     vf = f"[0:v]fade=t=in:st=0:d={FADE},fade=t=out:st={dur - FADE}:d={FADE},format=yuv420p[v]"
     run(["ffmpeg", "-y", "-i", str(silent_video), *ain, "-filter_complex", f"{vf};{afilter}",
          "-map", "[v]", "-map", "[a]", "-t", str(dur), *VIDEO_ARGS, *AUDIO_ARGS, str(out)])
     silent_video.unlink()
+
+
+def hero_clip(source, audio, dur, out, name_card=None):
+    """Use a generated video clip as the picture, looped/slowed to fill the scene."""
+    ain, afilter = audio_inputs(audio, dur)
+    clip_len = duration(source)
+    # slow slightly rather than loop when it is close, which reads as deliberate
+    speed = max(0.5, min(1.0, clip_len / dur)) if clip_len < dur else 1.0
+    vf = (f"[0:v]setpts=PTS/{speed:.4f},scale={W}:{H}:force_original_aspect_ratio=increase,"
+          f"crop={W}:{H},fps={FPS},"
+          f"fade=t=in:st=0:d={FADE},fade=t=out:st={dur - FADE}:d={FADE},format=yuv420p")
+    extra = []
+    if name_card:
+        hold = min(NAME_CARD_SECONDS, max(dur - 0.6, 1.0))
+        extra = ["-i", str(name_card)]
+        vf += (f"[bg];[2:v]format=rgba,fade=t=in:st=0.35:d=0.3:alpha=1,"
+               f"fade=t=out:st={hold:.2f}:d=0.4:alpha=1[nc];"
+               f"[bg][nc]overlay=0:0:enable='lt(t,{hold + 0.5:.2f})'[v]")
+    else:
+        vf += "[v]"
+    run(["ffmpeg", "-y", "-stream_loop", "-1", "-i", str(source), *ain, *extra,
+         "-filter_complex", f"{vf};{afilter}", "-map", "[v]", "-map", "[a]",
+         "-t", str(dur), *VIDEO_ARGS, *AUDIO_ARGS, str(out)])
+
+
+def multi_shot_clip(images, audio, dur, scene, out, name_card, clip_dir, sid):
+    """Cut a scene into several shots so the picture changes every few seconds.
+
+    One long slow zoom is what made the first cut feel like a slideshow. Here the
+    narration stays continuous while the picture hard-cuts underneath it, which is
+    the standard retention edit (research findings 18-19).
+    """
+    plan = shot_plan(dur, len(images))
+    if len(plan) == 1:
+        still_clip(images[0], audio, dur, scene.get("motion", "in"), out, name_card)
+        return
+    parts = []
+    for i, (img_i, seconds, motion) in enumerate(plan):
+        part = clip_dir / f"{sid}_shot{i}.mp4"
+        frames = int(seconds * FPS)
+        vf = (f"[0:v]{motion_filter(motion or 'in', frames)},format=yuv420p"
+              # only the first and last shot get a fade; the rest hard-cut
+              + (f",fade=t=in:st=0:d={FADE}" if i == 0 else "")
+              + (f",fade=t=out:st={seconds - FADE}:d={FADE}" if i == len(plan) - 1 else "")
+              + "[v]")
+        run(["ffmpeg", "-y", "-i", str(images[img_i % len(images)]),
+             "-f", "lavfi", "-t", f"{seconds}", "-i", "anullsrc=r=44100:cl=stereo",
+             "-filter_complex", f"{vf};[1:a]anull[a]", "-map", "[v]", "-map", "[a]",
+             "-t", f"{seconds}", *VIDEO_ARGS, *AUDIO_ARGS, str(part)])
+        parts.append(part)
+    silent = clip_dir / f"{sid}_shots.mp4"
+    concat(parts, silent)
+    # lay the continuous narration (and any name card) over the cut sequence
+    ain, afilter = audio_inputs(audio, dur)
+    extra, vf = [], "[0:v]null[v]"
+    if name_card:
+        hold = min(NAME_CARD_SECONDS, max(dur - 0.6, 1.0))
+        extra = ["-i", str(name_card)]
+        vf = (f"[2:v]format=rgba,fade=t=in:st=0.35:d=0.3:alpha=1,"
+              f"fade=t=out:st={hold:.2f}:d=0.4:alpha=1[nc];"
+              f"[0:v][nc]overlay=0:0:enable='lt(t,{hold + 0.5:.2f})'[v]")
+    run(["ffmpeg", "-y", "-i", str(silent), *ain, *extra,
+         "-filter_complex", f"{vf};{afilter}", "-map", "[v]", "-map", "[a]",
+         "-t", str(dur), *VIDEO_ARGS, *AUDIO_ARGS, str(out)])
+    for p in parts:
+        p.unlink(missing_ok=True)
+    silent.unlink(missing_ok=True)
 
 
 def build_clips(ep_id, allow_placeholders=False):
@@ -195,22 +291,28 @@ def build_clips(ep_id, allow_placeholders=False):
             diagram_clip(scene["diagram"], audio, dur, out)
         else:
             if kind == "card":
-                image = clip_dir / f"{sid}_card.jpg"
-                card_image(image, scene)
+                images = [clip_dir / f"{sid}_card.jpg"]
+                card_image(images[0], scene)
             else:
-                image = base / "archival" / f"{sid}.jpg"
-                if not image.exists():
-                    image = base / "images" / f"{sid}.jpg"
-                if not image.exists():
+                images = scene_images(base, sid)
+                if not images:
                     if not allow_placeholders:
                         raise SystemExit(f"Missing image for {sid}. Run the 'images' stage first.")
-                    image = clip_dir / f"{sid}_placeholder.jpg"
-                    placeholder(image, sid)
+                    ph = clip_dir / f"{sid}_placeholder.jpg"
+                    placeholder(ph, sid,
+                                scene.get("prompt") or scene.get("fallback_prompt") or "")
+                    images = [ph]
             card = None
             if scene.get("name"):
                 card = clip_dir / f"{sid}_name.png"
                 name_card_overlay(card, scene["name"], scene.get("role", ""))
-            still_clip(image, audio, dur, scene.get("motion", "in"), out, card)
+            hero = base / "video" / f"{sid}.mp4"
+            if kind == "card":
+                still_clip(images[0], audio, dur, scene.get("motion", "in"), out, card)
+            elif scene.get("hero_video") and hero.exists():
+                hero_clip(hero, audio, dur, out, card)
+            else:
+                multi_shot_clip(images, audio, dur, scene, out, card, clip_dir, sid)
         spoken = (duration(audio) if audio else 0)
         timeline.append((scene, out, dur, spoken))
         print(f"clip {sid}: {dur:.1f}s")

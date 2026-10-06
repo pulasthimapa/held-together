@@ -8,7 +8,7 @@ on:
         required: true
         default: cast
         type: choice
-        options: [cast, images, voice, render, all]
+        options: [cast, images, video, voice, render, all]
       episode:
         description: "Episode folder"
         required: true
@@ -37,6 +37,11 @@ jobs:
 
       - name: Install Python packages
         run: pip install -r requirements.txt
+
+      # The explainers are HTML/CSS motion graphics rendered by headless Chromium.
+      - name: Install Chromium for the motion renderer
+        if: inputs.stage == 'render' || inputs.stage == 'all'
+        run: python -m playwright install --with-deps chromium
 
       - name: Run stage
         env:

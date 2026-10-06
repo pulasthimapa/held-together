@@ -1,423 +1,400 @@
-"""Engineering explainers drawn in code — our own original visuals.
+"""Engineering explainers as HTML/CSS motion graphics.
 
-Each diagram is a function frame(p) -> PIL.Image with p running 0..1 across the scene.
-The job of every one of these is to teach a structural idea to someone who has never
-opened an engineering textbook: everyday object first, then the real thing.
+Each builder returns (body_html, css) for a scene of `dur` seconds. web.py renders them
+with headless Chromium, seeking frame by frame, so the output is deterministic.
+
+The teaching rule for every one of these: an everyday object first, then the real thing.
+The retention rule: something changes visually every few seconds — entrance, development,
+payoff — never one slow move held for fifteen seconds.
 """
-import math
+import motion as M
 
-from PIL import Image, ImageDraw
-
-from style import (AMBER, BLUE, GREEN, H, INK, MUTE, RED, STEEL_LO,
-                   STEEL_MID, W, arrow, canvas, caption, dim_line, ease, ease_out,
-                   grid_bg, lacing, lerp, lower_third, member, over, panel_label, phase,
-                   split, stat, text, title_block)
-
-# Minimum seconds for a diagram, so short narration still gets a readable animation.
-MIN_SECONDS = {"collapse": 7.0, "buckling_loop": 9.0, "builtup_lacing": 12.0,
-               "straw_vs_steel": 7.0, "ruler_push": 7.0, "tension_compression": 8.0,
-               "cantilever_build": 9.0, "men_grid": 7.0}
+# Minimum seconds so a short line of narration still gets a readable animation.
+MIN_SECONDS = {"collapse": 8.0, "buckling_loop": 10.0, "builtup_lacing": 13.0,
+               "straw_vs_steel": 8.0, "ruler_push": 8.0, "tension_compression": 10.0,
+               "cantilever_build": 10.0, "men_grid": 9.0, "span_longer": 10.0,
+               "telegram_race": 12.0, "bend_record": 10.0}
 
 
-# ------------------------------------------------------------------ shared pieces
-def cantilever(d, left_pier, right_pier, deck_y, frac, color=INK, width=5, rivet=False):
-    """Elevation of a two-arm cantilever bridge between two river piers."""
-    span = right_pier - left_pier
-    anchor = span * 0.55
-    top = deck_y - span * 0.28
-    for pier, direction in ((left_pier, 1), (right_pier, -1)):
-        outer = pier - direction * anchor
-        tip = pier + direction * span * 0.36
-        _partial(d, [(outer, deck_y), (pier, top), (tip, deck_y)], frac, color, width)
-        _partial(d, [(outer, deck_y), (tip, deck_y)], frac, color, width)
-        for k in range(1, 6):
-            x = outer + (pier - outer) * k / 6
-            y = deck_y - (deck_y - top) * k / 6
-            _partial(d, [(x, deck_y), (x, y)], frac, color, max(2, width - 2))
-            x2 = pier + (tip - pier) * k / 6
-            y2 = top + (deck_y - top) * k / 6
-            _partial(d, [(x2, deck_y), (x2, y2)], frac, color, max(2, width - 2))
-    _partial(d, [(left_pier + span * 0.36, deck_y), (right_pier - span * 0.36, deck_y)],
-             frac, color, width)
-
-
-def _partial(d, pts, frac, fill, width):
-    if frac <= 0:
-        return
-    segs = list(zip(pts, pts[1:]))
-    lengths = [math.dist(a, b) for a, b in segs]
-    remaining = sum(lengths) * min(frac, 1.0)
-    for (a, b), ln in zip(segs, lengths):
-        if remaining <= 0:
-            break
-        f = min(1.0, remaining / ln) if ln else 1.0
-        d.line([a, (a[0] + (b[0] - a[0]) * f, a[1] + (b[1] - a[1]) * f)], fill=fill, width=width)
-        remaining -= ln
-
-
-def water(img, y=820):
-    over(img, lambda d: d.rectangle([0, y, W, H], fill=(176, 206, 230, 255)))
-    over(img, lambda d: d.rectangle([0, y, W, y + 8], fill=(140, 180, 214, 255)))
-
-
-def meter(img, frac, a, xy=(1560, 300), w=72, h=420, label="STRENGTH"):
-    """A vertical bar that drains — makes 'it gets weaker' a thing you can watch."""
-    if a <= 0:
-        return
-    x, y = xy
-    over(img, lambda d: d.rounded_rectangle([x, y, x + w, y + h], 10,
-                                            fill=(255, 255, 255, int(255 * a)),
-                                            outline=INK + (int(255 * a),), width=4))
-    fh = (h - 12) * max(0.0, min(1.0, frac))
-    col = GREEN if frac > 0.6 else (AMBER if frac > 0.3 else RED)
-    over(img, lambda d: d.rounded_rectangle([x + 6, y + h - 6 - fh, x + w - 6, y + h - 6], 6,
-                                            fill=col + (int(255 * a),)))
-    text(img, (x + w / 2, y - 40), label, 32, INK, a, "mm")
-    text(img, (x + w / 2, y + h + 26), f"{int(frac * 100)}%", 44, col, a, "mm", black=True)
-
-
-# ------------------------------------------------------------------ 1. the hook
-def straw_vs_steel(p):
-    img = canvas()
-    grid_bg(img)
-
-    def left(pan):
-        bow = 10 + 120 * phase(p, .4, .78)
-        pts = [(170 + 600 * i / 40, 560 + bow * math.sin(math.pi * i / 40)) for i in range(41)]
-        over(pan, lambda d: d.line(pts, fill=(255, 255, 255, 255), width=34))
-        over(pan, lambda d: d.line(pts, fill=(222, 229, 238, 255), width=26))
-        over(pan, lambda d: d.line([(x, y - 9) for x, y in pts], fill=(255, 255, 255, 235), width=6))
-        a = phase(p, .26, .4)
-        arrow(pan, (60, 560), (150, 560), RED, 14, a)
-        arrow(pan, (900, 560), (810, 560), RED, 14, a)
-
-    def right(pan):
-        member(pan, 150, 810, 560, thick=96, bow=4 + 46 * phase(p, .5, .88))
-        a = phase(p, .26, .4)
-        arrow(pan, (40, 560), (130, 560), RED, 18, a)
-        arrow(pan, (920, 560), (830, 560), RED, 18, a)
-
-    split(img, left, right)
-    panel_label(img, "A PLASTIC STRAW", MUTE, phase(p, .1, .22), 0)
-    panel_label(img, "1,000 TONNES OF STEEL", RED, phase(p, .16, .28), W // 2)
-    caption(img, "Same failure. Exactly the same physics.", phase(p, .8, .93))
-    return img
+# ------------------------------------------------------------------ 1. hook
+def straw_vs_steel(dur):
+    css = ""
+    # left: a drinking straw folding. right: the same thing in steel.
+    straw = ('<svg style="position:absolute;left:150px;top:430px" width="660" height="300">'
+             '<path id="straw" d="M0,40 Q330,40 660,40 L660,74 Q330,74 0,74 Z" fill="#e3e9f2"/>'
+             '<path d="M0,44 Q330,44 660,44" stroke="#fff" stroke-width="5" fill="none"/>'
+             '</svg>')
+    css += ('@keyframes strawB{0%{d:path("M0,40 Q330,40 660,40 L660,74 Q330,74 0,74 Z")}'
+            '100%{d:path("M0,40 Q330,300 660,40 L660,74 Q330,334 0,74 Z")}}'
+            f'#straw{{animation:strawB {dur * .55:.1f}s cubic-bezier(.5,0,.75,1) 1.2s both}}')
+    steel, c2 = M.member_svg("hk", 1110, 420, 660, 86,
+                             [(0, 6), (100, 92)], dur * .55, delay=1.6)
+    css += c2
+    a1, ca1 = M.arrow(60, 452, 110, 0.7, False, "red", 1.6, dur * .6)
+    a2, ca2 = M.arrow(840, 452, 110, 0.7, True, "red", 1.6, dur * .6)
+    a3, ca3 = M.arrow(1000, 452, 110, 1.2, False, "red", 1.9, dur * .6)
+    a4, ca4 = M.arrow(1800, 452, 110, 1.2, True, "red", 1.9, dur * .6)
+    css += ca1 + ca2 + ca3 + ca4
+    body = (M.divider(0.2)
+            + M.panel_label("A PLASTIC STRAW", "left", "var(--mute)", 0.1)
+            + M.panel_label("1,000 TONNES OF STEEL", "right", "var(--red)", 0.45)
+            + straw + steel + a1 + a2 + a3 + a4
+            + M.caption("Same failure. Exactly the same physics.", dur * .7))
+    return M.stage(body), css
 
 
 # ------------------------------------------------------------------ 2. two forces
-def tension_compression(p):
-    img = canvas()
-    grid_bg(img)
-    title_block(img, ["TWO WAYS TO LOAD ANYTHING."], phase(p, 0, .16), y=80, size=62, accent=BLUE)
-
-    # rope in tension: pull it and it just goes taut
-    y1 = 400
-    a1 = phase(p, .18, .32)
-    sag = 70 * (1 - phase(p, .3, .5))
-    pts = [(560 + 800 * i / 40, y1 + sag * math.sin(math.pi * i / 40)) for i in range(41)]
-    over(img, lambda d: d.line(pts, fill=(168, 124, 70, int(255 * a1)), width=18))
-    arrow(img, (520, y1), (420, y1), BLUE, 12, a1)
-    arrow(img, (1400, y1), (1500, y1), BLUE, 12, a1)
-    text(img, (330, y1), "PULL", 44, BLUE, a1, "rm", display=True)
-    text(img, (960, y1 - 110), "TENSION  —  a rope works fine", 42, INK, phase(p, .34, .46), "mm")
-    text(img, (960, y1 + 130), "it just pulls tight. Nothing to go wrong.", 36, MUTE,
-         phase(p, .4, .52), "mm", bold=False)
-
-    # same rope in compression: push it and it collapses
-    y2 = 760
-    a2 = phase(p, .55, .66)
-    crumple = phase(p, .64, .85)
-    pts2 = [(560 + 800 * i / 40,
-             y2 + 120 * crumple * math.sin(3 * math.pi * i / 40) * math.sin(math.pi * i / 40))
-            for i in range(41)]
-    over(img, lambda d: d.line(pts2, fill=(168, 124, 70, int(255 * a2)), width=18))
-    arrow(img, (420, y2), (520, y2), RED, 12, a2)
-    arrow(img, (1500, y2), (1400, y2), RED, 12, a2)
-    text(img, (330, y2), "PUSH", 44, RED, a2, "rm", display=True)
-    text(img, (960, y2 + 150), "COMPRESSION  —  now it matters what the thing is made of",
-         40, RED, phase(p, .78, .9), "mm")
-    text(img, (960, y2 + 212), "The Quebec Bridge failed in compression.", 38, INK,
-         phase(p, .88, .97), "mm", bold=False)
-    return img
+def tension_compression(dur):
+    css = ""
+    rope_t = ('<svg style="position:absolute;left:560px;top:330px" width="800" height="160">'
+              '<path id="ropeT" d="M0,60 Q400,130 800,60" stroke="#a87c46" stroke-width="18" '
+              'fill="none" stroke-linecap="round"/></svg>')
+    css += ('@keyframes rT{0%{d:path("M0,60 Q400,130 800,60")}'
+            '100%{d:path("M0,60 Q400,62 800,60")}}'
+            '#ropeT{animation:rT .9s 1.1s cubic-bezier(.2,.9,.25,1) both}')
+    rope_c = ('<svg style="position:absolute;left:560px;top:700px" width="800" height="240">'
+              '<path id="ropeC" d="M0,90 Q400,90 800,90" stroke="#a87c46" stroke-width="18" '
+              'fill="none" stroke-linecap="round"/></svg>')
+    css += ('@keyframes rC{0%{d:path("M0,90 Q400,90 800,90")}'
+            '100%{d:path("M0,90 C200,-40 300,230 400,90 C500,-40 600,230 800,90")}}'
+            f'#ropeC{{animation:rC .8s {dur * .62:.1f}s cubic-bezier(.6,0,.9,1) both}}')
+    a1, c1 = M.arrow(400, 382, 120, 0.9, True, "blue")
+    a2, c2 = M.arrow(1400, 382, 120, 0.9, False, "blue")
+    a3, c3 = M.arrow(400, 782, 120, dur * .56, False, "red")
+    a4, c4 = M.arrow(1400, 782, 120, dur * .56, True, "red")
+    css += c1 + c2 + c3 + c4
+    body = (M.title("TWO WAYS TO LOAD ANYTHING.", 80, 62, "blue")
+            + rope_t + a1 + a2 + rope_c + a3 + a4
+            + M.label("PULL", 330, 368, 46, "var(--blue)", 0.9, "riseIn", "right")
+            + M.label("TENSION — a rope works fine", 960, 250, 44, "var(--ink)", 1.5,
+                      "riseIn", "center")
+            + M.label("it just pulls tight. nothing to go wrong.", 960, 500, 36,
+                      "var(--mute)", 1.9, "fade", "center", 500)
+            + M.label("PUSH", 330, 768, 46, "var(--red)", dur * .56, "riseIn", "right")
+            + M.label("COMPRESSION — now it matters what the thing is made of", 960, 876, 42,
+                      "var(--red)", dur * .74, "riseIn", "center")
+            + M.caption("The Quebec Bridge failed in compression.", dur * .86, 28))
+    return M.stage(body), css
 
 
 # ------------------------------------------------------------------ 3. ruler
-def ruler_push(p):
-    img = canvas()
-    grid_bg(img)
-    title_block(img, ["TRY THIS YOURSELF."], phase(p, 0, .18), y=90, size=78, accent=BLUE)
-    push = phase(p, .22, .5)
-    bow = 150 * phase(p, .32, .84) ** 1.4
-    x0, x1, y = 430, 1490, 600
-    pts = [(x0 + (x1 - x0) * i / 40, y + bow * math.sin(math.pi * i / 40)) for i in range(41)]
-    over(img, lambda d: d.line([(x, yy + 14) for x, yy in pts], fill=(0, 0, 0, 36), width=30))
-    over(img, lambda d: d.line(pts, fill=(255, 206, 74, 255), width=26))
-    over(img, lambda d: d.line([(x, yy - 7) for x, yy in pts], fill=(255, 240, 190, 255), width=8))
-    over(img, lambda d: [d.line([(x0 + (x1 - x0) * i / 20, y + bow * math.sin(math.pi * i / 20) - 10),
-                                 (x0 + (x1 - x0) * i / 20, y + bow * math.sin(math.pi * i / 20) + 2)],
-                                fill=(150, 110, 20, 200), width=3) for i in range(21)])
-    arrow(img, (250, y), (x0 - 20, y), RED, 18, push)
-    arrow(img, (1670, y), (x1 + 20, y), RED, 18, push)
-    if bow > 30:
-        a = phase(p, .52, .64)
-        dim_line(img, (960, y + 6), (960, y + bow), "", a)
-        text(img, (1010, y + bow / 2), "it bows", 46, RED, a, "lm", display=True)
-    caption(img, "It never snaps. It bends sideways and keeps going.", phase(p, .7, .86))
-    return img
+def ruler_push(dur):
+    rule = ('<svg style="position:absolute;left:430px;top:470px" width="1060" height="340">'
+            '<path id="rulerB" d="M0,60 Q530,60 1060,60 L1060,96 Q530,96 0,96 Z" '
+            'fill="#ffce4a" stroke="#d9a21f" stroke-width="3"/>'
+            '<path id="rulerT" d="M0,66 Q530,66 1060,66" stroke="#fff3cd" stroke-width="7" '
+            'fill="none"/>'
+            '<path id="rulerTick" d="M0,78 Q530,78 1060,78" stroke="#9a7415" stroke-width="20" '
+            'fill="none" stroke-dasharray="2 50"/></svg>')
+    b0 = 'M0,60 Q530,60 1060,60 L1060,96 Q530,96 0,96 Z'
+    b1 = 'M0,60 Q530,380 1060,60 L1060,96 Q530,416 0,96 Z'
+    css = (f'@keyframes rb{{0%{{d:path("{b0}")}}100%{{d:path("{b1}")}}}}'
+           f'#rulerB{{animation:rb {dur * .55:.1f}s cubic-bezier(.45,0,.75,1) 1.1s both}}'
+           '@keyframes rt{0%{d:path("M0,66 Q530,66 1060,66")}'
+           '100%{d:path("M0,66 Q530,386 1060,66")}}'
+           f'#rulerT{{animation:rt {dur * .55:.1f}s cubic-bezier(.45,0,.75,1) 1.1s both}}'
+           '@keyframes rk{0%{d:path("M0,78 Q530,78 1060,78")}'
+           '100%{d:path("M0,78 Q530,398 1060,78")}}'
+           f'#rulerTick{{animation:rk {dur * .55:.1f}s cubic-bezier(.45,0,.75,1) 1.1s both}}')
+    a1, c1 = M.arrow(250, 522, 150, 0.8, False, "red", 1.7, dur * .55)
+    a2, c2 = M.arrow(1520, 522, 150, 0.8, True, "red", 1.7, dur * .55)
+    css += c1 + c2
+    body = (M.title("TRY THIS YOURSELF.", 90, 78, "blue")
+            + rule + a1 + a2
+            + M.label("it bows", 1560, 640, 52, "var(--red)", dur * .6, "popIn", "left",
+                      800, "font-family:Montserrat,sans-serif")
+            + M.caption("It never snaps. It bends sideways and keeps going.", dur * .72))
+    return M.stage(body), css
 
 
 # ------------------------------------------------------------------ 4. the loop
-def buckling_loop(p):
-    """The runaway loop, shown physically: real steel bowing while its strength drains."""
-    img = canvas(deep=True)
-    text(img, (W / 2, 120), "BUCKLING", 150, INK, phase(p, 0, .14), "mm", track=16, black=True)
-    over(img, lambda d: d.rectangle([W / 2 - 280 * ease(phase(p, .1, .26)), 232,
-                                     W / 2 + 280 * ease(phase(p, .1, .26)), 240], fill=RED + (255,)))
-
-    # three accelerating cycles: each one bows further and drains more strength
-    cycles = [(0.22, 0.42, 34, 0.74), (0.42, 0.62, 78, 0.45), (0.62, 0.86, 150, 0.12)]
-    bow, strength = 10.0, 1.0
-    for t0, t1, b, s in cycles:
-        k = phase(p, t0, t1)
-        if k > 0:
-            bow = 10 + (b - 10) * k if bow < b else bow
-            bow = max(bow, 10 + (b - 10) * k)
-            strength = min(strength, 1.0 - (1.0 - s) * k)
-    load = 1.0 + 0.9 * phase(p, .2, .86)
-    member(img, 380, 1380, 430, thick=78, bow=bow, tint=lerp(STEEL_MID, RED, 1 - strength))
-    arrow(img, (250, 430), (360, 430), RED, int(10 + 12 * load), phase(p, .16, .26))
-    arrow(img, (1510, 430), (1400, 430), RED, int(10 + 12 * load), phase(p, .16, .26))
-    meter(img, strength, phase(p, .2, .3), (1660, 300), 74, 360)
-
-    # the running commentary, one line per cycle
-    lines = [("it bows", .24), ("so it carries less", .44), ("so it bows further", .64)]
-    for i, (s, t) in enumerate(lines):
-        a = phase(p, t, t + .1)
-        text(img, (880, 790 + i * 68), f"{i + 1}.  {s}", 48, [AMBER, RED, RED][i], a, "mm",
-             display=True)
-    caption(img, "Each turn of the loop is faster than the last.", phase(p, .88, .97), y=H - 90)
-    return img
+def buckling_loop(dur):
+    body_svg, css = M.member_svg("bl", 380, 400, 1000, 82,
+                                 [(0, 8), (30, 32), (60, 76), (100, 156)],
+                                 dur * .78, delay=0.9)
+    a1, c1 = M.arrow(214, 432, 150, 0.6, False, "red", 2.0, dur * .78)
+    a2, c2 = M.arrow(1556, 432, 150, 0.6, True, "red", 2.0, dur * .78)
+    css += c1 + c2
+    # the member reddens as it weakens
+    css += ('@keyframes hot{from{filter:none}to{filter:hue-rotate(-28deg) saturate(2.4) '
+            'brightness(.92)}}'
+            f'#bodybl{{animation:bodyBbl {dur * .78:.1f}s cubic-bezier(.4,0,.8,1) .9s both,'
+            f'hot {dur * .78:.1f}s linear .9s both}}')
+    # strength meter draining
+    css += ('@keyframes drain{0%{transform:scaleY(1);background:var(--green)}'
+            '32%{transform:scaleY(.74);background:var(--green)}'
+            '46%{background:var(--amber)}62%{transform:scaleY(.45);background:var(--amber)}'
+            '80%{background:var(--red)}100%{transform:scaleY(.12);background:var(--red)}}'
+            f'#drainbar{{animation:drain {dur * .78:.1f}s cubic-bezier(.4,0,.8,1) .9s both}}')
+    meter = ('<div class="meter" style="left:1668px;top:300px;height:380px">'
+             '<div class="fill" id="drainbar" style="height:100%"></div></div>')
+    steps = "".join(
+        M.label(t, 960, 700 + i * 72, 50, c, d, "popIn", "center", 700,
+                "font-family:Montserrat,sans-serif")
+        for i, (t, c, d) in enumerate([
+            ("1. it bows", "var(--amber)", dur * .22),
+            ("2. so it carries less", "var(--red)", dur * .45),
+            ("3. so it bows further", "var(--red)", dur * .65)]))
+    body = (M.title("BUCKLING", 96, 128, "red", left=620)
+            + body_svg + a1 + a2 + meter
+            + M.label("STRENGTH", 1707, 252, 30, "var(--ink)", 0.8, "fade", "center")
+            + steps
+            + M.caption("Each turn of the loop is faster than the last.", dur * .84, 40))
+    return M.stage(body, deep=True), css
 
 
 # ------------------------------------------------------------------ 5. built-up members
-def builtup_lacing(p):
-    img = canvas()
-
-    def left(pan):
-        member(pan, 110, 850, 450, thick=130, bow=6 + 10 * phase(p, .5, .95))
-        a = phase(p, .35, .5)
-        arrow(pan, (20, 450), (95, 450), BLUE, 14, a)
-        arrow(pan, (940, 450), (865, 450), BLUE, 14, a)
-        if a > 0:
-            text(pan, (480, 680), "acts as ONE thick member", 40, BLUE, a, "mm")
-            text(pan, (480, 744), "strong", 62, BLUE, phase(p, .5, .62), "mm", display=True)
-
-    def right(pan):
-        spread = 30 * phase(p, .55, .9)
-        b = 10 + 66 * phase(p, .52, .96)
-        lacing(pan, 130, 830, 450, 150 + spread * 3,
-               phase(p, .22, .34) * (1 - phase(p, .72, .9)), STEEL_LO)
-        member(pan, 110, 850, 450, thick=150 + spread * 3, bow=b, n_plates=4,
-               gap=spread, rivets=False)
-        a = phase(p, .35, .5)
-        arrow(pan, (20, 450), (95, 450), RED, 14, a)
-        arrow(pan, (940, 450), (865, 450), RED, 14, a)
-        if a > 0:
-            text(pan, (480, 680), "four plates bend SEPARATELY", 38, RED, a, "mm")
-            text(pan, (480, 744), "far weaker", 62, RED, phase(p, .5, .62), "mm", display=True)
-
-    split(img, left, right)
-    panel_label(img, "LACED TIGHTLY", BLUE, phase(p, .06, .18), 0)
-    panel_label(img, "LACED TOO LIGHTLY", RED, phase(p, .1, .22), W // 2)
-    caption(img, "The Quebec Bridge had the second kind.", phase(p, .82, .94))
-    return img
+def builtup_lacing(dur):
+    css = ""
+    solid, c1 = M.member_svg("sl", 110, 400, 740, 132, [(0, 6), (100, 22)], dur * .6, 1.4)
+    plates, c2 = M.plates_svg("pl", 1070, 400, 740, 132, 4,
+                              [(0, 2), (55, 2), (100, 30)],
+                              [(0, 6), (55, 26), (100, 88)], dur * .6, 1.4)
+    lace, c3 = M.lacing_svg("lc", 1090, 404, 700, 132, 0.8, 0.9)
+    css += c1 + c2 + c3
+    css += ('@keyframes laceGo{0%{opacity:1}70%{opacity:1}100%{opacity:0}}'
+            f'#lclc{{animation:dashlc .9s .8s ease both,laceGo {dur * .6:.1f}s 1.4s linear both}}')
+    a1, ca1 = M.arrow(20, 452, 80, 1.1, False, "blue")
+    a2, ca2 = M.arrow(858, 452, 80, 1.1, True, "blue")
+    a3, ca3 = M.arrow(980, 452, 80, 1.1, False, "red")
+    a4, ca4 = M.arrow(1818, 452, 80, 1.1, True, "red")
+    css += ca1 + ca2 + ca3 + ca4
+    body = (M.divider(0.15)
+            + M.panel_label("LACED TIGHTLY", "left", "var(--blue)", 0.1)
+            + M.panel_label("LACED TOO LIGHTLY", "right", "var(--red)", 0.4)
+            + solid + lace + plates + a1 + a2 + a3 + a4
+            + M.label("acts as ONE thick member", 480, 700, 40, "var(--blue)", dur * .5,
+                      "riseIn", "center")
+            + M.label("strong", 480, 760, 62, "var(--blue)", dur * .56, "popIn", "center",
+                      800, "font-family:Montserrat,sans-serif")
+            + M.label("four plates bend SEPARATELY", 1440, 700, 38, "var(--red)", dur * .5,
+                      "riseIn", "center")
+            + M.label("far weaker", 1440, 760, 62, "var(--red)", dur * .56, "popIn", "center",
+                      800, "font-family:Montserrat,sans-serif")
+            + M.caption("The Quebec Bridge had the second kind.", dur * .78))
+    return M.stage(body), css
 
 
 # ------------------------------------------------------------------ 6. the span decision
-def span_longer(p):
-    img = canvas()
-    grid_bg(img)
-    water(img, 840)
-    title_block(img, ["MAKE THE SPAN LONGER,", "AND THE STEEL GETS HEAVIER."],
-                phase(p, 0, .2), y=80, size=58, accent=AMBER)
-    grow = phase(p, .34, .66)
-    half = 320 + 90 * grow
-    lp, rp = W / 2 - half, W / 2 + half
-    over(img, lambda d: cantilever(d, lp, rp, 640, phase(p, .12, .34), INK, 5))
-    over(img, lambda d: [d.rectangle([x - 18, 640, x + 18, 880], fill=INK + (255,)) for x in (lp, rp)])
-    a = phase(p, .34, .44)
-    dim_line(img, (lp, 920), (rp, 920), "490 m" if grow < 0.5 else "549 m", a, RED, 44)
-    # the point most people miss: the bridge mostly carries itself
-    b = phase(p, .68, .8)
-    if b > 0:
-        text(img, (W / 2, 1010), "A bridge this size mostly carries its own weight.", 44,
-             INK, b, "mm")
-        text(img, (W / 2, 1062), "More span → more steel → more weight → more steel again.",
-             38, RED, phase(p, .78, .9), "mm", bold=False)
-    return img
+def span_longer(dur):
+    def truss(x, w, uid, delay):
+        return (f'<svg style="position:absolute;left:{x}px;top:380px" width="{w}" height="300">'
+                f'<path id="{uid}" d="M0,260 L{w/2},0 L{w},260 Z" fill="none" stroke="#11161f" '
+                f'stroke-width="6"/>'
+                + "".join(f'<line x1="{w*k/12}" y1="260" x2="{w*k/12}" '
+                          f'y2="{260 - 260*min(k,12-k)/6}" stroke="#11161f" stroke-width="3"/>'
+                          for k in range(1, 12))
+                + f'<line x1="0" y1="260" x2="{w}" y2="260" stroke="#11161f" stroke-width="6"/>'
+                f'</svg>')
+    css = ('@keyframes grow{from{transform:scaleX(1)}to{transform:scaleX(1.26)}}'
+           f'#spanwrap{{transform-origin:center center;'
+           f'animation:grow 1.1s {dur * .34:.1f}s cubic-bezier(.2,.9,.25,1) both}}'
+           '@keyframes dimGrow{from{width:640px}to{width:880px}}'
+           f'#dim{{animation:dimGrow 1.1s {dur * .34:.1f}s cubic-bezier(.2,.9,.25,1) both}}')
+    bridge = (f'<div id="spanwrap" style="position:absolute;left:0;top:0;width:1920px;'
+              f'height:1080px">{truss(320, 560, "t1", 0.5)}{truss(1040, 560, "t2", 0.7)}'
+              f'<div style="position:absolute;left:584px;top:640px;width:32px;height:230px;'
+              f'background:var(--ink)"></div>'
+              f'<div style="position:absolute;left:1304px;top:640px;width:32px;height:230px;'
+              f'background:var(--ink)"></div></div>')
+    dim = ('<div style="position:absolute;left:600px;top:920px">'
+           '<div id="dim" class="wipeIn" style="height:5px;background:var(--red);width:640px;'
+           'animation-delay:1.3s"></div></div>')
+    body = (M.water(860, 0.2)
+            + M.title("MAKE THE SPAN LONGER,", 70, 58, "amber")
+            + M.title("AND THE STEEL GETS HEAVIER.", 142, 58, "amber", delay=0.35)
+            + bridge + dim
+            + M.label("490 m", 960, 952, 44, "var(--red)", 1.5, "fade", "center", 700,
+                      f"animation:fade .4s 1.5s ease both,fade .3s {dur * .42:.1f}s "
+                      f"reverse both")
+            + M.label("549 m", 960, 952, 44, "var(--red)", dur * .48, "popIn", "center", 700,
+                      "font-family:Montserrat,sans-serif")
+            + M.label("A bridge this size mostly carries its own weight.", 960, 1000, 44,
+                      "var(--ink)", dur * .64, "riseIn", "center")
+            + M.label("more span → more steel → more weight → more steel again", 960, 1046, 36,
+                      "var(--red)", dur * .76, "riseIn", "center", 500))
+    return M.stage(body), css
 
 
 # ------------------------------------------------------------------ 7. how it is built
-def cantilever_build(p):
-    """Why nobody could simply stop and check: the bridge was built out over the water."""
-    img = canvas()
-    grid_bg(img)
-    water(img, 840)
-    title_block(img, ["BUILT OUT INTO MID-AIR."], phase(p, 0, .16), y=80, size=64, accent=BLUE)
-    lp, rp, deck = W / 2 - 420, W / 2 + 420, 620
-    over(img, lambda d: [d.rectangle([x - 18, deck, x + 18, 880], fill=INK + (255,)) for x in (lp, rp)])
-    reach = phase(p, .2, .85)
-    over(img, lambda d: cantilever(d, lp, rp, deck, reach, INK, 5))
-    # a travelling crane creeping outwards
-    cx = lp + (W / 2 - lp) * reach
-    a = phase(p, .25, .35)
-    if a > 0:
-        over(img, lambda d: [d.rectangle([cx - 26, deck - 150, cx + 26, deck], fill=AMBER + (int(255 * a),)),
-                             d.line([(cx, deck - 150), (cx + 130, deck - 90)], fill=INK + (int(255 * a),), width=7)])
-    text(img, (W / 2, 1000), "No scaffolding. No support underneath.", 46, INK,
-         phase(p, .6, .72), "mm")
-    text(img, (W / 2, 1056), "Every day's work made the arms heavier — and longer.", 38,
-         RED, phase(p, .72, .84), "mm", bold=False)
-    return img
+def cantilever_build(dur):
+    """Two arms creeping out from their piers towards each other, with nothing below."""
+    def arm(uid, x, flip):
+        webs = "".join(
+            f'<line x1="{640 * k / 9}" y1="260" x2="{640 * k / 9}" '
+            f'y2="{260 - 260 * min(k, 9 - k) / 4.5}" stroke="#11161f" stroke-width="3"/>'
+            for k in range(1, 9))
+        mirror = " style='transform:scaleX(-1);transform-origin:center'" if flip else ""
+        return (f'<svg style="position:absolute;left:{x}px;top:380px" width="640" height="300">'
+                f'<g id="{uid}"{mirror}>'
+                f'<path d="M0,260 L320,0 L640,260 Z" fill="none" stroke="#11161f" '
+                f'stroke-width="6"/>{webs}'
+                f'<line x1="0" y1="260" x2="640" y2="260" stroke="#11161f" '
+                f'stroke-width="6"/></g></svg>')
+    css = ('@keyframes revealR{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 0 0 0)}}'
+           '@keyframes revealL{from{clip-path:inset(0 0 0 100%)}to{clip-path:inset(0 0 0 0)}}'
+           f'#armA{{animation:revealR {dur * .6:.1f}s linear .6s both}}'
+           f'#armB{{animation:revealL {dur * .6:.1f}s linear .6s both}}'
+           '@keyframes craneA{from{transform:translateX(0)}to{transform:translateX(470px)}}'
+           '@keyframes craneB{from{transform:translateX(0)}to{transform:translateX(-470px)}}'
+           f'#craneA{{animation:craneA {dur * .6:.1f}s linear .6s both}}'
+           f'#craneB{{animation:craneB {dur * .6:.1f}s linear .6s both}}')
+
+    def crane(uid, x):
+        return (f'<div id="{uid}" style="position:absolute;left:{x}px;top:500px">'
+                '<div style="width:30px;height:140px;background:var(--amber)"></div>'
+                '<div style="position:absolute;left:24px;top:-8px;width:130px;height:8px;'
+                'background:var(--ink);transform:rotate(22deg);transform-origin:left"></div></div>')
+
+    pier = lambda x: (f'<div style="position:absolute;left:{x}px;top:640px;width:34px;'
+                      f'height:240px;background:var(--ink)"></div>')
+    body = (M.water(860, 0.2)
+            + M.title("BUILT OUT INTO MID-AIR.", 80, 64, "blue")
+            + arm("armA", 160, False) + arm("armB", 1120, True)
+            + pier(464) + pier(1424) + crane("craneA", 200) + crane("craneB", 1690)
+            + M.label("no scaffolding. nothing underneath.", 960, 940, 46, "var(--ink)",
+                      dur * .55, "riseIn", "center")
+            + M.label("every day's work made the arms longer, heavier, harder to stop",
+                      960, 1000, 36, "var(--red)", dur * .7, "riseIn", "center", 500))
+    return M.stage(body), css
 
 
 # ------------------------------------------------------------------ 8. the measurements
-def bend_record(p):
-    img = canvas()
-    grid_bg(img)
-    title_block(img, ["THE BEND KEPT GROWING."], phase(p, 0, .16), y=80, size=66, accent=AMBER)
-    rows = [("early August", 0.18, STEEL_MID), ("27 August", 0.55, AMBER), ("29 August", 1.0, RED)]
-    for i, (label, amt, col) in enumerate(rows):
-        a = phase(p, .2 + i * .17, .38 + i * .17)
-        if a <= 0:
-            continue
-        y = 400 + i * 190
-        member(img, 460, 1460, y, thick=56, bow=10 + 80 * amt * ease_out(a), tint=col, a=a)
-        text(img, (420, y), label, 40, INK, a, "rm")
-        text(img, (1520, y), f"+{int(amt * 60)} mm", 44, col, phase(a, .5, 1), "lm", display=True)
-    lower_third(img, "Norman McLure", "inspecting engineer, on site",
-                phase(p, .52, .72), x=1240, y=140)
-    caption(img, "Not old damage. The loop, already running.", phase(p, .86, .97))
-    return img
+def bend_record(dur):
+    css = ""
+    rows = [("early August", 14, "st", 0.0), ("27 August", 54, "st", 0.22),
+            ("29 August", 120, "stHot", 0.44)]
+    out = ""
+    for i, (when, bow, fill, t) in enumerate(rows):
+        d = dur * (0.18 + t)
+        svg, c = M.member_svg(f"br{i}", 480, 360 + i * 185, 980, 46,
+                              [(0, 4), (100, bow)], 0.9, d, fill=fill)
+        css += c
+        css += (f'#br{i}wrap{{animation:riseIn .5s {d:.2f}s cubic-bezier(.2,.9,.25,1) both}}')
+        out += (f'<div id="br{i}wrap" style="position:absolute;left:0;top:0">{svg}'
+                + M.label(when, 440, 376 + i * 185, 40, "var(--ink)", d, "fade", "right")
+                + M.label(f"+{int(bow/2)} mm", 1500, 376 + i * 185, 44,
+                          ["var(--mute)", "var(--amber)", "var(--red)"][i], d + 0.5,
+                          "popIn", "left", 700, "font-family:Montserrat,sans-serif")
+                + '</div>')
+    body = (M.title("THE BEND KEPT GROWING.", 80, 66, "amber")
+            + out
+            + M.namecard("Norman McLure", "inspecting engineer, on site", 1240, 140, dur * .5)
+            + M.caption("Not old damage. The loop, already running.", dur * .82))
+    return M.stage(body), css
 
 
 # ------------------------------------------------------------------ 9. the telegram race
-LON0, LON1, LAT0, LAT1 = -79.0, -67.5, 39.4, 47.8
+def telegram_race(dur):
+    NY, PA, QC = (1180, 700), (980, 790), (1420, 300)
+    css = ('@keyframes drawL{from{stroke-dashoffset:var(--len)}to{stroke-dashoffset:0}}'
+           '@keyframes tick{to{transform:rotate(360deg)}}')
+    river = ('<svg style="position:absolute;left:0;top:0" width="1920" height="1080">'
+             '<path d="M900,560 Q1150,440 1340,330 T1700,170" stroke="#b0cee6" '
+             'stroke-width="14" fill="none" class="drawIn" '
+             'style="animation-delay:.2s;animation-duration:1.2s"/>'
+             f'<path id="legA" d="M{NY[0]},{NY[1]} L{PA[0]},{PA[1]}" stroke="#e8192c" '
+             'stroke-width="10" fill="none" stroke-dasharray="300" '
+             f'style="--len:300;animation:drawL .9s {dur * .28:.1f}s ease both"/>'
+             f'<path id="legB" d="M{PA[0]},{PA[1]} L{QC[0]},{QC[1]}" stroke="#7a869a" '
+             'stroke-width="7" fill="none" stroke-dasharray="14 18" '
+             f'style="--len:700;stroke-dashoffset:700;animation:drawL 1.4s {dur * .5:.1f}s ease both"/>'
+             '</svg>')
 
+    def pin(xy, name, delay, side=1):
+        return (f'<div style="position:absolute;left:{xy[0]-14}px;top:{xy[1]-14}px;width:28px;'
+                f'height:28px;border-radius:50%;background:var(--ink);'
+                f'animation:statPop .45s {delay}s cubic-bezier(.16,1.3,.4,1) both"></div>'
+                + M.label(name, xy[0] + 30 * side, xy[1] - 20, 38, "var(--ink)", delay + 0.1,
+                          "riseIn", "left" if side > 0 else "right"))
 
-def _xy(lat, lon):
-    return (160 + (lon - LON0) / (LON1 - LON0) * (W - 320),
-            150 + (LAT1 - lat) / (LAT1 - LAT0) * (H - 320))
+    def clock(x, y, hh, mm, delay, cap):
+        ang_h, ang_m = (hh % 12 + mm / 60) * 30, mm * 6
+        return (f'<div style="position:absolute;left:{x}px;top:{y}px;width:190px;height:190px;'
+                f'border:7px solid var(--ink);border-radius:50%;background:#fff;'
+                f'animation:statPop .5s {delay}s cubic-bezier(.16,1.3,.4,1) both">'
+                f'<div style="position:absolute;left:50%;top:50%;width:7px;height:52px;'
+                f'background:var(--ink);transform-origin:top center;'
+                f'transform:translate(-50%,0) rotate({ang_h + 180}deg)"></div>'
+                f'<div style="position:absolute;left:50%;top:50%;width:5px;height:74px;'
+                f'background:var(--red);transform-origin:top center;'
+                f'transform:translate(-50%,0) rotate({ang_m + 180}deg)"></div></div>'
+                + M.label(cap, x + 95, y + 206, 32, "var(--ink)", delay + 0.2, "fade", "center"))
 
-
-def _clock(img, c, r, hours, minutes, a=1.0, label=None):
-    if a <= 0:
-        return
-    A = int(255 * a)
-    def draw(d):
-        d.ellipse([c[0] - r, c[1] - r, c[0] + r, c[1] + r], fill=(255, 255, 255, A),
-                  outline=INK + (A,), width=6)
-        for k in range(12):
-            ang = math.pi / 2 - k * math.pi / 6
-            d.line([(c[0] + .82 * r * math.cos(ang), c[1] - .82 * r * math.sin(ang)),
-                    (c[0] + .95 * r * math.cos(ang), c[1] - .95 * r * math.sin(ang))],
-                   fill=INK + (A,), width=4)
-        hm = (hours % 12 + minutes / 60) * math.pi / 6
-        mm = minutes * math.pi / 30
-        d.line([c, (c[0] + .5 * r * math.sin(hm), c[1] - .5 * r * math.cos(hm))], fill=INK + (A,), width=10)
-        d.line([c, (c[0] + .8 * r * math.sin(mm), c[1] - .8 * r * math.cos(mm))], fill=RED + (A,), width=6)
-    over(img, draw)
-    if label:
-        text(img, (c[0], c[1] + r + 38), label, 34, INK, a, "mm")
-
-
-def telegram_race(p):
-    img = canvas()
-    grid_bg(img, 0.8)
-    QC, NY, PA = _xy(46.75, -71.29), _xy(40.71, -74.01), _xy(40.13, -75.51)
-    over(img, lambda d: d.line([_xy(44.0, -76.3), _xy(45.4, -73.9), _xy(46.3, -72.6),
-                                _xy(46.8, -71.2), _xy(47.6, -69.7)],
-                               fill=(176, 206, 230, 255), width=12, joint="curve"))
-    for pt, name, side, a in ((NY, "New York", 1, phase(p, .05, .15)),
-                              (PA, "Pennsylvania office", -1, phase(p, .1, .2)),
-                              (QC, "the bridge, Quebec", 1, phase(p, .15, .25))):
-        if a <= 0:
-            continue
-        over(img, lambda d, pt=pt, a=a: d.ellipse([pt[0] - 14, pt[1] - 14, pt[0] + 14, pt[1] + 14],
-                                                  fill=INK + (int(255 * a),)))
-        text(img, (pt[0] + 28 * side, pt[1] - 6), name, 38, INK, a,
-             "lm" if side > 0 else "rm")
-    _clock(img, (330, 300), 100, 12, 16, phase(p, .2, .3), "12:16 pm — sent")
-    over(img, lambda d: _partial(d, [NY, PA], phase(p, .3, .5), RED + (255,), 9))
-    _clock(img, (330, 620), 100, 13, 3, phase(p, .5, .6), "just after 1 pm — arrives")
-    # the leg that was never travelled
-    dash = phase(p, .6, .8)
-    if dash > 0:
-        n = 30
-        over(img, lambda d: [d.line([(PA[0] + (QC[0] - PA[0]) * i / n, PA[1] + (QC[1] - PA[1]) * i / n),
-                                     (PA[0] + (QC[0] - PA[0]) * (i + .5) / n,
-                                      PA[1] + (QC[1] - PA[1]) * (i + .5) / n)],
-                                    fill=MUTE + (255,), width=6)
-                             for i in range(int(n * dash))])
-    x = phase(p, .82, .92)
-    if x > 0:
-        m = ((PA[0] + QC[0]) / 2, (PA[1] + QC[1]) / 2)
-        over(img, lambda d: [d.line([(m[0] - 46, m[1] - 46 * s), (m[0] + 46, m[1] + 46 * s)],
-                                    fill=RED + (int(255 * x),), width=14) for s in (-1, 1)])
-        text(img, (m[0] + 76, m[1]), "never sent on", 52, RED, x, "lm", display=True)
-    return img
+    cross = (f'<div style="position:absolute;left:{(PA[0]+QC[0])//2 - 50}px;'
+             f'top:{(PA[1]+QC[1])//2 - 50}px;width:100px;height:100px;'
+             f'animation:statPop .5s {dur*.78:.1f}s cubic-bezier(.16,1.3,.4,1) both">'
+             '<div style="position:absolute;top:44px;width:100px;height:14px;'
+             'background:var(--red);transform:rotate(45deg)"></div>'
+             '<div style="position:absolute;top:44px;width:100px;height:14px;'
+             'background:var(--red);transform:rotate(-45deg)"></div></div>')
+    body = (river
+            + pin(NY, "New York", 0.2) + pin(PA, "Pennsylvania office", 0.45, -1)
+            + pin(QC, "the bridge, Quebec", 0.7)
+            + clock(150, 220, 12, 16, dur * .18, "12:16 pm — sent")
+            + clock(150, 620, 13, 3, dur * .42, "just after 1 pm — arrives")
+            + cross
+            + M.label("never sent on", (PA[0] + QC[0]) // 2 + 80, (PA[1] + QC[1]) // 2 - 28,
+                      52, "var(--red)", dur * .82, "riseIn", "left", 800,
+                      "font-family:Montserrat,sans-serif"))
+    return M.stage(body), css
 
 
 # ------------------------------------------------------------------ 10. the men
-def men_grid(p):
-    img = canvas()
-    grid_bg(img)
-    text(img, (W / 2, 130), "86 MEN WERE ON THE STEEL", 64, INK, phase(p, .05, .2), "mm",
-         display=True)
-    fade = phase(p, .5, .82)
-    appear = phase(p, .1, .38)
-
-    def draw(d):
-        for k in range(86):
-            row, col = divmod(k, 22)
-            x, y = 520 + col * 42, 290 + row * 42
-            if k / 86 > appear:
-                continue
-            alpha = 1.0 if k < 11 else 1.0 - 0.86 * fade
-            colr = INK if k < 11 else lerp(INK, RED, fade)
-            d.ellipse([x - 14, y - 14, x + 14, y + 14], fill=colr + (int(255 * alpha),))
-    over(img, draw)
-    text(img, (W / 2, 540), "33 of them from one small community: Kahnawake", 42, AMBER,
-         phase(p, .32, .44), "mm")
-    stat(img, "75", "did not come home", phase(p, .72, .88), (W / 2, 790), 190, RED)
-    return img
+def men_grid(dur):
+    dots = ""
+    for k in range(86):
+        row, col = divmod(k, 22)
+        x, y = 520 + col * 42, 300 + row * 42
+        appear = 0.5 + k * 0.012
+        if k < 11:
+            anim = f"animation:statPop .4s {appear:.2f}s cubic-bezier(.16,1.3,.4,1) both"
+        else:
+            anim = (f"animation:statPop .4s {appear:.2f}s cubic-bezier(.16,1.3,.4,1) both,"
+                    f"gone .5s {dur * .55 + (k % 22) * 0.012:.2f}s ease both")
+        dots += (f'<div style="position:absolute;left:{x-14}px;top:{y-14}px;width:28px;'
+                 f'height:28px;border-radius:50%;background:var(--ink);{anim}"></div>')
+    css = ('@keyframes gone{from{opacity:1;background:var(--ink);transform:none}'
+           'to{opacity:.14;background:var(--red);transform:translateY(26px)}}')
+    body = (M.label("86 MEN WERE ON THE STEEL", 960, 120, 64, "var(--ink)", 0.1, "riseIn",
+                    "center", 800, "font-family:Montserrat,sans-serif")
+            + dots
+            + M.label("33 of them from one small community: Kahnawake", 960, 540, 42,
+                      "var(--amber)", dur * .34, "riseIn", "center")
+            + M.stat("75", "did not come home", 960, 700, dur * .72, 190))
+    return M.stage(body), css
 
 
 # ------------------------------------------------------------------ 11. collapse
-def collapse(p):
-    img = canvas()
-    grid_bg(img, 0.6)
-    water(img, 860)
-    lp, rp, deck = W / 2 - 420, W / 2 + 420, 620
-    fall = phase(p, .18, .72)
-    if fall <= 0:
-        over(img, lambda d: cantilever(d, lp, rp, deck, 1.0, INK, 6))
-    else:
-        layer = Image.new("RGBA", img.size, (0, 0, 0, 0))
-        cantilever(ImageDraw.Draw(layer), lp, rp, deck, 1.0, INK + (255,), 6)
-        drop = int((860 - deck + 300) * fall ** 1.7)
-        south = layer.crop((0, 0, int(W / 2 + 60), H)).rotate(-16 * fall, center=(lp, deck),
-                                                              resample=Image.BICUBIC)
-        img.alpha_composite(layer.crop((int(W / 2 + 60), 0, W, H)), (int(W / 2 + 60), 0))
-        faded = south.copy()
-        faded.putalpha(south.getchannel("A").point(lambda v: int(v * (1 - 0.45 * fall))))
-        img.alpha_composite(faded, (0, drop))
-        water(img, 860)
-    over(img, lambda d: [d.rectangle([x - 18, deck, x + 18, 900], fill=INK + (255,)) for x in (lp, rp)])
-    secs = min(15, int(15 * phase(p, .18, .78)))
-    text(img, (W / 2, 160), f"{secs}", 220, RED, phase(p, .1, .2), "mm", black=True)
-    text(img, (W / 2, 300), "SECONDS", 56, INK, phase(p, .12, .22), "mm", track=10, display=True)
-    return img
+def collapse(dur):
+    css = (f'@keyframes fall{{0%{{transform:none;opacity:1}}'
+           f'30%{{transform:translateY(40px) rotate(-5deg)}}'
+           f'100%{{transform:translateY(560px) rotate(-22deg);opacity:.35}}}}'
+           f'#southArm{{transform-origin:right center;'
+           f'animation:fall {dur * .55:.1f}s cubic-bezier(.5,0,.9,1) {dur * .18:.1f}s both}}'
+           '@keyframes shake{0%,100%{transform:none}25%{transform:translateX(-6px)}'
+           '75%{transform:translateX(6px)}}'
+           f'#shaker{{animation:shake .12s {dur * .18:.1f}s 6 both}}'
+           '@keyframes counter{from{opacity:0}to{opacity:1}}')
+    def arm(uid, x, flip):
+        webs = "".join(
+            f'<line x1="{700 * k / 10}" y1="280" x2="{700 * k / 10}" '
+            f'y2="{280 - 280 * min(k, 10 - k) / 5}" stroke="#11161f" stroke-width="3"/>'
+            for k in range(1, 10))
+        mirror = ' style="transform:scaleX(-1)"' if flip else ""
+        return (f'<svg id="{uid}" style="position:absolute;left:{x}px;top:380px" width="700" '
+                f'height="300"><g{mirror} transform-origin="center">'
+                f'<path d="M0,280 L350,0 L700,280 Z" fill="none" stroke="#11161f" '
+                f'stroke-width="7"/>{webs}'
+                f'<line x1="0" y1="280" x2="700" y2="280" stroke="#11161f" '
+                f'stroke-width="7"/></g></svg>')
+    pier = lambda x: (f'<div style="position:absolute;left:{x}px;top:640px;width:36px;'
+                      f'height:250px;background:var(--ink);z-index:3"></div>')
+    body = (M.water(880, 0.0)
+            + f'<div id="shaker">{arm("southArm", 160, False)}{arm("northArm", 1060, True)}</div>'
+            + pier(492) + pier(1392)
+            + M.stat("15", "SECONDS", 960, 110, dur * .12, 230))
+    return M.stage(body, vignette=True), css
 
 
 DIAGRAMS = {"straw_vs_steel": straw_vs_steel, "tension_compression": tension_compression,

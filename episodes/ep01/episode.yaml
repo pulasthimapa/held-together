@@ -22,6 +22,14 @@ scenes:
       Dramatic low angle looking up a vast half-built steel cantilever bridge at golden hour,
       workers as small silhouettes high on the steel, deep teal river below, blazing amber sky,
       strong rim light on every rivet. Epic and alive.
+    shots:
+      - >-
+        Tight shot of riveted steel plates with a worker's boots on a narrow beam, the river far below in deep teal, sun flare through the trusses, vertigo.
+      - >-
+        Silhouette of a lone ironworker against a blazing amber sky, standing on the very end of an unfinished cantilever arm.
+    hero_video: >-
+      Slow cinematic aerial push along a vast half-built steel cantilever bridge at golden hour, tiny workers silhouetted on the trusses, deep teal river below, warm amber sun flare, dust and haze in the air. Photoreal, filmic, shallow depth of field.
+    hero_seconds: 8
     narration: >-
       At half past five on a Thursday afternoon in 1907, eighty-six men were standing on the
       largest bridge ever built. Fifteen seconds later, seventy-five of them were dead.
@@ -33,6 +41,11 @@ scenes:
       Extreme close-up of a telegram lying forgotten on a dark wooden desk in a shaft of hard
       afternoon light, dust in the air, deep shadows, one bright crimson wax seal.
       The rest of the office is out of focus and empty.
+    shots:
+      - >-
+        Over-the-shoulder shot of a clerk's hand placing a telegram face-down on a stack of papers, warm office light, the window behind blown out white.
+      - >-
+        Macro shot of a brass telegraph key at rest on a desk, dust motes, hard shaft of sunlight, deep shadow around it.
     narration: >-
       The warning that could have stopped it was already written. It had been sent that
       morning. It was sitting, read and understood, in an office six hundred miles away.
@@ -57,6 +70,14 @@ scenes:
       Quebec City in the early 1900s seen across a wide teal river at sunrise, cliffs and
       spires catching warm gold light, steamships trailing smoke, a railway line stopping
       abruptly at the water's edge. Vivid, cinematic, high contrast.
+    shots:
+      - >-
+        Aerial view of the wide St Lawrence river splitting a landscape in two, a railway line ending at the water on one side and resuming on the other, vivid teal and gold.
+      - >-
+        Street-level view of a crowded 1900s Quebec waterfront, barrels and crates, steam, people waiting, warm late light.
+    hero_video: >-
+      Slow drifting aerial over a wide river at sunrise, mist on the water, a cliff-top city with spires catching gold light, a steam ship trailing smoke. Photoreal, cinematic, vivid teal and amber.
+    hero_seconds: 8
     narration: >-
       Quebec had a problem. The St Lawrence River cut the city off from the railways to the
       south. The answer was a bridge, and not just any bridge: the longest of its kind
@@ -72,6 +93,11 @@ scenes:
       Elias as a distinguished 1900s American engineer in a sharp dark three-piece suit,
       standing over a drafting table in a New York office, strong window light raking across
       rolled plans, warm amber lamp against cool blue daylight, proud and commanding.
+    shots:
+      - >-
+        Close-up of an elderly engineer's hands resting on a rolled bridge drawing, a signet ring, strong side light, shallow focus.
+      - >-
+        A framed portrait and engineering medals on a dark office wall, raking light picking out the gold, proud and slightly cold.
     narration: >-
       The man in charge was Theodore Cooper, one of the most respected bridge engineers in
       America. He was in his sixties. He was proud. And he wanted this to be the crowning
@@ -95,6 +121,11 @@ scenes:
       The same elderly engineer alone in a dim New York office at night, lit by one warm
       desk lamp, surrounded by unopened letters and telegrams, a walking cane against the
       chair, the glittering city cold and blue through the window behind him.
+    shots:
+      - >-
+        Close-up of a stack of unopened letters and telegrams on a desk edge, one slipping off, warm lamp pool in darkness.
+      - >-
+        Wide shot of an empty New York office at night seen from outside the window, a single lit desk, the city dark around it.
     narration: >-
       Cooper was unwell. Once the steel started going up, he never once travelled to see it.
       He ran the biggest bridge in the world from that office, through letters, telegrams,
@@ -167,6 +198,11 @@ scenes:
       Close-up of the young engineer's hands holding a steel rule against a huge riveted
       steel member, measuring a visible bend, hard raking sunlight, crimson paint mark on the
       steel, intense focus, shallow depth of field.
+    shots:
+      - >-
+        Macro of a steel rule laid against a riveted plate showing a clear gap, crimson chalk mark, hard sunlight, sharp shadows.
+      - >-
+        A notebook page filled with pencil measurements and dates, a thumb holding it against the wind, bright daylight.
     narration: >-
       In early August, McLure reported it. Cooper wrote back asking how on earth that could
       have happened. Men on site said the bend must have come that way from the factory.
@@ -221,6 +257,14 @@ scenes:
       Riveting crew working high on the open steel on a bright afternoon, Sam among them,
       sleeves rolled, glowing orange rivets, sparks, laughing, the teal river far below,
       brilliant sunlight. Alive, warm, utterly ordinary.
+    shots:
+      - >-
+        Close-up of a glowing orange rivet being caught in a metal cone, sparks flying, dark steel background, intense heat glow.
+      - >-
+        Two workers laughing while sharing a lunch pail sitting on a beam, legs dangling over the river, warm afternoon light.
+    hero_video: >-
+      Close handheld shot of 1900s riveters working on open steel high above a river, glowing orange rivets, flying sparks, sunlight flaring through the trusses, men moving confidently. Photoreal, warm, alive.
+    hero_seconds: 8
     narration: >-
       Hundreds of miles away, on the bridge, it was an ordinary Thursday afternoon. Eighty-six
       men were out on the steel. Among them were Mohawk ironworkers from Kahnawake, a small
@@ -272,6 +316,9 @@ scenes:
       A riverbank at dawn after the disaster, twisted steel rising from calm water, mist,
       cold blue light with a single warm sliver of sunrise, small figures standing silently
       on the shore. Quiet devastation.
+    hero_video: >-
+      Slow drift across twisted wrecked steel rising out of calm misty water at dawn, cold blue light with one warm sliver of sunrise, utterly still. Photoreal, sombre, cinematic.
+    hero_seconds: 8
     narration: >-
       In Kahnawake, two dozen women became widows in a single evening. The men were brought
       home and buried under crosses made from steel beams.
@@ -283,6 +330,11 @@ scenes:
       Mohawk ironworkers in silhouette walking a high steel beam against a vivid sunset over
       a modern city skyline under construction, strong graphic shapes, warm amber and deep
       teal. Proud and forward-looking.
+    shots:
+      - >-
+        Low angle of Mohawk ironworkers walking a narrow beam high above a modern city, arms out for balance, vivid sunset behind.
+      - >-
+        Close-up of weathered hands gripping a steel cable, strong and sure, warm light, deep teal shadow.
     narration: >-
       Then the community made a decision. They did not give up the work. Instead, their men
       would never again all work the same job at the same time, so that one accident could
@@ -296,6 +348,11 @@ scenes:
       A formal 1900s commission hearing room, long table, stacks of drawings and steel
       samples as evidence, hard window light, rows of men in dark suits, one empty chair in
       sharp focus in the foreground.
+    shots:
+      - >-
+        Close-up of a failed steel chord section laid on a table as evidence, the buckle clearly visible, hard overhead light.
+      - >-
+        A commissioner's hand writing a verdict in a leather-bound ledger, nib and ink, warm lamp, deep shadow.
     narration: >-
       A Royal Commission investigated. It found that the chords which failed had been badly
       designed, and it blamed errors of judgment by two men: the designer, Peter Szlapka,
@@ -309,6 +366,11 @@ scenes:
       The young engineer standing alone at a window in low warm light, seen from behind and
       slightly above, shoulders down, the river and the wreck visible far below through
       the glass. Still and heavy.
+    shots:
+      - >-
+        Extreme close-up of the young engineer's face in profile, jaw tight, eyes down, cool window light, shallow focus.
+      - >-
+        His notebook and hat left on a table by the window, the river beyond out of focus.
     narration: >-
       The young man who saw it coming had done almost everything right. He spotted the
       problem. He measured it. He carried it by hand to the one person who could stop the
@@ -321,6 +383,11 @@ scenes:
       1916, a huge new centre span suspended on cables being lifted between two completed
       cantilever arms over a wide river, crowds of small figures watching from the banks,
       dramatic sky, vivid colour, enormous sense of scale.
+    shots:
+      - >-
+        Close-up of thick steel lifting cables under tension, droplets of water, cold blue light, enormous scale implied.
+      - >-
+        Crowds of spectators on a riverbank looking up, hats and parasols, shock beginning to register, warm daylight.
     narration: >-
       They built it again. In 1916, as the new centre span was being lifted into place, part
       of the lifting equipment failed. The span fell into the river. Thirteen more men died.
@@ -331,6 +398,9 @@ scenes:
     prompt: >-
       The finished Quebec Bridge today at sunrise, a freight train crossing, mirror-calm
       river, vivid amber and teal, long clean lines of steel, majestic wide shot.
+    hero_video: >-
+      Slow aerial orbit around a finished steel cantilever bridge at sunrise, a freight train crossing, mirror-calm river reflecting amber sky. Photoreal, majestic, cinematic.
+    hero_seconds: 8
     narration: >-
       The bridge was finished in 1917. Its main span is still the longest cantilever span in
       the world. Trains cross it every day.
@@ -341,6 +411,11 @@ scenes:
     prompt: >-
       Close-up of a plain dark iron ring being placed onto a young engineer's little finger
       by older hands, candlelit ceremony, warm amber glow against deep shadow, reverent.
+    shots:
+      - >-
+        Macro of the plain dark iron ring itself resting on a dark cloth, single hard light, every facet of the rough metal visible.
+      - >-
+        A row of young engineers standing in candlelight with their hands held out, warm amber glow, reverent and still.
     narration: >-
       In 1925, Canadian engineers began a new ceremony. Its obligation was written by Rudyard
       Kipling. At the end of it, each new engineer receives a ring of iron.
@@ -352,6 +427,14 @@ scenes:
       Extreme close-up of a hand drawing a bridge elevation in pencil, a plain dark iron ring
       on the little finger brushing the paper, warm lamp light, crisp detail, shallow depth
       of field.
+    shots:
+      - >-
+        Close-up of a pencil tip meeting paper, graphite catching the light, the ring just visible at the edge of frame.
+      - >-
+        A finished bridge drawing on a drafting table, hands resting at its edges, warm lamp light, quiet.
+    hero_video: >-
+      Extreme macro, shallow focus: a pencil tip drawing a line on paper, a plain dark iron ring on the little finger brushing the page, warm lamp light, dust motes. Photoreal, intimate, filmic.
+    hero_seconds: 6
     narration: >-
       The rings are not made from the bridge's steel. That is a myth. But each one carries
       its lesson. It is worn on the little finger of the working hand, so that every time an
