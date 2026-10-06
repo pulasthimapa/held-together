@@ -1,43 +1,65 @@
 # Recurring illustrated cast. Faces never change; costumes change per episode.
 # Master sheets are generated once into cast/sheets/<id>.jpg and reused as references.
+#
+# Elias and Maya are the two hosts and appear in EVERY episode (rule F3).
+# Elias is a composite character, never a named real person (rule F2).
+# The rest of the troupe play whatever roles a story needs.
 
 style: >-
-  Bold modern 2D editorial illustration. Vivid saturated colour, high contrast, strong
-  directional light with deep shadows and bright highlights. Crisp clean shapes, confident
-  graphic shading, rich teal and warm amber in the same frame, a single bright crimson
-  accent. Cinematic wide composition, dramatic camera angle, shallow depth of field feel.
-  Looks like a premium streaming documentary title card, not a dusty history book.
+  Premium 3D-rendered stylised character animation still, in the polished look of a modern
+  animated feature. Soft cinematic key light with warm rim light, gentle subsurface skin
+  shading, individually rendered hair, expressive believable eyes with real catchlights.
+  Shallow depth of field with a softly blurred background, rich warm amber and deep teal in
+  the same frame. Film-grade colour grading, subtle lens bloom. Characters look sincere and
+  grounded, never cartoonish or caricatured, never plastic.
   No text, no captions, no logos, no watermark.
 
 sheet_prompt: >-
   Character reference sheet. {description}. Wearing a plain neutral grey shirt.
-  Plain light-grey background. Four views side by side: front, three-quarter left,
-  profile right, three-quarter back. Same face and proportions in every view,
-  soft even studio light.
+  Plain light-grey studio background, soft even three-point lighting. Four views side by side:
+  front, three-quarter left, profile right, three-quarter back. Exactly the same face, hair
+  and proportions in every view. Neutral calm expression.
 
 actors:
+  # ---- the two hosts, in every episode ----
   elias:
     name: Elias
+    host: true
+    role_note: >-
+      The engineer of the period. A composite character, labelled on screen as such.
+      Carries the story from inside the era. Weary, precise, carries some guilt.
     description: >-
-      Man in his early 60s, tall and gaunt, silver swept-back hair, deep-set grey eyes,
-      heavy brow, clean-shaven, thin lips, long narrow face
+      Man in his early 60s, tall and gaunt, silver swept-back hair, deep-set grey eyes under
+      a heavy brow, clean-shaven, thin lips, long narrow face, deep lines around the mouth,
+      quiet watchful expression
+  maya:
+    name: Maya
+    host: true
+    role_note: >-
+      Structural engineer of today. Asks what the viewer is thinking and brings the modern
+      angle: what we now measure, what the codes say, what would catch it now.
+    description: >-
+      Woman in her early 30s, short black bob haircut, round wire-rimmed glasses, sharp dark
+      brown eyes, slim face with high cheekbones, alert and curious expression
+
+  # ---- the troupe, cast per story ----
   tom:
     name: Tom
     description: >-
       Man in his mid-20s, lean build, dark curly hair, earnest brown eyes, faint freckles
-      across the nose, slightly large ears, clean-shaven, youthful face
+      across the nose, slightly large ears, clean-shaven, youthful open face
   sam:
     name: Sam
     description: >-
       Man in his late 30s, broad-shouldered and stocky, short dark beard, weathered tanned
-      skin, a small scar through his left eyebrow, strong hands
+      skin, a small scar through his left eyebrow, strong calloused hands
   ruth:
     name: Ruth
     description: >-
       Woman in her mid-40s, strong jaw, auburn hair in a low bun, green eyes, laugh lines
       around the eyes, calm steady expression
-  maya:
-    name: Maya
+  walter:
+    name: Walter
     description: >-
-      Woman in her early 30s, short black bob haircut, round wire glasses, sharp dark eyes,
-      slim face, focused expression
+      Man in his late 60s, heavy-set and imposing, thick white moustache, balding with white
+      hair at the temples, pale blue eyes, jowled face, proud stubborn expression

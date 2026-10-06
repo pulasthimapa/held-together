@@ -3,6 +3,10 @@
 Only scenes that carry a `hero_video:` prompt are generated, and the render falls back
 to the scene's stills if a clip is missing, so this stage is never required.
 
+Run this AFTER the images stage: where a scene already has a still, that still seeds the
+clip, so the characters keep the faces from their reference sheets instead of being
+reinvented by the video model.
+
 WARNING — the request shape below follows Google's long-running "predict" pattern for
 Veo but has NOT been verified against the live API in this session (working rule 13).
 If the first run fails, the error prints the raw response: fix MODEL / _request_body /
@@ -11,6 +15,7 @@ _extract_uri here rather than anywhere else, they are the only API-shaped code.
 Cost: video is by far the most expensive thing in this pipeline. MAX_CLIPS and
 MAX_SECONDS are hard stops so a bad episode file cannot run up a bill.
 """
+import base64
 import os
 import time
 
@@ -21,14 +26,20 @@ from common import env, episode_dir, load_episode
 BASE = "https://generativelanguage.googleapis.com/v1beta"
 MODEL = os.environ.get("VEO_MODEL", "veo-3.1-fast-generate-preview")
 
-MAX_CLIPS = 6          # per episode
+MAX_CLIPS = 8          # per episode
 MAX_SECONDS = 8        # per clip
 POLL_SECONDS = 10
 POLL_LIMIT = 60        # give up after ~10 minutes on one clip
 
 
-def _request_body(prompt, seconds):
-    return {"instances": [{"prompt": prompt}],
+def _request_body(prompt, seconds, start_image=None):
+    """`start_image` seeds the clip from one of our own stills, so the cast keeps its face."""
+    instance = {"prompt": prompt}
+    if start_image:
+        instance["image"] = {
+            "bytesBase64Encoded": base64.b64encode(start_image.read_bytes()).decode(),
+            "mimeType": "image/jpeg"}
+    return {"instances": [instance],
             "parameters": {"aspectRatio": "16:9",
                            "durationSeconds": min(seconds, MAX_SECONDS),
                            "personGeneration": "allow_adult"}}
@@ -53,10 +64,11 @@ def _extract_uri(done):
     return walk(done.get("response", done))
 
 
-def _generate(prompt, seconds, key):
+def _generate(prompt, seconds, key, start_image=None):
     start = requests.post(f"{BASE}/models/{MODEL}:predictLongRunning",
-                          params={"key": key}, json=_request_body(prompt, seconds),
-                          timeout=120)
+                          params={"key": key},
+                          json=_request_body(prompt, seconds, start_image),
+                          timeout=300)
     if start.status_code != 200:
         raise SystemExit(
             f"Veo request refused (HTTP {start.status_code}). The API shape in "
@@ -98,8 +110,12 @@ def make_hero_clips(ep_id):
         if out.exists():
             continue
         seconds = min(float(scene.get("hero_seconds", 6)), MAX_SECONDS)
-        print(f"hero clip {scene['id']}: {seconds:.0f}s …")
-        out.write_bytes(_generate(" ".join(scene["hero_video"].split()), seconds, key))
+        # Animate our own still where one exists, so the cast keeps its face (rule 7b).
+        seed = episode_dir(ep_id) / "images" / f"{scene['id']}.jpg"
+        seed = seed if seed.exists() else None
+        print(f"hero clip {scene['id']}: {seconds:.0f}s"
+              f"{' from our still' if seed else ' from the prompt alone'} …")
+        out.write_bytes(_generate(" ".join(scene["hero_video"].split()), seconds, key, seed))
         made += 1
         print(f"hero clip: {out.name}")
     print(f"hero clips generated this run: {made} (existing files are never redone)")

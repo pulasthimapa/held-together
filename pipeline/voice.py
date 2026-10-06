@@ -1,4 +1,15 @@
-"""Stage 3: narration in the cloned voice, one MP3 per scene (ElevenLabs API)."""
+"""Stage 3: narration, one MP3 per scene (ElevenLabs API).
+
+Two speakers: Elias (the engineer of the period) and Maya (the modern engineer). A scene's
+`speaker:` picks the voice. Set these repository secrets:
+
+    ELEVENLABS_VOICE_ELIAS   older male, measured, weathered
+    ELEVENLABS_VOICE_MAYA    younger female, clear, curious
+
+ELEVENLABS_VOICE_ID still works as a fallback for either, so a half-configured repo
+produces an episode in one voice rather than failing.
+"""
+import os
 import time
 
 import requests
@@ -6,15 +17,29 @@ import requests
 from common import clean, env, episode_dir, load_episode
 
 MODEL_ID = "eleven_multilingual_v2"
-VOICE_SETTINGS = {"stability": 0.55, "similarity_boost": 0.85, "style": 0.15,
-                  "use_speaker_boost": True}
+# Elias carries weight and should sound settled; Maya is brighter and a little quicker.
+VOICE_SETTINGS = {
+    "elias": {"stability": 0.62, "similarity_boost": 0.85, "style": 0.18,
+              "use_speaker_boost": True},
+    "maya": {"stability": 0.48, "similarity_boost": 0.82, "style": 0.28,
+             "use_speaker_boost": True},
+}
+DEFAULT_SPEAKER = "elias"
 
 
-def _tts(text, prev_text, next_text):
-    url = (f"https://api.elevenlabs.io/v1/text-to-speech/{env('ELEVENLABS_VOICE_ID')}"
+def voice_id_for(speaker):
+    specific = os.environ.get(f"ELEVENLABS_VOICE_{speaker.upper()}")
+    if specific:
+        return specific
+    return env("ELEVENLABS_VOICE_ID")
+
+
+def _tts(text, prev_text, next_text, speaker=DEFAULT_SPEAKER):
+    url = (f"https://api.elevenlabs.io/v1/text-to-speech/{voice_id_for(speaker)}"
            "?output_format=mp3_44100_128")
     headers = {"xi-api-key": env("ELEVENLABS_API_KEY"), "Content-Type": "application/json"}
-    body = {"text": text, "model_id": MODEL_ID, "voice_settings": VOICE_SETTINGS,
+    settings = VOICE_SETTINGS.get(speaker, VOICE_SETTINGS[DEFAULT_SPEAKER])
+    body = {"text": text, "model_id": MODEL_ID, "voice_settings": settings,
             "previous_text": prev_text, "next_text": next_text}
     for attempt in range(1, 4):
         resp = requests.post(url, json=body, headers=headers, timeout=300)
@@ -40,10 +65,15 @@ def make_narration(ep_id):
         out = audio_dir / f"{scene['id']}.mp3"
         if out.exists():
             continue
+        speaker = scene.get("speaker", DEFAULT_SPEAKER)
         text = clean(scene["narration"])
-        prev_text = clean(spoken[i - 1]["narration"]) if i > 0 else ""
-        next_text = clean(spoken[i + 1]["narration"]) if i + 1 < len(spoken) else ""
-        out.write_bytes(_tts(text, prev_text, next_text))
+        # Only pass neighbouring lines from the SAME speaker: ElevenLabs uses them for
+        # prosody, and feeding it the other voice's words makes the delivery drift.
+        def neighbour(j):
+            return (clean(spoken[j]["narration"])
+                    if 0 <= j < len(spoken)
+                    and spoken[j].get("speaker", DEFAULT_SPEAKER) == speaker else "")
+        out.write_bytes(_tts(text, neighbour(i - 1), neighbour(i + 1), speaker))
         chars += len(text)
-        print(f"narration: {out.name}")
+        print(f"narration: {out.name} ({speaker})")
     print(f"characters sent this run: {chars}")

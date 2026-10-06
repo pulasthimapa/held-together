@@ -123,6 +123,40 @@ Second pass on 29 September 2026. Every route was tried:
 | 17 | Story channels are being flagged "mass-produced" even after YouTube's manual review. | Single source (one 170K-subscriber channel's account plus YouTube's replies on X; matches Creator Insider comments) | @MacabroGato thread and @TeamYouTube replies. | Differentiate each episode; do not rely on a story niche being safe. |
 | 16 | Creators fear automated false flags more than the written policy. | Verified | Creator Insider comments plus the Next Web, Dexerto and Kotaku coverage of Kurzgesagt's false flag (already in sources). | Keep authorship evidence per episode; avoid mass production. |
 
+### Retention editing, checked 6 October 2026
+
+Two independent guides, opened in full, agree closely on the numbers.
+
+| # | Finding | Status | Evidence | So what |
+| --- | --- | --- | --- | --- |
+| 18 | Something should change visually every 5-7 seconds, with 10-15 second changes acceptable during a hook. | Verified | [air.io](https://air.io/en/youtube-hacks/advanced-retention-editing-cutting-patterns-that-keep-viewers-past-minute-8) gives 15-25s per cut for talking head and 10-15s in fast explanation mode; [pixflow](https://pixflow.net/blog/youtube-video-retention-editing/) gives "every five to seven seconds". | Scenes carry 2-3 angles; no picture is held longer than 7s (rule 7a). |
+| 19 | A larger pattern interrupt belongs every 30-60 seconds, and a rehook roughly every two minutes. | Verified | pixflow: interrupts "every 30 to 60 seconds"; air.io: rehooks "roughly every two minutes". | Host beats at turning points double as the rehooks (rule F4). |
+| 20 | A cold open that drops the viewer into the dramatic moment before rewinding is one of three effective hook shapes. | Verified | pixflow names it directly; air.io's progressive-rhythm pattern assumes the payoff is seeded early. | Episode 1 opens on the collapse, then rewinds. |
+
+Also recorded, not findings: music sits at -20 to -25 dB under calm narration and -8 to -12 dB
+in energetic sequences (air.io, single source).
+
+### Format references supplied by Indeepa, viewed 6-7 October 2026
+
+Watched frame by frame in the browser, not summarised from a description.
+
+**@Pastifact, "Caesar Built a Bridge Just to Tear It Down"** (YouTube Short, 35s, 73 likes)
+- Photoreal AI-generated video throughout — Roman workers on rafts, a pile driver, mist, an
+  aerial of the finished bridge. No graphics, no diagrams, no illustration.
+- Two text layers: a small dark block near the top carrying the narration line, and large
+  white captions at the bottom timed to the speech.
+- *Relevance:* this is a generated-footage format, not a motion-graphics one. Matching it
+  means buying video for every shot, about £4 per 35-second Short at the fast tier.
+
+**@indiameetsbritain, Koh-i-Noor reel** (Instagram, 24s, 160 likes)
+- Rendered illustrated characters at near-Pixar quality — soft key light, bokeh backgrounds,
+  careful skin and hair — and the characters are animated, talking and gesturing.
+- Two recurring hosts, Arjun and Oliver, in a conversation format, with a small branded
+  corner mark and burned captions in a warm serif. Labelled as AI content.
+- *Relevance:* this is the model the channel adopted on 7 October 2026. It confirms that
+  recurring illustrated hosts in conversation is a working format, and that the quality gap
+  is art direction plus image-to-video animation, not a different kind of tool.
+
 ## Sources opened
 
 [Reddit (via Arctic Shift archive): production time](https://www.reddit.com/r/NewTubers/comments/1vteeja/) · [monetisation](https://www.reddit.com/r/NewTubers/comments/1vopp09/) · [is faceless good](https://www.reddit.com/r/NewTubers/comments/1vlhpax/) · [horror AI channel](https://www.reddit.com/r/NewTubers/comments/1vfw38j/) · [TechCrunch, Matt Halprin](https://techcrunch.com/2026/07/20/youtube-clarifies-policies-around-ai-slop-and-upsetting-videos/) · [Quasa](https://quasa.io/media/youtube-inauthentic-content-buckets-explained-in-2026-interview) · [Tubefilter policy](https://www.tubefilter.com/2026/07/13/youtube-inauthentic-content-monetization-policy-update/) · [Yahoo Tech](https://tech.yahoo.com/social-media/articles/youtube-reveals-ai-slop-videos-090000379.html) · [Hollywood Reporter](https://www.hollywoodreporter.com/business/digital/faceless-creators-youtube-ai-damage-1236617586/) · [The Next Web](https://thenextweb.com/news/youtube-ai-slop-crackdown-faceless-creators-collateral-damage) · [HackerNoon](https://hackernoon.com/youtubes-ai-slop-crackdown-cant-tell-a-directed-ai-film-from-a-bot-farm) · [Dexerto](https://www.dexerto.com/youtube/youtubes-ai-slop-detector-incorrectly-targets-kurzgesagt-as-other-creators-fear-same-fate-3395930/) · [Kotaku](https://kotaku.com/youtube-mistakenly-penalizes-popular-science-channel-kurzgesagt-for-ai-generated-slop-2000722702) · [Kurzgesagt video summary](https://my.infocaptor.com/hub/summaries/kurzgesagt-in-a-nutshell/ai-slop-is-killing-our-channel-_zfN9wnPvU0) · [HN thread 1](https://news.ycombinator.com/item?id=45504156) · [HN thread 2](https://news.ycombinator.com/item?id=49225764) · [Fall of Civilizations](https://en.wikipedia.org/wiki/Fall_of_Civilizations_(podcast)) · [MrBeast guide, Tubefilter](https://www.tubefilter.com/2024/09/17/mrbeast-internal-production-guide-leaked-key-points/) · [Simon Willison](https://simonwillison.net/2024/Sep/15/how-to-succeed-in-mrbeast-production/) · [PostLink TikTok](https://postlinkapp.com/blog/tiktok-creator-rewards-program) · [Ryan McBeth Substack](https://ryanmcbeth.substack.com/p/youtube-demonitized-my-latest-roundup/comments) · YouTube (comments read 4 Oct 2026): [Kurzgesagt](https://www.youtube.com/watch?v=_zfN9wnPvU0) · [Brick Immortar](https://www.youtube.com/watch?v=e4DTMe0huXM) · [Creator Insider](https://www.youtube.com/watch?v=14Vm0CiyUVE)
