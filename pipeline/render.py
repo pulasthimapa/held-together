@@ -6,8 +6,11 @@ import subprocess
 from PIL import Image, ImageDraw
 
 import diagrams
-from common import (FONT_SANS_BOLD, FONT_SERIF, FONT_SERIF_BOLD, FPS, H, ROOT, W, clean,
+import style as S
+from common import (FONT_SANS_BOLD, FPS, H, ROOT, W, clean,
                     duration, episode_dir, load_episode, run)
+
+NAME_CARD_SECONDS = 3.4   # how long a person's name card stays on screen
 
 TAIL = 0.6          # breathing room after each narrated line (seconds)
 FADE = 0.35
@@ -81,16 +84,32 @@ def placeholder(path, label):
 
 
 def card_image(path, scene):
-    from PIL import ImageFont
-    im = Image.new("RGB", (W, H), (10, 10, 10))
-    d = ImageDraw.Draw(im)
-    if scene.get("title"):
-        d.text((W // 2, H // 2 - 30), scene["title"], font=ImageFont.truetype(FONT_SERIF_BOLD, 76),
-               fill=(236, 227, 208), anchor="mm")
-    if scene.get("subtitle"):
-        d.text((W // 2, H // 2 + 60), scene["subtitle"], font=ImageFont.truetype(FONT_SERIF, 34),
-               fill=(170, 160, 145), anchor="mm")
-    im.save(path, quality=95)
+    """Title / statement card in the channel's bright house style."""
+    im = S.canvas()
+    S.grid_bg(im, 0.7)
+    title, sub = scene.get("title", ""), scene.get("subtitle", "")
+    if title:
+        d0 = ImageDraw.Draw(im)
+        f = S.font(96, display=True)
+        lines = S.wrap(d0, title, f, W - 420)
+        y = H / 2 - (len(lines) * 108) / 2 - (30 if sub else 0)
+        S.over(im, lambda d: d.rectangle([W / 2 - 150, y - 56, W / 2 + 150, y - 44],
+                                         fill=S.RED + (255,)))
+        for i, ln in enumerate(lines):
+            S.text(im, (W / 2, y + i * 108 + 54), ln, 96, S.INK, 1.0, "mm", display=True)
+        y += len(lines) * 108
+    else:
+        y = H / 2
+    if sub:
+        S.text(im, (W / 2, y + 60), sub, 42, S.MUTE, 1.0, "mm", bold=False)
+    im.convert("RGB").save(path, quality=95)
+
+
+def name_card_overlay(path, name, role):
+    """Transparent PNG laid over a scene so the viewer knows who they are looking at."""
+    im = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+    S.lower_third(im, name, role, 1.0, x=110, y=H - 300)
+    im.save(path)
 
 
 def motion_filter(kind, frames):
@@ -117,13 +136,24 @@ def audio_inputs(audio, dur):
             "[1:a]anull[a]")
 
 
-def still_clip(image, audio, dur, motion, out):
+def still_clip(image, audio, dur, motion, out, name_card=None):
     frames = int(dur * FPS)
     ain, afilter = audio_inputs(audio, dur)
-    vf = (f"[0:v]{motion_filter(motion, frames)},"
-          f"fade=t=in:st=0:d={FADE},fade=t=out:st={dur - FADE}:d={FADE},format=yuv420p[v]")
+    base = (f"[0:v]{motion_filter(motion, frames)},"
+            f"fade=t=in:st=0:d={FADE},fade=t=out:st={dur - FADE}:d={FADE},format=yuv420p")
+    extra_in = []
+    if name_card:
+        # the card sits still while the picture moves underneath it
+        hold = min(NAME_CARD_SECONDS, max(dur - 0.6, 1.0))
+        extra_in = ["-i", str(name_card)]
+        vf = (f"{base}[bg];"
+              f"[2:v]format=rgba,fade=t=in:st=0.35:d=0.3:alpha=1,"
+              f"fade=t=out:st={hold:.2f}:d=0.4:alpha=1[nc];"
+              f"[bg][nc]overlay=0:0:enable='lt(t,{hold + 0.5:.2f})'[v]")
+    else:
+        vf = f"{base}[v]"
     # A single (non-looped) image frame: zoompan expands it into `frames` output frames.
-    run(["ffmpeg", "-y", "-i", str(image), *ain,
+    run(["ffmpeg", "-y", "-i", str(image), *ain, *extra_in,
          "-filter_complex", f"{vf};{afilter}", "-map", "[v]", "-map", "[a]",
          "-t", str(dur), *VIDEO_ARGS, *AUDIO_ARGS, str(out)])
 
@@ -138,7 +168,7 @@ def diagram_clip(name, audio, dur, out):
         stdin=subprocess.PIPE, stderr=subprocess.DEVNULL)
     draw = diagrams.DIAGRAMS[name]
     for i in range(frames):
-        proc.stdin.write(draw(i / max(frames - 1, 1)).tobytes())
+        proc.stdin.write(draw(i / max(frames - 1, 1)).convert("RGB").tobytes())
     proc.stdin.close()
     if proc.wait() != 0:
         raise RuntimeError(f"diagram render failed: {name}")
@@ -176,7 +206,11 @@ def build_clips(ep_id, allow_placeholders=False):
                         raise SystemExit(f"Missing image for {sid}. Run the 'images' stage first.")
                     image = clip_dir / f"{sid}_placeholder.jpg"
                     placeholder(image, sid)
-            still_clip(image, audio, dur, scene.get("motion", "in"), out)
+            card = None
+            if scene.get("name"):
+                card = clip_dir / f"{sid}_name.png"
+                name_card_overlay(card, scene["name"], scene.get("role", ""))
+            still_clip(image, audio, dur, scene.get("motion", "in"), out, card)
         spoken = (duration(audio) if audio else 0)
         timeline.append((scene, out, dur, spoken))
         print(f"clip {sid}: {dur:.1f}s")
@@ -214,10 +248,9 @@ def drawtext_escape(text):
     return text.replace("\\", "\\\\").replace(":", "\\:").replace("'", "’").replace("%", "\\%")
 
 
-def hook_filters(hook, size=62, max_width=900, top=220):
+def hook_filters(hook, size=60, max_width=940, top=200):
     """The opening hook as wrapped lines, shown for the first 3.5 seconds of a vertical cut."""
-    from PIL import ImageFont
-    font = ImageFont.truetype(FONT_SANS_BOLD, size)
+    font = S.font(size, display=True)
     lines, current = [], ""
     for word in hook.split():
         trial = f"{current} {word}".strip()
@@ -227,10 +260,10 @@ def hook_filters(hook, size=62, max_width=900, top=220):
             lines.append(current)
             current = word
     lines.append(current)
-    step = int(size * 1.55)
+    step = int(size * 1.5)
     return ",".join(
-        f"drawtext=fontfile={FONT_SANS_BOLD}:text='{drawtext_escape(line)}':fontsize={size}:"
-        f"fontcolor=white:box=1:boxcolor=black@0.6:boxborderw=22:"
+        f"drawtext=fontfile={S.DISPLAY}:text='{drawtext_escape(line)}':fontsize={size}:"
+        f"fontcolor=white:box=1:boxcolor=0x11161F@0.92:boxborderw=20:"
         f"x=(w-text_w)/2:y={top + i * step}:enable='lt(t,3.5)'"
         for i, line in enumerate(lines))
 
@@ -268,15 +301,17 @@ def render(ep_id, allow_placeholders=False):
         srt = build / f"cut_{cut['id']}.srt"
         srt.write_text(captions_for(rows))
         end_start = max(t - 3, 0)
-        style = ("FontName=DejaVu Sans,FontSize=11,Bold=1,PrimaryColour=&H00FFFFFF,"
-                 "OutlineColour=&H00000000,BorderStyle=1,Outline=2,Shadow=0,"
-                 "Alignment=2,MarginV=70")
-        vf = (f"crop=608:1080:(iw-608)/2:0,scale=1080:1920,"
+        style = ("FontName=Inter SemiBold,FontSize=13,Bold=1,PrimaryColour=&H00FFFFFF,"
+                 "OutlineColour=&H00000000,BorderStyle=1,Outline=3,Shadow=0,"
+                 "Alignment=2,MarginV=300")
+        # Letterbox rather than crop: a centre crop cut the sides off every diagram.
+        # The bands top and bottom are where the hook and the captions live.
+        vf = (f"scale=1080:-2,pad=1080:1920:0:(1920-ih)/2:color=0x11161F,"
               f"subtitles='{ffmpeg_escape(srt)}':force_style='{style}',"
               f"{hook_filters(cut['hook'])},"
-              f"drawtext=fontfile={FONT_SANS_BOLD}:text='Full story on the channel':"
-              f"fontsize=56:fontcolor=white:box=1:boxcolor=0x9C3D24@0.9:boxborderw=24:"
-              f"x=(w-text_w)/2:y=260:enable='gte(t,{end_start:.2f})'")
+              f"drawtext=fontfile={S.UI_BOLD}:text='Full story on the channel':"
+              f"fontsize=52:fontcolor=white:box=1:boxcolor=0xE8192C@0.95:boxborderw=24:"
+              f"x=(w-text_w)/2:y=1560:enable='gte(t,{end_start:.2f})'")
         cut_out = out_dir / f"{ep_id}_vertical_{cut['id']}.mp4"
         run(["ffmpeg", "-y", "-i", str(cut_raw), "-vf", vf,
              "-af", "loudnorm=I=-14:TP=-1.5:LRA=11", *VIDEO_ARGS, *AUDIO_ARGS, str(cut_out)])

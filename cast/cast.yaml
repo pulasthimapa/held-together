@@ -2,9 +2,12 @@
 # Master sheets are generated once into cast/sheets/<id>.jpg and reused as references.
 
 style: >-
-  Painted 2D illustration in a textured gouache style, muted early-20th-century palette
-  with a single rust-red accent, soft cinematic light, film-still composition,
-  painterly brush texture. No text, no captions, no logos, no watermark.
+  Bold modern 2D editorial illustration. Vivid saturated colour, high contrast, strong
+  directional light with deep shadows and bright highlights. Crisp clean shapes, confident
+  graphic shading, rich teal and warm amber in the same frame, a single bright crimson
+  accent. Cinematic wide composition, dramatic camera angle, shallow depth of field feel.
+  Looks like a premium streaming documentary title card, not a dusty history book.
+  No text, no captions, no logos, no watermark.
 
 sheet_prompt: >-
   Character reference sheet. {description}. Wearing a plain neutral grey shirt.
