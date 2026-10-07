@@ -1,65 +1,96 @@
-# Recurring illustrated cast. Faces never change; costumes change per episode.
-# Master sheets are generated once into cast/sheets/<id>.jpg and reused as references.
+# Recurring cast. Faces, personas and speech NEVER change. Only clothing changes per episode.
+# Master sheets are generated once into cast/sheets/<id>.jpg and passed as references to
+# every scene image, which is what holds a photoreal face stable across generations.
 #
 # Elias and Maya are the two hosts and appear in EVERY episode (rule F3).
 # Elias is a composite character, never a named real person (rule F2).
 # The rest of the troupe play whatever roles a story needs.
 
 style: >-
-  Premium 3D-rendered stylised character animation still, in the polished look of a modern
-  animated feature. Soft cinematic key light with warm rim light, gentle subsurface skin
-  shading, individually rendered hair, expressive believable eyes with real catchlights.
-  Shallow depth of field with a softly blurred background, rich warm amber and deep teal in
-  the same frame. Film-grade colour grading, subtle lens bloom. Characters look sincere and
-  grounded, never cartoonish or caricatured, never plastic.
+  Photorealistic cinematic portrait photography. Shot on a full-frame camera with an 85mm
+  lens at f/1.8, shallow depth of field, softly blurred background. Real human skin with
+  visible pores, fine lines and natural subsurface translucency; individual flyaway hairs;
+  catchlights in the eyes; natural asymmetry. Soft directional key light with a gentle warm
+  rim, colour-graded like a premium documentary interview, deep teal and warm amber in the
+  frame. Absolutely photoreal — not illustration, not 3D render, not CGI, not airbrushed.
   No text, no captions, no logos, no watermark.
 
 sheet_prompt: >-
-  Character reference sheet. {description}. Wearing a plain neutral grey shirt.
-  Plain light-grey studio background, soft even three-point lighting. Four views side by side:
-  front, three-quarter left, profile right, three-quarter back. Exactly the same face, hair
-  and proportions in every view. Neutral calm expression.
+  Photorealistic casting reference sheet of the same real person, four studio portraits side
+  by side on one plain light-grey seamless background: front, three-quarter left, right
+  profile, and from behind. {description}. Wearing a plain neutral grey crew-neck top. Soft
+  even three-point studio lighting, neutral relaxed expression, identical face, hair,
+  features and proportions in all four portraits. Sharp focus, natural skin texture.
 
 actors:
-  # ---- the two hosts, in every episode ----
+  # ================= the two hosts, in every episode =================
   elias:
     name: Elias
     host: true
-    role_note: >-
-      The engineer of the period. A composite character, labelled on screen as such.
-      Carries the story from inside the era. Weary, precise, carries some guilt.
+    nationality: English
+    # A composite character, labelled on screen. Never a named real individual.
     description: >-
-      Man in his early 60s, tall and gaunt, silver swept-back hair, deep-set grey eyes under
-      a heavy brow, clean-shaven, thin lips, long narrow face, deep lines around the mouth,
-      quiet watchful expression
+      English white man in his early 60s, tall and lean with a gaunt long narrow face, high
+      prominent cheekbones, silver-grey hair swept back from a high forehead, deep-set
+      grey-blue eyes under a heavy brow, a slightly aquiline nose, thin lips, clean-shaven,
+      deep vertical lines either side of the mouth, weathered pale complexion with fine
+      crow's feet, calm steady gaze
+    persona: >-
+      A proud English engineer of his era who takes real pride in what his generation built
+      with slide rules and judgement. Authoritative and sure of himself, but genuinely
+      curious about modern methods and openly impressed by them. Exceptional at making a
+      complex structural idea simple without flattening it. Carries the weight of what went
+      wrong on his watch; never defensive about it, never self-pitying.
+    speech: >-
+      Measured, warm, lightly formal English. Full sentences, few contractions, period
+      flavour without archaism ("I should say", "quite right", "we called it"). Explains by
+      analogy to ordinary objects before naming the engineering term. Pauses before the
+      hardest facts. Never jokes about deaths. Asks Maya direct questions about modern
+      practice and listens to the answers.
   maya:
     name: Maya
     host: true
-    role_note: >-
-      Structural engineer of today. Asks what the viewer is thinking and brings the modern
-      angle: what we now measure, what the codes say, what would catch it now.
+    nationality: Indian
     description: >-
-      Woman in her early 30s, short black bob haircut, round wire-rimmed glasses, sharp dark
-      brown eyes, slim face with high cheekbones, alert and curious expression
+      Indian woman in her early 30s, warm medium-brown skin, dark brown almond-shaped eyes,
+      full dark eyebrows, long black hair in a sleek chin-length bob, round thin gold
+      wire-rimmed glasses, oval face with defined cheekbones, small gold stud in her left
+      nostril, expressive mouth, bright alert expression
+    persona: >-
+      A structural engineer working today. Energetic, quick, genuinely funny, and openly
+      fascinated by how people built enormous things without any of the tools she relies on.
+      Asks the question the viewer is thinking, and is not embarrassed to ask the simple one.
+      Excellent on modern practice: analysis, monitoring, codes, inspection regimes, what
+      the profession learned and when. Her humour switches off completely when the story
+      turns to people being hurt; there she is quiet and precise.
+    speech: >-
+      Contemporary British-Indian English, quick and natural, contractions throughout. Short
+      sentences. Dry asides and self-deprecating jokes in the lighter passages ("so, no
+      computer, no calculator, just vibes and a slide rule"). On tragic material the jokes
+      stop entirely and she becomes direct and spare. Often reframes Elias's explanation in
+      one plain sentence to check she has it right.
 
-  # ---- the troupe, cast per story ----
+  # ================= the troupe, cast per story =================
   tom:
     name: Tom
     description: >-
-      Man in his mid-20s, lean build, dark curly hair, earnest brown eyes, faint freckles
-      across the nose, slightly large ears, clean-shaven, youthful open face
+      White man in his mid-20s, lean build, dark brown curly hair, earnest hazel-brown eyes,
+      faint freckles across the nose and cheeks, slightly large ears, clean-shaven, open
+      youthful face, fair complexion
   sam:
     name: Sam
     description: >-
-      Man in his late 30s, broad-shouldered and stocky, short dark beard, weathered tanned
-      skin, a small scar through his left eyebrow, strong calloused hands
+      Man in his late 30s, broad-shouldered and stocky, short dark beard, weathered
+      sun-tanned skin, a small pale scar through the left eyebrow, dark brown eyes, strong
+      calloused hands, close-cropped dark hair
   ruth:
     name: Ruth
     description: >-
-      Woman in her mid-40s, strong jaw, auburn hair in a low bun, green eyes, laugh lines
-      around the eyes, calm steady expression
+      White woman in her mid-40s, strong jaw, auburn hair pinned in a low bun, green eyes,
+      laugh lines around the eyes, fair freckled complexion, calm steady expression
   walter:
     name: Walter
     description: >-
-      Man in his late 60s, heavy-set and imposing, thick white moustache, balding with white
-      hair at the temples, pale blue eyes, jowled face, proud stubborn expression
+      White man in his late 60s, heavy-set and imposing, thick white moustache, balding with
+      white hair at the temples, pale blue eyes, jowled ruddy face, heavy brow, proud
+      stubborn expression

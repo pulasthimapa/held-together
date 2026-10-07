@@ -18,6 +18,19 @@ F4. Characters are on screen for roughly 90 seconds an episode: the open, the cl
     the middle. This is a cost ceiling as much as an editorial one.
 F5. Tone follows the story. Sombre where people died, warmer for ingenuity and recovery.
     Never flippant about deaths.
+F6. **The hosts are fixed people, not costumes.** Their faces, nationalities, personas and
+    speech are defined in `cast/cast.yaml` and do not change between episodes — only their
+    clothing does. Write every line in their own voice:
+    - **Elias** (English, early 60s): proud of what his generation built, authoritative,
+      genuinely curious about modern methods. Measured formal English, few contractions,
+      explains by everyday analogy before naming the term.
+    - **Maya** (Indian, early 30s): energetic, witty, fascinated by how they built without
+      modern tools. Quick contemporary English, dry asides in the lighter passages — and the
+      jokes stop completely once people are being hurt.
+    Read the `persona` and `speech` fields before writing any script. A line either of them
+    would not say is a bug.
+F7. The cast is photoreal. Every scene image passes the reference sheet, which is what holds
+    a photoreal face stable; never generate a host without their sheet attached.
 
 ## Stories and scripts
 1. Only true stories. Every factual claim needs an opened source recorded in the episode's

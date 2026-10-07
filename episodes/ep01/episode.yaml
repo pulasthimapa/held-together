@@ -84,11 +84,11 @@ scenes:
     prompt: >-
       Maya in a warm modern study at night, soft lamp light, a small steel truss model in her
       hands, bookshelves softly out of focus behind her, teal and amber, shallow depth of
-      field. She is mid-question, alert and curious.
+      field. Mid-question, eyebrows up, half a smile — alert and amused.
     narration: >-
-      Every engineer I know has heard this story. We get told it in our first year, and then
-      we get handed a ring to remind us of it. But nobody ever explains the part I actually
-      care about. Not who was to blame. How the steel knew first.
+      Right, so every engineer I know has heard this one. They tell you in first year, then
+      they hand you a ring so you don't forget it. Nobody ever explains the bit I actually
+      care about, though. Not whose fault it was. How the steel knew first.
     motion: in
 
   - id: S05
@@ -168,12 +168,13 @@ scenes:
     host_shot: true
     actors: [maya]
     prompt: >-
-      Maya leaning forward in her warm study, one hand raised slightly, caught mid-question,
-      lamp light on her glasses, bokeh background in teal and amber.
+      Maya leaning forward in her warm study, one hand raised, caught mid-sentence with a wry
+      look, lamp light catching her glasses, bokeh background in teal and amber.
     narration: >-
-      That is the part that still happens, by the way. Not the arithmetic — we have software
-      for that now. The part that still happens is a number set early, by someone senior,
-      that nobody goes back and re-checks once everything else has moved.
+      And can I just say — no computer, no calculator, a slide rule and a very good memory.
+      I'd have given up. But that's not the bit that still happens, is it? The arithmetic we
+      can do now. What still happens is a number set early, by someone senior, that nobody
+      goes back and checks once everything around it has moved.
     motion: in
 
   - id: S10
@@ -223,9 +224,9 @@ scenes:
       gesturing a question, Elias listening with his hands folded, shallow depth of field,
       teal and amber.
     narration: >-
-      Stop there. Before you tell me what he saw, tell them what it means. Because if you
-      just say the steel was bending, people picture something slowly sagging. That is not
-      what this is.
+      Hold on. Before you tell me what he saw, tell them what it means. Because if you just
+      say the steel was bending, everyone pictures a shelf with too many books on it. Slow,
+      sad, basically fine. That is not what this is.
     motion: in
 
   - id: S13
