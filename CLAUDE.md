@@ -29,8 +29,13 @@ F6. **The hosts are fixed people, not costumes.** Their faces, nationalities, pe
       jokes stop completely once people are being hurt.
     Read the `persona` and `speech` fields before writing any script. A line either of them
     would not say is a bug.
-F7. The cast is photoreal. Every scene image passes the reference sheet, which is what holds
-    a photoreal face stable; never generate a host without their sheet attached.
+F7. **Two visual worlds — the present is photographed, the past is painted.** The studio
+    (Elias and Maya) is photoreal. Everything historical is a golden-age narrative oil
+    painting. The explainers stay flat and bright, because they are modern analysis laid over
+    the past. The full system is `docs/brand.md`; read it before changing any look, and put
+    any new decision in there rather than inventing it per episode.
+F8. Every scene image passes its actors' reference sheets. That is the only thing holding a
+    photoreal face stable across generations; never generate a host without their sheet.
 
 ## Stories and scripts
 1. Only true stories. Every factual claim needs an opened source recorded in the episode's

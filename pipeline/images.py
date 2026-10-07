@@ -10,6 +10,23 @@ from common import (FONT_SANS_BOLD, SHEETS_DIR, clean, episode_dir, load_cast,
                     load_episode)
 
 
+def world_of(cast, scene):
+    """Which visual world a scene belongs to (docs/brand.md).
+
+    The present is photographed, the past is painted. A scene is in the studio only if a
+    host appears in it; everything else — including every scene with no people at all — is
+    the past, and is painted.
+    """
+    for actor_id in scene.get("actors", []):
+        if cast["actors"].get(actor_id, {}).get("world") == "host":
+            return "host"
+    return "story"
+
+
+def style_for(cast, world):
+    return cast[f"style_{world}"]
+
+
 def make_cast_sheets():
     cast = load_cast()
     SHEETS_DIR.mkdir(parents=True, exist_ok=True)
@@ -18,11 +35,12 @@ def make_cast_sheets():
         out = SHEETS_DIR / f"{actor_id}.jpg"
         if out.exists():
             continue
-        prompt = cast["style"] + " " + cast["sheet_prompt"].format(
+        world = actor.get("world", "story")
+        prompt = style_for(cast, world) + " " + cast[f"sheet_prompt_{world}"].format(
             description=clean(actor["description"]))
         out.write_bytes(gemini.generate(clean(prompt), aspect="16:9"))
         made.append(out)
-        print(f"cast sheet: {out.name}")
+        print(f"cast sheet: {out.name} ({world})")
     contact_sheet(sorted(SHEETS_DIR.glob("*.jpg")), SHEETS_DIR.parent / "cast_review.jpg")
     return made
 
@@ -56,7 +74,7 @@ def make_scene_images(ep_id):
             out = img_dir / f"{scene['id']}{suffix}.jpg"
             if out.exists():
                 continue
-            full = cast["style"] + " " + clean(prompt)
+            full = style_for(cast, world_of(cast, scene)) + " " + clean(prompt)
             if refs:
                 names = ", ".join(cast["actors"][a]["name"] for a in scene["actors"])
                 full += (f" The reference images show {names}; keep each face, hair and build "

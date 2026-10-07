@@ -1,12 +1,15 @@
 # Recurring cast. Faces, personas and speech NEVER change. Only clothing changes per episode.
-# Master sheets are generated once into cast/sheets/<id>.jpg and passed as references to
-# every scene image, which is what holds a photoreal face stable across generations.
 #
-# Elias and Maya are the two hosts and appear in EVERY episode (rule F3).
+# TWO WORLDS (see docs/brand.md): the present is photographed, the past is painted.
+#   world: host   -> Elias and Maya, the podcast. Photoreal.
+#   world: story  -> everyone in the historical events. Golden-age narrative painting.
+# images.py picks the style from the actors in a scene; scenes with no actors use the
+# story style, because everything that is not the studio is the past.
+#
 # Elias is a composite character, never a named real person (rule F2).
-# The rest of the troupe play whatever roles a story needs.
 
-style: >-
+# ---------------------------------------------------------------- the studio: now
+style_host: >-
   Photorealistic cinematic portrait photography. Shot on a full-frame camera with an 85mm
   lens at f/1.8, shallow depth of field, softly blurred background. Real human skin with
   visible pores, fine lines and natural subsurface translucency; individual flyaway hairs;
@@ -15,20 +18,39 @@ style: >-
   frame. Absolutely photoreal — not illustration, not 3D render, not CGI, not airbrushed.
   No text, no captions, no logos, no watermark.
 
-sheet_prompt: >-
+# ---------------------------------------------------------------- the story: the past
+style_story: >-
+  Golden-age narrative oil painting in the bold illustrated storytelling tradition of the
+  early twentieth century. Visible confident brushwork and palette-knife texture, canvas
+  tooth showing through flat areas, paint handled thickly in the light and thinly in the
+  shadow. One strong directional light source; deep shadows that hold colour and are never
+  black; warm amber and gold light against cool teal and slate shadow. Rich saturated colour,
+  bright and luminous overall, glowing sky. Figures read as strong silhouettes first.
+  Simplified suggested detail rather than tight rendering; faces carried by light and
+  gesture. Heroic composition. No outlines, no cel shading, no flat vector, no cartoon
+  exaggeration, not photoreal. No text, no captions, no logos, no watermark.
+
+sheet_prompt_host: >-
   Photorealistic casting reference sheet of the same real person, four studio portraits side
   by side on one plain light-grey seamless background: front, three-quarter left, right
   profile, and from behind. {description}. Wearing a plain neutral grey crew-neck top. Soft
-  even three-point studio lighting, neutral relaxed expression, identical face, hair,
+  even three-point studio lighting, relaxed natural expression, identical face, hair,
   features and proportions in all four portraits. Sharp focus, natural skin texture.
 
+sheet_prompt_story: >-
+  Painted character reference sheet, four portraits of the same character side by side on one
+  plain warm-grey background: front, three-quarter left, right profile, and from behind.
+  {description}. Wearing a plain neutral grey work shirt. Even soft light, calm expression,
+  identical face, hair, features and proportions in all four portraits. Painted in the
+  channel's golden-age illustration style, brushwork visible.
+
 actors:
-  # ================= the two hosts, in every episode =================
+  # ================= the studio: two hosts, every episode, photoreal =================
   elias:
     name: Elias
+    world: host
     host: true
     nationality: English
-    # A composite character, labelled on screen. Never a named real individual.
     description: >-
       English white man in his early 60s, tall and lean with a gaunt long narrow face, high
       prominent cheekbones, silver-grey hair swept back from a high forehead, deep-set
@@ -49,13 +71,15 @@ actors:
       practice and listens to the answers.
   maya:
     name: Maya
+    world: host
     host: true
     nationality: Indian
     description: >-
-      Indian woman in her early 30s, warm medium-brown skin, dark brown almond-shaped eyes,
-      full dark eyebrows, long black hair in a sleek chin-length bob, round thin gold
-      wire-rimmed glasses, oval face with defined cheekbones, small gold stud in her left
-      nostril, expressive mouth, bright alert expression
+      Beautiful Indian woman in her late 20s, radiant warm golden-brown skin, large bright
+      dark-brown almond eyes with long lashes, elegant arched eyebrows, high cheekbones and a
+      soft heart-shaped face, full lips and a warm ready smile, long glossy black hair worn
+      loose to shoulder length with a soft natural wave, delicate round thin gold wire-rimmed
+      glasses, a tiny gold stud in her left nostril, youthful and lively expression
     persona: >-
       A structural engineer working today. Energetic, quick, genuinely funny, and openly
       fascinated by how people built enormous things without any of the tools she relies on.
@@ -70,27 +94,30 @@ actors:
       stop entirely and she becomes direct and spare. Often reframes Elias's explanation in
       one plain sentence to check she has it right.
 
-  # ================= the troupe, cast per story =================
+  # ================= the story: the troupe, painted, cast per story =================
   tom:
     name: Tom
+    world: story
     description: >-
-      White man in his mid-20s, lean build, dark brown curly hair, earnest hazel-brown eyes,
-      faint freckles across the nose and cheeks, slightly large ears, clean-shaven, open
-      youthful face, fair complexion
+      Young man in his mid-20s, lean build, dark brown curly hair, earnest hazel-brown eyes,
+      faint freckles across the nose and cheeks, clean-shaven, open youthful face, fair
+      complexion
   sam:
     name: Sam
+    world: story
     description: >-
       Man in his late 30s, broad-shouldered and stocky, short dark beard, weathered
-      sun-tanned skin, a small pale scar through the left eyebrow, dark brown eyes, strong
-      calloused hands, close-cropped dark hair
+      sun-tanned skin, dark brown eyes, strong calloused hands, close-cropped dark hair
   ruth:
     name: Ruth
+    world: story
     description: >-
-      White woman in her mid-40s, strong jaw, auburn hair pinned in a low bun, green eyes,
-      laugh lines around the eyes, fair freckled complexion, calm steady expression
+      Woman in her mid-40s, strong jaw, auburn hair pinned in a low bun, green eyes, laugh
+      lines around the eyes, fair freckled complexion, calm steady expression
   walter:
     name: Walter
+    world: story
     description: >-
-      White man in his late 60s, heavy-set and imposing, thick white moustache, balding with
-      white hair at the temples, pale blue eyes, jowled ruddy face, heavy brow, proud
-      stubborn expression
+      Man in his late 60s, heavy-set and imposing, thick white moustache, balding with white
+      hair at the temples, pale blue eyes, jowled ruddy face, heavy brow, proud stubborn
+      expression
