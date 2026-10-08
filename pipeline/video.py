@@ -121,7 +121,7 @@ def make_hero_clips(ep_id):
                          f"Remove some hero_video entries before running this stage.")
     key = env("GEMINI_API_KEY")
     cast = load_cast()
-    made = 0
+    made, failed = 0, []
     for scene in wanted:
         out = out_dir / f"{scene['id']}.mp4"
         if out.exists():
@@ -132,8 +132,42 @@ def make_hero_clips(ep_id):
         seed = seed if seed.exists() else None
         print(f"hero clip {scene['id']}: {seconds:.0f}s"
               f"{' from our still' if seed else ' from the prompt alone'} …")
-        prompt = " ".join(scene["hero_video"].split()) + " " + CLIP_STYLE[world_of(cast, scene)]
-        out.write_bytes(_generate(prompt, seconds, key, seed))
-        made += 1
-        print(f"hero clip: {out.name}")
+        world = world_of(cast, scene)
+        prompt = " ".join(scene["hero_video"].split()) + " " + CLIP_STYLE[world]
+        # Studio clips are checked frame by frame like studio stills: a clip that invents a
+        # stranger or changes a host is thrown away. One redraw at most, as clips are costly.
+        tries = STUDIO_CLIP_ATTEMPTS if world == "host" else 1
+        for attempt in range(1, tries + 1):
+            out.write_bytes(_generate(prompt, seconds, key, seed))
+            made += 1
+            problems = _check_clip(cast, scene, out, ep.get("wardrobe")) if world == "host" else []
+            if not problems:
+                print(f"hero clip: {out.name}")
+                break
+            out.unlink()
+            print(f"  {out.name} attempt {attempt} rejected: {'; '.join(problems)}")
+        else:
+            failed.append(out.name)
     print(f"hero clips generated this run: {made} (existing files are never redone)")
+    if failed:
+        raise SystemExit(f"These studio clips failed the picture check and were not saved: "
+                         f"{', '.join(failed)}. The render will use their stills instead.")
+
+
+STUDIO_CLIP_ATTEMPTS = 2
+
+
+def _check_clip(cast, scene, clip, wardrobe):
+    """Run the studio picture check on frames from the middle and end of a clip."""
+    import subprocess
+    from common import duration
+    from images import check_studio_picture
+    problems = []
+    d = duration(clip)
+    for t in (d * 0.5, max(d - 0.3, 0)):
+        frame = clip.with_suffix(f".{int(t * 10)}.jpg")
+        subprocess.run(["ffmpeg", "-v", "error", "-y", "-ss", f"{t:.2f}", "-i", str(clip),
+                        "-frames:v", "1", str(frame)], check=True)
+        problems += check_studio_picture(cast, scene, frame, wardrobe)
+        frame.unlink()
+    return problems

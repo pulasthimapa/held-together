@@ -2,3 +2,4 @@ episodes/*/build/
 episodes/*/output/
 __pycache__/
 *.pyc
+episodes/*/images/_*

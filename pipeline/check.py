@@ -260,13 +260,15 @@ def plan(stage, cast, ep_id, ep):
     if stage == "images":
         missing = [st for stems in _expected_images(ep).values() for st in stems
                    if not (base / "images" / f"{st}.jpg").exists()]
-        return f"images: {len(missing)} to generate: {', '.join(missing) or 'none'}"
+        return (f"images: {len(missing)} to generate: {', '.join(missing) or 'none'} "
+                f"(studio pictures are checked and may be redrawn up to 3 times)")
     if stage == "video":
         todo = [(s["id"], min(float(s.get("hero_seconds", 6)), 8)) for s in ep["scenes"]
                 if s.get("hero_video") and not (base / "video" / f"{s['id']}.mp4").exists()]
         secs = sum(t for _, t in todo)
         return (f"video: {len(todo)} clip(s), {secs:.0f} s to generate: "
-                f"{', '.join(i for i, _ in todo) or 'none'}")
+                f"{', '.join(i for i, _ in todo) or 'none'} (a studio clip that fails the "
+                f"picture check is redrawn once)")
     if stage == "voice":
         todo = [s for s in ep["scenes"] if s.get("narration")
                 and not (base / "audio" / f"{s['id']}.mp3").exists()]

@@ -28,7 +28,10 @@ drift. The hosts wear the same signature clothes every episode (`wardrobe:`): El
 charcoal waistcoat over a white collarless shirt, Maya an amber linen overshirt over a
 white T-shirt. **Only Elias and Maya ever exist in the studio.** Every studio shot is drawn with both hosts'
 reference sheets and the studio plate attached, whoever is in frame, so the other chair can
-never be filled by an invented stranger.
+never be filled by an invented stranger. Every studio still and studio clip is then
+checked automatically by a vision model against both reference sheets and the wardrobe:
+any unknown person, wrong clothes, a host missing from their own shot, or anyone standing
+gets the picture thrown away and redrawn (stills up to 3 times, clips once).
 
 **The camera rig is fixed, like a real filmed podcast.** Tripod cameras at seated eye level
 only: A wide (both hosts), B Maya's single, C Elias's single, D over Elias's shoulder,
