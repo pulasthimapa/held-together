@@ -74,7 +74,7 @@ def captions_for(scenes_with_times):
 
 # ---------- per-scene clips ----------
 
-def placeholder(path, label):
+def placeholder(path, label, note=""):
     im = Image.new("RGB", (W, H), (60, 58, 55))
     d = ImageDraw.Draw(im)
     from PIL import ImageFont
@@ -389,6 +389,8 @@ def render(ep_id, allow_placeholders=False):
         t += dur
     (out_dir / f"{ep_id}_long.srt").write_text(captions_for(rows))
     print(f"long-form: {long_out} ({t / 60:.1f} min)")
+    import check
+    check.write_description(ep_id, out_dir / f"{ep_id}_description.txt")
 
     # Vertical cuts
     by_id = {scene["id"]: (scene, clip, dur, spoken) for scene, clip, dur, spoken in timeline}
@@ -413,9 +415,12 @@ def render(ep_id, allow_placeholders=False):
         # A mild 1.18x zoom first trims 5% from each side — inside the 110px safe margin
         # every diagram is drawn with — so the picture fills more of a phone screen.
         # The bands top and bottom are where the hook and the captions live.
+        # An empty captions file (a placeholder test render) makes libass fail to open it.
+        subs = (f"subtitles='{ffmpeg_escape(srt)}':force_style='{style}',"
+                if srt.read_text().strip() else "")
         vf = (f"scale=1274:-2,crop=1080:in_h:(in_w-1080)/2:0,"
               f"pad=1080:1920:0:420:color=0x11161F,"
-              f"subtitles='{ffmpeg_escape(srt)}':force_style='{style}',"
+              f"{subs}"
               f"{hook_filters(cut['hook'])},"
               f"drawtext=fontfile={S.UI_BOLD}:text='Full story on the channel':"
               f"fontsize=52:fontcolor=white:box=1:boxcolor=0xE8192C@0.95:boxborderw=24:"

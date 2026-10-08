@@ -1,0 +1,189 @@
+# ep01 fact sheet — rule 1. Every narrated scene must appear here (pipeline/check.py fails
+# otherwise). Each claim names the source(s) it rests on. Every source was OPENED and read
+# on the date given; nothing here rests on a search snippet or an AI summary.
+#
+# kind: fact        - checkable claims, each with sources
+#       explanation - physics / how-it-works, stable textbook knowledge, no claim of record
+#       opinion     - a host's own view, framed as theirs
+#
+# Verified 2026-10-08 by three independent passes against the sources below.
+
+sources:
+  RC1908:
+    title: "Royal Commission, Quebec Bridge Inquiry, Report, Vol. I (Sessional Paper No. 154, 1908)"
+    url: "https://archive.org/stream/19071908v42i18p154_0540/19071908v42i18p154_0540_djvu.txt"
+    note: "Primary source. Findings pp. 9-10. OCR garbles fractions; inch figures checked against STRUCTURE."
+  RC1908v2:
+    title: "Royal Commission, Quebec Bridge Inquiry, Vol. II (minutes of evidence)"
+    url: "https://archive.org/details/19071908v42i19p154_0541"
+    note: "Primary source. Eyewitness durations of the fall; Cooper's evidence p. 380."
+  STRUCTURE1:
+    title: "STRUCTURE magazine, The Quebec Bridge, Part 1"
+    url: "https://www.structuremag.org/article/the-quebec-bridge-part-1/"
+  STRUCTURE3:
+    title: "STRUCTURE magazine, The Quebec Bridge, Part 3"
+    url: "https://www.structuremag.org/article/quebec-bridge-part-3/"
+  CANENC:
+    title: "The Canadian Encyclopedia, Quebec Bridge Disaster (feature)"
+    url: "https://thecanadianencyclopedia.ca/en/article/quebec-bridge-disaster-feature"
+  CANENC2:
+    title: "The Canadian Encyclopedia, Quebec Bridge Disasters"
+    url: "https://www.thecanadianencyclopedia.ca/en/article/quebec-bridge-disasters"
+  GOVCA2021:
+    title: "Government of Canada, The history of the Quebec Bridge (2021)"
+    url: "https://www.canada.ca/en/housing-infrastructure-communities/news/2021/04/the-history-of-the-quebec-bridge.html"
+  GOVCA2024:
+    title: "Government of Canada, acquisition of the Quebec Bridge (2024)"
+    url: "https://www.canada.ca/en/housing-infrastructure-communities/news/2024/11/the-government-of-canada-confirms-the-acquisition-of-the-quebec-bridge.html"
+  PARKS:
+    title: "Parks Canada, Quebec Bridge National Historic Site"
+    url: "https://pc.gc.ca/apps/DFHD/page_nhs_eng.aspx?id=851"
+  ASCE:
+    title: "ASCE, Historic Civil Engineering Landmark: Quebec Bridge"
+    url: "https://www.asce.org/about-civil-engineering/history-and-heritage/historic-landmarks/quebec-bridge"
+  LEGION:
+    title: "Legion Magazine, A bridge with two tragedies"
+    url: "https://legionmagazine.com/a-bridge-with-two-tragedies/"
+  CANHIST:
+    title: "Canada's History, A community's loss"
+    url: "https://www.canadashistory.ca/explore/first-nations-inuit-metis/a-community-s-loss"
+  EASTDOOR:
+    title: "The Eastern Door (Kahnawake), Remembering the Quebec Bridge disaster"
+    url: "https://easterndoor.com/article/remembering-the-quebec-bridge-disaster"
+  CBC:
+    title: "CBC, Kahnawake Mohawks mark 1907 Quebec Bridge disaster"
+    url: "https://www.cbc.ca/news/canada/kahnawake-mohawks-mark-1907-quebec-bridge-disaster-1.623180"
+  CBCUNRES:
+    title: "CBC Unreserved, Quebec Bridge disaster and Kahnawake"
+    url: "https://www.cbc.ca/radio/unreserved/quebec-bridge-disaster-kahnawake-first-nation-1.6476819"
+  SONIC:
+    title: "Sonic Memorial Project, Mohawk ironworkers"
+    url: "https://sonicmemorial.org/mohawk/mohawk.html"
+  USMINT:
+    title: "US Mint, 2015 Native American dollar: Mohawk ironworkers"
+    url: "https://www.usmint.gov/learn/coins-and-medals/collectible-coins/native-american-dollar-coins/2015-mohawk-ironworkers"
+  MTLHIST:
+    title: "Montreal history, Kahnawake (Caughnawaga)"
+    url: "https://montreal-history.com/resource/3327.html"
+  IRONRING:
+    title: "The Corporation of the Seven Wardens, Background"
+    url: "https://ironring.ca/background/"
+  IRONRINGFAQ:
+    title: "The Corporation of the Seven Wardens, FAQ"
+    url: "https://ironring.ca/faq/"
+  CAMP13:
+    title: "Iron Ring Camp 13, About the Iron Ring"
+    url: "https://camp13.ironring.ca/the-iron-ring/about-the-iron-ring"
+  CG300:
+    title: "National Highways, CG 300 Technical approval of highway structures"
+    url: "https://www.standardsforhighways.co.uk/tses/attachments/17dadcc6-8e01-455d-b93e-c827d280839a"
+    note: "Version opened is marked superseded; re-check the current version before each re-use."
+  HRB2023:
+    title: "Building (Higher-Risk Buildings Procedures) (England) Regulations 2023, reg. 33"
+    url: "https://www.legislation.gov.uk/uksi/2023/909/regulation/33"
+  CROSS:
+    title: "CROSS-UK, About"
+    url: "https://www.cross-safety.org/uk/about-cross-uk"
+
+scenes:
+  S01: {kind: fact, claims: [
+        {c: "Shortly after 5:30 pm, Thursday 29 Aug 1907", s: [LEGION, RC1908v2]},
+        {c: "86 men at work; 75 died", s: [CANENC, LEGION, STRUCTURE1]},
+        {c: "designed span 1,800 ft would exceed every bridge then built", s: [STRUCTURE1, ASCE]},
+        {c: "the fall took seconds (eyewitnesses: 4 to 8)", s: [RC1908v2]}]}
+  S02: {kind: fact, claims: [
+        {c: "telegram sent 12:16 pm, read about 3 pm", s: [RC1908v2, RC1908]},
+        {c: "Phoenixville to Quebec about 510 miles straight line", s: [computed]}]}
+  S04: {kind: fact, claims: [
+        {c: "Iron Ring ceremony traces its history to the 1907 collapse", s: [IRONRING]}]}
+  S05: {kind: opinion}
+  S06: {kind: fact, claims: [
+        {c: "bridge to give Quebec a rail crossing of the St Lawrence", s: [GOVCA2021]},
+        {c: "longest span ever attempted", s: [STRUCTURE1]}]}
+  S07: {kind: fact, claims: [
+        {c: "Cooper consulting engineer, highly respected", s: [RC1908]},
+        {c: "approaching seventy, infirm health (born 1839: 68)", s: [RC1908]}]}
+  S08: {kind: fact, claims: [
+        {c: "span lengthened 1,600 ft to 1,800 ft to avoid deep piers and ice and save a year", s: [RC1908, STRUCTURE1]},
+        {c: "dead load assumed too low and never revised", s: [RC1908]},
+        {c: "error found 1906; Cooper judged the stress increase acceptable", s: [RC1908, STRUCTURE1]}]}
+  S09: {kind: opinion}
+  S10: {kind: fact, claims: [
+        {c: "Cooper did not visit during superstructure erection; ran it from New York", s: [RC1908]}]}
+  S11: {kind: fact, claims: [
+        {c: "McLure, Princeton 1904, inspecting engineer on site", s: [RC1908, RC1908v2]},
+        {c: "a second inspector (Kinloch) also on site", s: [RC1908]}]}
+  S12: {kind: explanation}
+  S13: {kind: explanation}
+  S14: {kind: explanation}
+  S15: {kind: explanation}
+  S15M: {kind: explanation}
+  S16: {kind: fact, claims: [
+        {c: "lower chords of four ribs joined by latticing; latticing inefficient", s: [RC1908]}]}
+  S17: {kind: opinion, note: "Maya's professional view. Bonded strain gauges date from the late 1930s (well known; article URL not recorded, so not cited)."}
+  S18: {kind: explanation}
+  S19: {kind: fact, claims: [
+        {c: "6 Aug: McLure reports chords 7-L/8-L out of line; Cooper asks how both got bent", s: [RC1908]},
+        {c: "Deans (chief engineer, Phoenix) says bend put in at the shop", s: [RC1908]},
+        {c: "McLure sure ribs straight when erected", s: [RC1908]}]}
+  S20: {kind: fact, claims: [
+        {c: "27 Aug morning Kinloch finds 9-L bend increased; measured that afternoon", s: [RC1908]},
+        {c: "one rib 3/4 in to 2 1/4 in in a little over a week", s: [RC1908, STRUCTURE1]}]}
+  S21: {kind: fact, claims: [
+        {c: "telegraph avoided for fear of alarming workmen; measurements mailed; McLure sent to New York", s: [RC1908]}]}
+  S22: {kind: fact, claims: [
+        {c: "shortly after 11 am 29 Aug Cooper finds McLure in his office; wires after short talk", s: [RC1908]}]}
+  S23: {kind: fact, claims: [
+        {c: "sent 12:16 pm; wording 'Add no more load to bridge till after due consideration of facts'", s: [RC1908v2, RC1908]},
+        {c: "arrived 1:15 pm; Deans saw it about 3 pm; arranged to meet McLure", s: [RC1908]},
+        {c: "Cooper wired Phoenixville not Quebec believing it quicker", s: [RC1908]},
+        {c: "McLure promised to wire Kinloch and did not", s: [RC1908]}]}
+  S24: {kind: fact, claims: [
+        {c: "1:15 pm to collapse about 4 hours; seen about 3 pm; Deans thought he had reassuring news from Birks", s: [RC1908]},
+        {c: "no experienced bridge engineer in charge; loose supervision", s: [RC1908]}]}
+  S25: {kind: fact, claims: [
+        {c: "Mohawk ironworkers from Kahnawake, south of Montreal", s: [CANENC2, MTLHIST, GOVCA2021]}]}
+  S26: {kind: fact, claims: [
+        {c: "33 of the dead from Kahnawake", s: [GOVCA2021, CANHIST, EASTDOOR, CBC]}]}
+  S27: {kind: fact, claims: [
+        {c: "near the end of the working day", s: [RC1908v2, CANENC]}]}
+  S29: {kind: fact, claims: [{c: "a few seconds", s: [RC1908v2]}]}
+  S30: {kind: fact, claims: [{c: "75 of 86 killed", s: [CANENC, LEGION, STRUCTURE1]}]}
+  S31: {kind: fact, claims: [
+        {c: "about two dozen widows", s: [CBC, CANHIST]},
+        {c: "recovered men buried together at Kahnawake", s: [EASTDOOR]},
+        {c: "steel crosses stand in their memory", s: [EASTDOOR, CANHIST]}]}
+  S32: {kind: fact, claims: [
+        {c: "the women insisted never again so many men on one job", s: [CANHIST, CBCUNRES, SONIC]},
+        {c: "Kahnawake ironworkers on George Washington Bridge, Empire State Building", s: [SONIC, USMINT]}]}
+  S33: {kind: fact, claims: [
+        {c: "failure due to defective design of lower chords; 'errors in judgment' of Szlapka and Cooper", s: [RC1908]},
+        {c: "dead load underestimated and never revised", s: [RC1908]},
+        {c: "nothing could save the bridge after 27 Aug; loss of life might have been prevented", s: [RC1908]}]}
+  S34: {kind: fact, claims: [
+        {c: "UK Category 3 checks by a separate organisation (complex highway structures)", s: [CG300]},
+        {c: "England higher-risk buildings: duty to report safety occurrences during construction", s: [HRB2023]},
+        {c: "CROSS confidential reporting", s: [CROSS]}]}
+  S35: {kind: fact, claims: [
+        {c: "bend seen, measured, carried to Cooper who wired; McLure's promise to wire the site not kept", s: [RC1908]}]}
+  S36: {kind: fact, claims: [
+        {c: "11 Sep 1916 centre span fell while lifted; 13 died; still on river bed", s: [STRUCTURE3, GOVCA2021, CANENC2]},
+        {c: "a casting at a corner of the lifting gear failed (ASCE: a jack bearing)", s: [STRUCTURE3, ASCE]}]}
+  S37: {kind: fact, claims: [
+        {c: "completed 1917; longest cantilever span in the world", s: [STRUCTURE3, PARKS, ASCE]},
+        {c: "daily passenger and freight trains plus road traffic", s: [GOVCA2021, GOVCA2024]}]}
+  S38: {kind: fact, claims: [
+        {c: "first ceremony 25 Apr 1925; Kipling wrote the Obligation", s: [IRONRING]},
+        {c: "not made from Quebec Bridge steel", s: [IRONRINGFAQ]},
+        {c: "worn on the little finger of the working hand", s: [IRONRING, IRONRINGFAQ]},
+        {c: "said to brush the page (belief, not fact; worded 'they say')", s: [CAMP13]}]}
+  S39: {kind: fact, claims: [{c: "at least 75 in 1907; 13 in 1916", s: [CANENC, GOVCA2021, STRUCTURE3]}]}
+
+# Goes into the YouTube description verbatim (rule 1: note where sources disagree).
+disagreements:
+  - "Deaths in 1907: most sources give 75; the Government of Canada and Parks Canada give 76; others give 74 or 77."
+  - "Kahnawake: 33 of the dead in most sources; one gives 35."
+  - "Widows in Kahnawake: 24 or 25, depending on the source."
+  - "Duration of the fall: inquiry eyewitnesses estimated four to eight seconds; some later accounts say fifteen."
+  - "1916 cause: STRUCTURE magazine says a casting failed; ASCE says a jack bearing."
+  - "The idea that the Iron Ring brushes the page as you draw is a tradition, not a documented fact."

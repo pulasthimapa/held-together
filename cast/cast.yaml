@@ -1,4 +1,5 @@
-# Recurring cast. Faces, personas and speech NEVER change. Only clothing changes per episode.
+# Recurring cast. The hosts' faces, personas, speech, signature wardrobe and the studio NEVER
+# change. The troupe (world: story) is recast and recostumed per story.
 #
 # TWO WORLDS (see docs/brand.md): the present is photographed, the past is painted.
 #   world: host   -> Elias and Maya, the podcast. Photoreal.
@@ -44,6 +45,30 @@ sheet_prompt_story: >-
   identical face, hair, features and proportions in all four portraits. Painted in the
   channel's golden-age illustration style, brushwork visible.
 
+# ---------------------------------------------------------------- the studio set: PERMANENT
+# The podcast room never changes between episodes, like the hosts' faces. images.py adds
+# `description` to every studio scene and passes the reference plate (cast/sheets/studio.jpg,
+# made by the cast stage from `plate_prompt`) so the room, the microphones and the seating
+# stay identical. Change this only as a deliberate rebrand: it means redrawing every
+# studio shot of every future episode.
+studio:
+  description: >-
+    Set in the Held Together podcast studio, which is always exactly the same room: an
+    intimate studio with dark walnut wall panelling and deep teal fabric acoustic panels; a
+    heavy round dark walnut table in the centre; two black broadcast dynamic microphones on
+    black articulated boom arms clamped to the table edge, one in front of each host at
+    mouth height; a pair of black closed-back studio headphones resting at each place;
+    Elias always sits on the left of the table and Maya on the right, facing each other at a
+    slight angle to camera; behind them a wall of shelves holding a small steel truss bridge
+    model, a slide rule, a glass jar of rivets, rolled drawings and a brass theodolite; a
+    brass desk lamp with a warm amber glow on the table; a soft teal backlight on the
+    acoustic panels.
+  plate_prompt: >-
+    Wide establishing photograph of the empty studio, both chairs empty and pulled up to the
+    table, both microphones and headphones in place, the whole room visible, eye-level
+    camera. {description}
+  sheet: studio
+
 actors:
   # ================= the studio: two hosts, every episode, photoreal =================
   elias:
@@ -51,6 +76,10 @@ actors:
     world: host
     host: true
     nationality: English
+    # Permanent signature look in the studio, every episode (images.py adds it).
+    wardrobe: >-
+      Elias wears his signature charcoal wool waistcoat over a white collarless shirt with
+      the sleeves rolled once, no tie.
     description: >-
       English white man in his early 60s, tall and lean with a gaunt long narrow face, high
       prominent cheekbones, silver-grey hair swept back from a high forehead, deep-set
@@ -74,6 +103,9 @@ actors:
     world: host
     host: true
     nationality: Indian
+    wardrobe: >-
+      Maya wears her signature warm amber linen overshirt, open, over a plain white T-shirt, and her
+      round thin gold wire-rimmed glasses.
     description: >-
       Beautiful Indian woman in her late 20s, radiant warm golden-brown skin, large bright
       dark-brown almond eyes with long lashes, elegant arched eyebrows, high cheekbones and a

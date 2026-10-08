@@ -39,8 +39,9 @@ scenes:
         Silhouette of a lone ironworker against a blazing amber sky, standing on the very end
         of an unfinished cantilever arm.
     narration: >-
-      At half past five on a Thursday afternoon in 1907, eighty-six men were standing on the
-      largest bridge ever built. Fifteen seconds later, seventy-five of them were dead.
+      Shortly after half past five on a Thursday afternoon in 1907, eighty-six men were
+      working on what was meant to become the longest bridge span on Earth. Seconds
+      later, seventy-five of them were dead.
     motion: in
 
   - id: S02
@@ -57,14 +58,15 @@ scenes:
         Macro shot of a brass telegraph key at rest on a desk, dust motes, a hard shaft of
         sunlight, deep shadow around it.
     narration: >-
-      The warning that could have stopped it was already written. It had been sent that
-      morning. It was sitting, read and understood, in an office six hundred miles away.
+      The warning that could have saved them had already been sent. It left New York
+      just after noon. By mid-afternoon it had been read, in an office five hundred
+      miles away.
     motion: in
 
   - id: S03
     type: card
     title: "HELD TOGETHER"
-    subtitle: "A true story. Elias is a composite character; everyone else is real."
+    subtitle: "A true story, told by two fictional hosts. Everyone in the story is real."
     hold: 3
 
   # ================================================= HOSTS: THE SET-UP
@@ -76,18 +78,19 @@ scenes:
     name: "Maya"
     role: "structural engineer, today"
     hero_video: >-
-      Maya sits in a warm modern study, turning a small steel truss model over in her hands,
-      then looking up and asking a question. Subtle natural movement, blinking, breathing.
-      Soft key light, softly blurred background.
+      Maya, seated at her microphone, turns a small steel truss model over in her hands,
+      then looks up across the table and asks a question. Subtle natural movement,
+      blinking, breathing.
     hero_seconds: 8
     prompt: >-
-      Maya in a warm modern study at night, soft lamp light, a small steel truss model in her
-      hands, bookshelves softly out of focus behind her, teal and amber, shallow depth of
-      field. Mid-question, eyebrows up, half a smile — alert and amused.
+      Medium close-up of Maya in her seat, speaking into her microphone, a small steel
+      truss model in her hands, mid-question, eyebrows up, half a smile, alert and
+      amused.
     narration: >-
-      Right, so every engineer I know has heard this one. They tell you in first year, then
-      they hand you a ring so you don't forget it. Nobody ever explains the bit I actually
-      care about, though. Not whose fault it was. How the steel knew first.
+      Right, so every engineer I know has heard this one. It's the story they tell you
+      to explain why we check things. In Canada, the ceremony where new engineers get
+      their iron ring traces its story back to this bridge. Nobody ever explains the bit
+      I actually care about, though. Not whose fault it was. How the steel knew first.
     motion: in
 
   - id: S05
@@ -98,14 +101,12 @@ scenes:
     name: "Elias"
     role: "engineer, 1907 — a composite character"
     hero_video: >-
-      Elias sits in a dim study lit by one warm lamp, listening, then slowly nodding and
-      beginning to speak. Subtle breathing and blinking, heavy with memory. Soft key light,
-      softly blurred background.
+      Elias, seated at his microphone, listens, then slowly nods and leans in to the
+      microphone to begin speaking. Subtle breathing and blinking, heavy with memory.
     hero_seconds: 8
     prompt: >-
-      Elias in a dim 1900s study lit by a single warm lamp, waistcoat and loosened collar,
-      drawings rolled on the desk beside him, deep teal shadow behind, shallow depth of
-      field. Weary, remembering.
+      Medium close-up of Elias in his seat at his microphone, listening, weary and
+      remembering, rolled drawings on the table beside him.
     narration: >-
       Then I will tell it that way. I was an engineer in those years, and I will tell you
       what we knew, what we measured, and exactly where it stopped being a question of steel
@@ -128,9 +129,8 @@ scenes:
         Street-level view of a crowded 1900s waterfront, barrels and crates, steam, people
         waiting, warm late light.
     narration: >-
-      Quebec had a river it could not cross. The St Lawrence cut the city off from the
-      railways to the south, and the answer was to be a bridge — the longest of its kind
-      anywhere on Earth.
+      Quebec had a river in the way. No railway crossed the St Lawrence at Quebec, and
+      the answer was to be a bridge with the longest span ever attempted.
     motion: right
 
   - id: S07
@@ -144,9 +144,8 @@ scenes:
       suit, standing over a drafting table in a New York office, strong window light raking
       across rolled plans, warm amber lamp against cool blue daylight, proud and commanding.
     narration: >-
-      The man in charge was Theodore Cooper, one of the most respected bridge engineers in
-      America. He was in his sixties. He was proud. And he wanted this to be the crowning
-      work of his life.
+      Its consulting engineer was Theodore Cooper, one of the most respected bridge
+      engineers in America. He was sixty-eight years old, and in poor health.
     motion: in
 
   - id: S08
@@ -154,11 +153,13 @@ scenes:
     speaker: elias
     diagram: span_longer
     narration: >-
-      To save money on the piers standing in the river, he made the main span longer. That
-      sounds like a small decision. It is not. A bridge this size spends most of its strength
-      carrying itself, so a longer span needs heavier steel, and heavier steel needs more
-      steel again. Somewhere in that spiral, the early weight calculations were never
-      properly checked.
+      To keep the piers out of the deepest water and the winter ice, and to finish a
+      year sooner, he made the main span longer: eighteen hundred feet. That sounds like
+      a small decision. It is not. A bridge this size spends most of its strength
+      carrying itself, so a longer span needs heavier steel, and heavier steel needs
+      more steel again. The weight the design assumed was too low, and it was never
+      revised. When the error came to light in 1906, Cooper judged the extra stress
+      acceptable, and the work went on.
 
   - id: S09
     type: image
@@ -166,13 +167,13 @@ scenes:
     host_shot: true
     actors: [maya]
     prompt: >-
-      Maya leaning forward in her warm study, one hand raised, caught mid-sentence with a wry
-      look, lamp light catching her glasses, bokeh background in teal and amber.
+      Maya leaning forward to her microphone, one hand raised, caught mid-sentence with
+      a wry look, lamp light catching her glasses.
     narration: >-
-      And can I just say — no computer, no calculator, a slide rule and a very good memory.
-      I'd have given up. But that's not the bit that still happens, is it? The arithmetic we
-      can do now. What still happens is a number set early, by someone senior, that nobody
-      goes back and checks once everything around it has moved.
+      And can I just say, no computer, no calculator, a slide rule and a very good
+      memory. I'd have given up. But that's not the bit that still happens, is it? The
+      arithmetic we can do now. What still happens is a number that turns out wrong, and
+      someone senior deciding it's probably fine.
     motion: in
 
   - id: S10
@@ -191,9 +192,9 @@ scenes:
         Wide shot of an empty office at night seen from outside the window, a single lit
         desk, the city dark around it.
     narration: >-
-      Cooper was unwell. Once the steel started going up, he never once travelled to see it.
-      He ran the largest bridge in the world from that office, through letters, telegrams,
-      and one young man.
+      Because of his health, he did not once visit the bridge while the steel was going
+      up. He ran it from his office in New York, through letters, telegrams, and the
+      reports of a young inspector.
     motion: in
 
   - id: S11
@@ -207,8 +208,9 @@ scenes:
       open steel high above a teal river, wind in his hair, notebook in hand, bright sunlight
       and strong shadows, vertigo-inducing wide angle.
     narration: >-
-      His name was Norman McLure. He was the inspecting engineer on site. Cooper's eyes. And
-      in the summer of 1907, those eyes saw something wrong.
+      His name was Norman McLure, an engineer a few years out of Princeton, inspecting
+      the work on site. And in the summer of 1907, he and the other inspector began to
+      see something wrong.
     motion: in
 
   # ================================================= ACT 2: THE PHYSICS
@@ -218,9 +220,8 @@ scenes:
     host_shot: true
     actors: [maya, elias]
     prompt: >-
-      Maya and Elias in conversation, split warm and cool lighting between them, Maya
-      gesturing a question, Elias listening with his hands folded, shallow depth of field,
-      teal and amber.
+      Wide two-shot across the table: Maya gesturing a question, Elias listening with
+      his hands folded, both at their microphones.
     narration: >-
       Hold on. Before you tell me what he saw, tell them what it means. Because if you just
       say the steel was bending, everyone pictures a shelf with too many books on it. Slow,
@@ -269,11 +270,11 @@ scenes:
     speaker: elias
     diagram: builtup_lacing
     narration: >-
-      And there was a second fault, hidden in the design. The great lower chords, the members
-      pushed hardest, were not solid blocks of steel. They were separate plates held together
-      by thin diagonal straps we called lacing. Tie plates together tightly and they behave
-      as one thick member, which is enormously strong. Tie them too lightly and each thin
-      plate bows on its own.
+      And there was a second fault, hidden in the design. The great lower chords, the
+      members pushed hardest, were not solid blocks of steel. Each was four separate
+      ribs, joined by light lattice bars. Tie ribs together tightly and they behave as
+      one thick member, which is enormously strong. Tie them too lightly and each thin
+      rib bows on its own.
 
   - id: S17
     type: image
@@ -281,14 +282,15 @@ scenes:
     host_shot: true
     actors: [maya]
     prompt: >-
-      Maya at a desk with a laptop showing a colourful finite element stress plot of a steel
-      member, her face lit by the screen, warm lamp behind, shallow depth of field.
+      Maya at her microphone with a laptop open on the table showing a colourful finite
+      element stress plot of a steel member, the screen lighting her face.
     narration: >-
-      And this is where it gets uncomfortable for us, because that failure mode has not gone
-      anywhere. What has changed is that we can see it coming. A model of that chord takes an
-      afternoon now. Strain gauges would have told them the load was climbing. On a job that
-      size today there would be monitoring on the critical members, reporting continuously.
-      None of that existed. He had a ruler and his own judgement.
+      And this is where it gets uncomfortable for us, because that failure mode hasn't
+      gone anywhere. What's changed is that we can see it coming. A model of that chord
+      would take me an afternoon. Strain gauges on it would show the stress climbing
+      towards its limit. On a job that size today, you'd expect monitoring on the
+      critical members, often reporting continuously. None of that existed. They had a
+      ruler and their own judgement.
     motion: in
 
   - id: S18
@@ -317,9 +319,10 @@ scenes:
         A notebook page filled with pencil measurements and dates, a thumb holding it against
         the wind, bright daylight.
     narration: >-
-      In early August, McLure reported it. Cooper wrote back asking how on earth it could
-      have happened. Men on site said the bend must have come that way from the works.
-      McLure did not believe it. He thought it was growing.
+      On the sixth of August, McLure reported two chords out of line. Cooper wrote back
+      asking how both of them could have become bent. The bridge company's chief
+      engineer replied that the bend had no doubt been put in at the shop. McLure was
+      sure they had been straight when they went up.
     motion: in
 
   - id: S20
@@ -327,9 +330,11 @@ scenes:
     speaker: elias
     diagram: bend_record
     narration: >-
-      So he did the only thing an engineer can do with a suspicion. He measured it, wrote
-      down the date, and measured it again. On the twenty-seventh of August the bend was
-      larger. It was not old damage. It was the loop, already running.
+      Then, on the morning of the twenty-seventh of August, the other inspector found
+      that a bend in one of the great lower chords had grown. They measured it that
+      afternoon. In little more than a week, one rib had gone from three quarters of an
+      inch out of line to two and a quarter. It was not old damage. It was the loop,
+      already running.
 
   - id: S21
     type: image
@@ -340,8 +345,9 @@ scenes:
       his knees, rain streaking the dark window, his reflection doubled in the glass, amber
       lamp light, deep blue night outside.
     narration: >-
-      He did not send a telegram. He wrote a letter, and then he boarded a train to New York
-      to put it in front of Cooper himself.
+      Nobody wired the alarm, for fear of frightening the men. The measurements went by
+      post, and McLure was put on a train to New York to explain them to Cooper in
+      person.
     motion: in
 
   - id: S22
@@ -353,7 +359,8 @@ scenes:
       covered in plans, bright morning light flooding the office, the older man gripping the
       table edge, sudden understanding on his face.
     narration: >-
-      On the morning of the twenty-ninth they met. This time Cooper understood at once.
+      Late on the morning of the twenty-ninth, Cooper reached his office and found
+      McLure waiting. After a short talk, he acted.
     motion: in
 
   - id: S23
@@ -361,10 +368,13 @@ scenes:
     speaker: elias
     diagram: telegram_race
     narration: >-
-      At sixteen minutes past twelve a telegram left New York for the bridge company's office
-      in Pennsylvania. It said to put no more load on the bridge until the facts had been
-      considered. It arrived just after one. The men who read it talked it over, and agreed
-      to meet again the next day. The warning was never sent on to Quebec.
+      At sixteen minutes past twelve, a telegram left New York for the bridge company's
+      office in Phoenixville, Pennsylvania. Add no more load to bridge, it said, till
+      after due consideration of facts. It arrived at a quarter past one. The chief
+      engineer did not see it until about three, and arranged to meet McLure that
+      evening. Cooper had wired Pennsylvania rather than Quebec, believing it would be
+      quicker. McLure had promised to wire the site. He never did. No order to stop ever
+      reached the men on the bridge.
 
   - id: S24
     type: image
@@ -372,12 +382,13 @@ scenes:
     host_shot: true
     actors: [maya]
     prompt: >-
-      Maya sitting back, hand over her mouth, the small steel model abandoned on the desk in
-      front of her, lamp light low, bokeh background, quiet dismay.
+      Maya sitting back from her microphone, hand over her mouth, the small steel model
+      set down on the table in front of her, quiet dismay.
     narration: >-
-      Four hours. It sat there four hours, in a building full of people who understood
-      exactly what it meant. There was no procedure that said who had to act on it. That is
-      the thing that made me cold the first time I read this. Not the chord. The gap.
+      Four hours. It sat there four hours. The chief engineer didn't see it till three,
+      and he thought he had better news from the site, so he waited. The inquiry said it
+      plainly: there was no experienced bridge engineer in charge on site. That's what
+      made me go cold the first time I read this. Not the chord. The gap.
     motion: in
 
   # ================================================= ACT 4: THE COLLAPSE
@@ -401,9 +412,9 @@ scenes:
         Two workers sharing a lunch pail sitting on a beam, legs dangling over the river,
         warm afternoon light.
     narration: >-
-      Hundreds of miles away, on the bridge, it was an ordinary Thursday afternoon.
-      Eighty-six men were out on the steel. Among them were Mohawk ironworkers from
-      Kahnawake, a community near Montreal, known for their skill and their nerve at height.
+      Five hundred miles away, on the bridge, it was an ordinary Thursday afternoon.
+      Among the men out on the steel were Mohawk ironworkers from Kahnawake, a community
+      just south of Montreal, known for their skill at height.
     motion: left
 
   - id: S26
@@ -413,8 +424,7 @@ scenes:
       A quiet riverside village at dusk with a simple stone memorial in the foreground,
       wildflowers, warm low light across the water, a distant bridge silhouette. Respectful.
     narration: >-
-      Thirty-three of them came from Kahnawake. The youngest was eighteen. The oldest was
-      forty-four.
+      Thirty-three of the men who died came from Kahnawake.
     motion: in
 
   - id: S27
@@ -424,8 +434,7 @@ scenes:
       Golden hour on the bridge deck, long shadows stretching across the steel, a man
       reaching for his tool bag, the low sun blazing through the trusses, dust in the light.
     narration: >-
-      Just after half past five, the signal went for the end of the shift. Men began to
-      gather their tools.
+      It was nearly the end of the working day.
     motion: out
 
   - id: S28
@@ -438,14 +447,14 @@ scenes:
     speaker: elias
     diagram: collapse
     narration: >-
-      It took about fifteen seconds.
+      It took a few seconds.
 
   - id: S30
     type: diagram
     speaker: elias
     diagram: men_grid
     narration: >-
-      Of the eighty-six men on the bridge, seventy-five were killed.
+      Of the eighty-six men, seventy-five were killed.
 
   # ================================================= ACT 5: AFTER
   - id: S31
@@ -461,8 +470,9 @@ scenes:
       cold blue light with a single warm sliver of sunrise, small figures standing silently
       on the shore.
     narration: >-
-      In Kahnawake, two dozen women became widows in a single evening. The men were brought
-      home and buried under crosses made from steel beams.
+      In Kahnawake, about two dozen women became widows in a single evening. The men who
+      could be recovered were brought home and buried together. Crosses made of steel
+      still stand in their memory.
     motion: out
 
   - id: S32
@@ -481,10 +491,10 @@ scenes:
         Close-up of weathered hands gripping a steel cable, strong and sure, warm light, deep
         teal shadow.
     narration: >-
-      Then the community made a decision. They did not give up the work. Instead their men
-      would never again all work the same job at the same time, so that one accident could
-      never take so many of them again. Their ironworkers went on to help raise the skylines
-      of North America.
+      Then the women of Kahnawake made a decision. Their men would not give up the work.
+      But never again would so many of them work on one job at the same time. Kahnawake
+      ironworkers went on to help raise the skylines of North America, from the George
+      Washington Bridge to the Empire State Building.
     motion: right
 
   - id: S33
@@ -502,9 +512,13 @@ scenes:
         A commissioner's hand writing a verdict in a leather-bound ledger, nib and ink, warm
         lamp, deep shadow.
     narration: >-
-      A Royal Commission investigated. It found that the chords which failed had been badly
-      designed, and it blamed errors of judgment by two men: the designer, Peter Szlapka, and
-      Theodore Cooper.
+      A Royal Commission investigated. It found that the lower chords had failed because
+      of their defective design, and it put that down to errors in judgment by two
+      engineers: Peter Szlapka of the Phoenix Bridge Company, who designed them, and
+      Theodore Cooper, who approved them. It found the bridge's own weight had been
+      underestimated and never revised. And it found that although nothing could have
+      saved the bridge after the twenty-seventh, the loss of life might have been
+      prevented.
     motion: in
 
   - id: S34
@@ -513,14 +527,15 @@ scenes:
     host_shot: true
     actors: [maya, elias]
     prompt: >-
-      Maya and Elias sitting opposite each other in the low lamp light, neither speaking,
-      the steel model on the table between them, warm and cool light meeting in the middle,
-      shallow depth of field.
+      Wide two-shot across the table, Maya and Elias at their microphones, neither
+      speaking, the small steel model on the table between them.
     narration: >-
-      Here is what has actually changed since then, and it is not the physics. We have
-      independent design checks, so no single person's judgement stands alone. We have a duty
-      to report, written down, with a name against it. We have monitoring that does not get
-      tired or outranked. Every one of those exists because of days like this one.
+      Here's what has changed, and it isn't the physics. On complex highway bridges in
+      the UK, the design is checked by a team from a separate organisation, so no single
+      person's judgement stands alone. On new high-rise homes in England, there's now a
+      legal duty to report serious safety problems to the regulator. And any engineer
+      can report a concern to CROSS, in confidence. Every one of those was learned the
+      hard way, from days like this one.
     motion: in
 
   - id: S35
@@ -529,13 +544,13 @@ scenes:
     host_shot: true
     actors: [elias]
     prompt: >-
-      Elias alone in the lamp light, looking down at his own hands, the drawings pushed
-      aside, deep shadow around him, one warm highlight on his face.
+      Close shot of Elias at his microphone, looking down at his own hands on the table,
+      one warm highlight on his face, the room falling into shadow behind him.
     narration: >-
-      And yet. The young man saw it. He measured it. He carried it by hand to the one person
-      who could stop the work. Everything your rules are designed to produce, he did, on his
-      own, without being told to. It was not enough. Being right has never been the same
-      thing as being heard in time.
+      And yet. The bend was seen. It was measured. A young man carried it by train to
+      the one person who could stop the work, and that person acted. Then the warning
+      waited in an office, and the promise to wire the site was never kept. Being right
+      has never been the same thing as being heard in time.
     motion: in
 
   - id: S36
@@ -546,8 +561,9 @@ scenes:
       cantilever arms over a wide river, crowds of small figures watching from the banks,
       dramatic sky, enormous sense of scale.
     narration: >-
-      They built it again. In 1916, as the new centre span was being lifted into place, part
-      of the lifting equipment failed. The span fell into the river. Thirteen more men died.
+      They built it again. In 1916, as the new centre span was being lifted into place,
+      a casting at one corner of the lifting gear failed. The span fell into the river,
+      where it still lies. Thirteen more men died.
     motion: in
 
   - id: S37
@@ -561,48 +577,49 @@ scenes:
       The finished Quebec Bridge at sunrise, a freight train crossing, mirror-calm river,
       vivid amber and teal, long clean lines of steel, majestic wide shot.
     narration: >-
-      The bridge was finished in 1917. Its main span is still the longest cantilever span in
-      the world. Trains cross it every day.
+      The bridge was finished in 1917. Its main span is still the longest cantilever
+      span in the world. Trains still cross it every day, and so do thousands of cars.
     motion: left
 
   - id: S38
     type: image
     speaker: maya
     host_shot: true
-    actors: [maya]
+    world: host   # a studio shot with no people in it
     hero_video: >-
-      Extreme close-up of two hands only: a thumb slowly turns a plain dark iron ring on the
-      little finger, resting over an engineering drawing. Warm lamp light. Only the hands
-      are ever in frame; no face appears at any point. The camera does not move away from
-      the hands.
+      Very slow push in on a plain dark iron ring lying on an engineering drawing on a
+      walnut table, warm lamp light shifting softly. No people, no hands, no faces ever
+      appear.
     hero_seconds: 6
     prompt: >-
-      Extreme close-up of Maya's hand turning a plain dark iron ring on her little finger
-      above a drawing, warm lamp light, shallow depth of field, crisp detail.
+      Extreme close-up of a plain dark iron ring lying on an engineering drawing on the
+      walnut studio table, beside the base of a microphone stand, warm lamp light, crisp
+      detail. No people in frame.
     narration: >-
-      In 1925 Canadian engineers began a ceremony, with an obligation written by Rudyard
-      Kipling, and at the end of it each new engineer receives a ring of iron. It is not made
-      from this bridge's steel. That part is a myth. But it is worn on the little finger of
-      the working hand, so that every time you draw a line, it touches the page.
+      In 1925, Canadian engineers held the first of a ceremony, with an obligation
+      written by Rudyard Kipling. At the end of it, each new engineer receives an iron
+      ring. It isn't made from this bridge's steel. That part's a myth. It's worn on the
+      little finger of the working hand, and they say it brushes the page every time you
+      draw a line.
     motion: in
 
   - id: S39
     type: card
-    title: "Seventy-five men in 1907. Thirteen in 1916."
+    title: "At least 75 men in 1907. 13 more in 1916."
     subtitle: "What would you have done with McLure's measurements?"
     hold: 5
     speaker: maya
     narration: >-
-      Seventy-five men in 1907. Thirteen more in 1916. If you had been holding McLure's
-      notebook, with the bend growing and the work still going on, what would you have done?
-      Tell us below.
+      At least seventy-five men in 1907. Thirteen more in 1916. If you'd been holding
+      McLure's measurements, with the bend growing and the work still going on, what
+      would you have done? Tell us below.
 
 cuts:
   - id: the_hook
     scenes: [S01, S02, S04, S14, S15]
     hook: "75 men died because a telegram stopped moving"
   - id: buckling
-    scenes: [S13, S14, S15, S16]
+    scenes: [S13, S14, S15, S15M, S16]
     hook: "Why steel bends instead of snapping"
   - id: the_warning
     scenes: [S19, S20, S21, S23, S24]

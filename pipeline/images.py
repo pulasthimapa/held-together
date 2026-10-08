@@ -17,10 +17,62 @@ def world_of(cast, scene):
     host appears in it; everything else — including every scene with no people at all — is
     the past, and is painted.
     """
+    if scene.get("world") in ("host", "story"):
+        return scene["world"]
     for actor_id in scene.get("actors", []):
         if cast["actors"].get(actor_id, {}).get("world") == "host":
             return "host"
     return "story"
+
+
+MAX_REFS = 4  # the image model accepts at most four reference images per request
+
+
+def studio_sheet(cast):
+    return SHEETS_DIR / f"{cast['studio']['sheet']}.jpg"
+
+
+def build_prompt(cast, scene, prompt):
+    """The full text sent to the image model for one picture of one scene.
+
+    Studio scenes always get the permanent set and the hosts' signature wardrobe, so no
+    episode file can move the podcast to a different room or change what the hosts wear.
+    """
+    world = world_of(cast, scene)
+    parts = [style_for(cast, world)]
+    if world == "host":
+        parts.append(clean(cast["studio"]["description"]))
+    parts.append(clean(prompt))
+    for actor_id in scene.get("actors", []):
+        wardrobe = cast["actors"][actor_id].get("wardrobe")
+        if wardrobe and world == "host":
+            parts.append(clean(wardrobe))
+    if scene.get("actors"):
+        names = ", ".join(cast["actors"][a]["name"] for a in scene["actors"])
+        parts.append(f"The first reference images show {names}; keep each face, hair and build "
+                     "exactly as in the references.")
+    if world == "host":
+        parts.append("The last reference image is the studio: keep the room, the table, the "
+                     "microphones, the headphones, the shelves and the lighting exactly as in "
+                     "it, seen from this scene's camera angle.")
+    return clean(" ".join(parts))
+
+
+def refs_for(cast, scene):
+    refs = []
+    for actor_id in scene.get("actors", []):
+        sheet = SHEETS_DIR / f"{actor_id}.jpg"
+        if not sheet.exists():
+            raise SystemExit(f"Missing cast sheet for {actor_id}. Run the 'cast' stage first.")
+        refs.append(sheet)
+    if world_of(cast, scene) == "host":
+        plate = studio_sheet(cast)
+        if not plate.exists():
+            raise SystemExit("Missing studio plate cast/sheets/studio.jpg. Run 'cast' first.")
+        refs.append(plate)
+    if len(refs) > MAX_REFS:
+        raise SystemExit(f"{scene['id']}: {len(refs)} reference images, limit is {MAX_REFS}.")
+    return refs
 
 
 def style_for(cast, world):
@@ -41,6 +93,14 @@ def make_cast_sheets():
         out.write_bytes(gemini.generate(clean(prompt), aspect="16:9"))
         made.append(out)
         print(f"cast sheet: {out.name} ({world})")
+    plate = studio_sheet(cast)
+    if not plate.exists():
+        desc = clean(cast["studio"]["description"])
+        prompt = style_for(cast, "host") + " " + cast["studio"]["plate_prompt"].format(
+            description=desc)
+        plate.write_bytes(gemini.generate(clean(prompt), aspect="16:9"))
+        made.append(plate)
+        print("studio plate: studio.jpg")
     contact_sheet(sorted(SHEETS_DIR.glob("*.jpg")), SHEETS_DIR.parent / "cast_review.jpg")
     return made
 
@@ -63,23 +123,14 @@ def make_scene_images(ep_id):
             prompts = [scene["fallback_prompt"]]
         if not prompts:
             continue
-        refs = []
-        for actor_id in scene.get("actors", []):
-            sheet = SHEETS_DIR / f"{actor_id}.jpg"
-            if not sheet.exists():
-                raise SystemExit(f"Missing cast sheet for {actor_id}. Run the 'cast' stage first.")
-            refs.append(sheet)
+        refs = refs_for(cast, scene)
         for idx, prompt in enumerate(prompts):
             suffix = "" if idx == 0 else "bcd"[idx - 1]
             out = img_dir / f"{scene['id']}{suffix}.jpg"
             if out.exists():
                 continue
-            full = style_for(cast, world_of(cast, scene)) + " " + clean(prompt)
-            if refs:
-                names = ", ".join(cast["actors"][a]["name"] for a in scene["actors"])
-                full += (f" The reference images show {names}; keep each face, hair and build "
-                         "exactly as in the references, only the costume and setting change.")
-            out.write_bytes(gemini.generate(clean(full), refs=refs, aspect="16:9"))
+            out.write_bytes(gemini.generate(build_prompt(cast, scene, prompt), refs=refs,
+                                            aspect="16:9"))
             total += 1
             print(f"scene image: {out.name}")
     print(f"images generated this run: {total}")

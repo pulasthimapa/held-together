@@ -6,9 +6,9 @@ on:
       stage:
         description: "Which stage to run"
         required: true
-        default: cast
+        default: check
         type: choice
-        options: [cast, images, video, voice, render, all]
+        options: [check, cast, images, video, voice, render, all]
       episode:
         description: "Episode folder"
         required: true
@@ -43,22 +43,34 @@ jobs:
         if: inputs.stage == 'render' || inputs.stage == 'all'
         run: python -m playwright install --with-deps chromium
 
-      - name: Run stage
+      # Runs before anything is installed or paid for. A failure here costs nothing.
+      - name: Preflight checks (spends nothing)
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           ELEVENLABS_API_KEY: ${{ secrets.ELEVENLABS_API_KEY }}
-          ELEVENLABS_VOICE_ID: ${{ secrets.ELEVENLABS_VOICE_ID }}
+          ELEVENLABS_VOICE_ELIAS: ${{ secrets.ELEVENLABS_VOICE_ELIAS }}
+          ELEVENLABS_VOICE_MAYA: ${{ secrets.ELEVENLABS_VOICE_MAYA }}
+        run: |
+          cd pipeline && python -c "import check; check.preflight('${{ inputs.stage == 'all' && 'images' || inputs.stage }}', '${{ inputs.episode }}')"
+
+      - name: Run stage (preflight again, generate, then verify)
+        if: inputs.stage != 'check'
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          ELEVENLABS_API_KEY: ${{ secrets.ELEVENLABS_API_KEY }}
           ELEVENLABS_VOICE_ELIAS: ${{ secrets.ELEVENLABS_VOICE_ELIAS }}
           ELEVENLABS_VOICE_MAYA: ${{ secrets.ELEVENLABS_VOICE_MAYA }}
         run: python pipeline/run.py "${{ inputs.stage }}" --episode "${{ inputs.episode }}"
 
       # Save generated images and audio back to the repo so we never pay for them twice.
+      # always(): if a stage fails halfway, everything already paid for is still kept,
+      # and anything verify deleted as bad is removed from the repo too.
       - name: Save generated assets
-        if: inputs.stage != 'render'
+        if: always() && inputs.stage != 'render' && inputs.stage != 'check'
         run: |
           git config user.name "held-together-bot"
           git config user.email "actions@users.noreply.github.com"
-          git add cast/ episodes/
+          git add -A cast/ episodes/
           git diff --cached --quiet || git commit -m "Generated assets: ${{ inputs.stage }} (${{ inputs.episode }})"
           for i in 1 2 3 4 5; do
             git push && break
@@ -68,15 +80,16 @@ jobs:
           done
 
       - name: Upload review images
-        if: inputs.stage == 'cast' || inputs.stage == 'images' || inputs.stage == 'all'
+        if: always() && (inputs.stage == 'cast' || inputs.stage == 'images' || inputs.stage == 'video' || inputs.stage == 'all')
         uses: actions/upload-artifact@v4
         with:
           name: review-${{ inputs.stage }}
           path: |
             cast/cast_review.jpg
             episodes/${{ inputs.episode }}/images_review.jpg
+            episodes/${{ inputs.episode }}/clips_review.jpg
           if-no-files-found: ignore
-          retention-days: 30
+          retention-days: 7
 
       - name: Upload videos
         if: inputs.stage == 'render' || inputs.stage == 'all'
@@ -84,4 +97,5 @@ jobs:
         with:
           name: videos-${{ inputs.episode }}
           path: episodes/${{ inputs.episode }}/output/
-          retention-days: 30
+          if-no-files-found: error
+          retention-days: 7

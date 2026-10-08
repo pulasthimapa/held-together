@@ -28,9 +28,10 @@ from images import world_of
 # can never ask for the wrong look. Without it Veo drifts painted stills into photoreal
 # within four seconds, and invents faces where the still had none.
 CLIP_STYLE = {
-    "host": ("Photoreal live-action footage. Keep the exact faces, hair, glasses and "
-             "clothing of the starting frame; do not change anyone's appearance. "
-             "Not animation, not 3D, not cartoon."),
+    "host": ("Photoreal live-action footage in a podcast studio. Keep the exact faces, hair, "
+             "glasses and clothing of the starting frame; do not change anyone's appearance "
+             "and do not add anyone. The room, the table and the microphones stay exactly as "
+             "in the starting frame. Not animation, not 3D, not cartoon."),
     "story": ("Keep the golden-age oil-painting look of the starting frame for the whole "
               "clip: visible brushwork, canvas texture, painted light. The image stays a "
               "moving painting from first frame to last. Not photoreal, not 3D, not CGI."),

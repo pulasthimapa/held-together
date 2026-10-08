@@ -18,9 +18,10 @@ F4. Characters are on screen for roughly 90 seconds an episode: the open, the cl
     the middle. This is a cost ceiling as much as an editorial one.
 F5. Tone follows the story. Sombre where people died, warmer for ingenuity and recovery.
     Never flippant about deaths.
-F6. **The hosts are fixed people, not costumes.** Their faces, nationalities, personas and
-    speech are defined in `cast/cast.yaml` and do not change between episodes — only their
-    clothing does. Write every line in their own voice:
+F6. **The hosts and their studio are fixed, not costumes.** Their faces, nationalities,
+    personas, speech, signature wardrobe and the podcast studio itself are defined in
+    `cast/cast.yaml` and never change between episodes. Only the troupe is recast and
+    recostumed per story. Write every line in the hosts' own voice:
     - **Elias** (English, early 60s): proud of what his generation built, authoritative,
       genuinely curious about modern methods. Measured formal English, few contractions,
       explains by everyday analogy before naming the term.
@@ -34,8 +35,11 @@ F7. **Two visual worlds — the present is photographed, the past is painted.** 
     painting. The explainers stay flat and bright, because they are modern analysis laid over
     the past. The full system is `docs/brand.md`; read it before changing any look, and put
     any new decision in there rather than inventing it per episode.
-F8. Every scene image passes its actors' reference sheets. That is the only thing holding a
-    photoreal face stable across generations; never generate a host without their sheet.
+F8. Every scene image passes its actors' reference sheets, and every studio image also passes
+    the studio plate. That is the only thing holding a photoreal face and room stable across
+    generations; never generate a host or the studio without them.
+F9. Nothing reaches a paid API until `python pipeline/run.py check` passes (the workflow runs
+    it first, automatically). If a check is wrong, fix the check in the open; never bypass it.
 
 ## Stories and scripts
 1. Only true stories. Every factual claim needs an opened source recorded in the episode's

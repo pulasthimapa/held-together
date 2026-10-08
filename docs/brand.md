@@ -17,6 +17,17 @@ described here, add it here first.
 | **The story** | The historical events | Painted narrative illustration (below) | Tom, Sam, Ruth, Walter, and every historical scene |
 | **The explainer** | How the engineering works | Flat bright HTML/CSS motion graphics | No people — steel, forces, diagrams |
 
+### The studio is permanent
+
+The podcast room is as fixed as the hosts' faces, and is defined once in `cast/cast.yaml`
+(`studio:`): walnut panelling, deep teal acoustic panels, a round walnut table, two black
+broadcast microphones on boom arms, headphones at each place, a shelf of engineering
+objects, a brass lamp. **Elias always sits left, Maya right.** Every studio image is drawn
+with the studio reference plate (`cast/sheets/studio.jpg`) attached, so the room cannot
+drift. The hosts wear the same signature clothes every episode (`wardrobe:`): Elias a
+charcoal waistcoat over a white collarless shirt, Maya an amber linen overshirt over a
+white T-shirt. Only the troupe changes costume.
+
 The explainer layer belongs to Maya's world: it is the modern analysis laid over the past.
 That is why it is clean and bright rather than painted.
 

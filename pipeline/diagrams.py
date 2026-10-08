@@ -163,13 +163,13 @@ def builtup_lacing(dur):
             + M.panel_label("LACED TIGHTLY", "left", "var(--blue)", 0.1)
             + M.panel_label("LACED TOO LIGHTLY", "right", "var(--red)", 0.4)
             + solid + lace + plates + a1 + a2 + a3 + a4
-            + M.label("acts as ONE thick member", 480, 700, 40, "var(--blue)", dur * .5,
+            + M.label("acts as ONE thick member", 480, 736, 40, "var(--blue)", dur * .5,
                       "riseIn", "center")
-            + M.label("strong", 480, 760, 62, "var(--blue)", dur * .56, "popIn", "center",
+            + M.label("strong", 480, 796, 62, "var(--blue)", dur * .56, "popIn", "center",
                       800, "font-family:Montserrat,sans-serif")
-            + M.label("four plates bend SEPARATELY", 1440, 700, 38, "var(--red)", dur * .5,
+            + M.label("four ribs bend SEPARATELY", 1440, 736, 38, "var(--red)", dur * .5,
                       "riseIn", "center")
-            + M.label("far weaker", 1440, 760, 62, "var(--red)", dur * .56, "popIn", "center",
+            + M.label("far weaker", 1440, 796, 62, "var(--red)", dur * .56, "popIn", "center",
                       800, "font-family:Montserrat,sans-serif")
             + M.caption("The Quebec Bridge had the second kind.", dur * .78))
     return M.stage(body), css
@@ -197,21 +197,21 @@ def span_longer(dur):
               f'background:var(--ink)"></div>'
               f'<div style="position:absolute;left:1304px;top:640px;width:32px;height:230px;'
               f'background:var(--ink)"></div></div>')
-    dim = ('<div style="position:absolute;left:600px;top:920px">'
+    dim = ('<div style="position:absolute;left:600px;top:872px">'
            '<div id="dim" class="wipeIn" style="height:5px;background:var(--red);width:640px;'
            'animation-delay:1.3s"></div></div>')
     body = (M.water(860, 0.2)
             + M.title("MAKE THE SPAN LONGER,", 70, 58, "amber")
             + M.title("AND THE STEEL GETS HEAVIER.", 142, 58, "amber", delay=0.35)
             + bridge + dim
-            + M.label("490 m", 960, 952, 44, "var(--red)", 1.5, "fade", "center", 700,
+            + M.label("1,600 ft", 960, 902, 44, "var(--red)", 1.5, "fade", "center", 700,
                       f"animation:fade .4s 1.5s ease both,fade .3s {dur * .42:.1f}s "
                       f"reverse both")
-            + M.label("549 m", 960, 952, 44, "var(--red)", dur * .48, "popIn", "center", 700,
+            + M.label("1,800 ft", 960, 902, 44, "var(--red)", dur * .48, "popIn", "center", 700,
                       "font-family:Montserrat,sans-serif")
-            + M.label("A bridge this size mostly carries its own weight.", 960, 1000, 44,
+            + M.label("A bridge this size mostly carries its own weight.", 960, 954, 44,
                       "var(--ink)", dur * .64, "riseIn", "center")
-            + M.label("more span → more steel → more weight → more steel again", 960, 1046, 36,
+            + M.label("more span → more steel → more weight → more steel again", 960, 1004, 36,
                       "var(--red)", dur * .76, "riseIn", "center", 500))
     return M.stage(body), css
 
@@ -262,10 +262,13 @@ def cantilever_build(dur):
 # ------------------------------------------------------------------ 8. the measurements
 def bend_record(dur):
     css = ""
-    rows = [("early August", 14, "st", 0.0), ("27 August", 54, "st", 0.22),
-            ("29 August", 120, "stHot", 0.44)]
+    # Real measurements only (Royal Commission 1908, Vol. I p. 87; STRUCTURE magazine):
+    # one rib of lower chord 9-L, about 3/4 in out of line a little over a week before
+    # 27 August, 2 1/4 in on 27 August. No later measurement was taken.
+    rows = [("mid-August", 30, "st", 0.0, "\u00be in"),
+            ("27 August", 90, "stHot", 0.3, "2\u00bc in")]
     out = ""
-    for i, (when, bow, fill, t) in enumerate(rows):
+    for i, (when, bow, fill, t, value) in enumerate(rows):
         d = dur * (0.18 + t)
         svg, c = M.member_svg(f"br{i}", 480, 360 + i * 185, 980, 46,
                               [(0, 4), (100, bow)], 0.9, d, fill=fill)
@@ -273,12 +276,14 @@ def bend_record(dur):
         css += (f'#br{i}wrap{{animation:riseIn .5s {d:.2f}s cubic-bezier(.2,.9,.25,1) both}}')
         out += (f'<div id="br{i}wrap" style="position:absolute;left:0;top:0">{svg}'
                 + M.label(when, 440, 376 + i * 185, 40, "var(--ink)", d, "fade", "right")
-                + M.label(f"+{int(bow/2)} mm", 1500, 376 + i * 185, 44,
-                          ["var(--mute)", "var(--amber)", "var(--red)"][i], d + 0.5,
+                + M.label(value, 1500, 376 + i * 185, 44,
+                          ["var(--amber)", "var(--red)"][i], d + 0.5,
                           "popIn", "left", 700, "font-family:Montserrat,sans-serif")
                 + '</div>')
     body = (M.title("THE BEND KEPT GROWING.", 80, 66, "amber")
             + out
+            + M.label("one rib of lower chord 9-L, out of line", 960, 820, 34, "var(--mute)",
+                      dur * .45, "fade", "center")
             + M.namecard("Norman McLure", "inspecting engineer, on site", 1240, 140, dur * .5)
             + M.caption("Not old damage. The loop, already running.", dur * .82))
     return M.stage(body), css
@@ -329,12 +334,13 @@ def telegram_race(dur):
              '<div style="position:absolute;top:44px;width:100px;height:14px;'
              'background:var(--red);transform:rotate(-45deg)"></div></div>')
     body = (river
-            + pin(NY, "New York", 0.2) + pin(PA, "Pennsylvania office", 0.45, -1)
+            + pin(NY, "New York", 0.2) + pin(PA, "Phoenixville, Pennsylvania", 0.45, -1)
             + pin(QC, "the bridge, Quebec", 0.7)
-            + clock(150, 220, 12, 16, dur * .18, "12:16 pm — sent")
-            + clock(150, 620, 13, 3, dur * .42, "just after 1 pm — arrives")
+            + clock(150, 70, 12, 16, dur * .14, "12:16 pm — sent")
+            + clock(150, 390, 13, 15, dur * .30, "1:15 pm — arrives")
+            + clock(150, 710, 15, 0, dur * .46, "about 3 pm — read")
             + cross
-            + M.label("never sent on", (PA[0] + QC[0]) // 2 + 80, (PA[1] + QC[1]) // 2 - 28,
+            + M.label("no stop order", (PA[0] + QC[0]) // 2 + 80, (PA[1] + QC[1]) // 2 - 28,
                       52, "var(--red)", dur * .82, "riseIn", "left", 800,
                       "font-family:Montserrat,sans-serif"))
     return M.stage(body), css
@@ -356,10 +362,10 @@ def men_grid(dur):
                  f'height:28px;border-radius:50%;background:var(--ink);{anim}"></div>')
     css = ('@keyframes gone{from{opacity:1;background:var(--ink);transform:none}'
            'to{opacity:.14;background:var(--red);transform:translateY(26px)}}')
-    body = (M.label("86 MEN WERE ON THE STEEL", 960, 120, 64, "var(--ink)", 0.1, "riseIn",
+    body = (M.label("86 MEN AT WORK ON THE BRIDGE", 960, 120, 64, "var(--ink)", 0.1, "riseIn",
                     "center", 800, "font-family:Montserrat,sans-serif")
             + dots
-            + M.label("33 of them from one small community: Kahnawake", 960, 540, 42,
+            + M.label("33 of the dead came from one community: Kahnawake", 960, 540, 42,
                       "var(--amber)", dur * .34, "riseIn", "center")
             + M.stat("75", "did not come home", 960, 700, dur * .72, 190))
     return M.stage(body), css
@@ -393,7 +399,7 @@ def collapse(dur):
     body = (M.water(880, 0.0)
             + f'<div id="shaker">{arm("southArm", 160, False)}{arm("northArm", 1060, True)}</div>'
             + pier(492) + pier(1392)
-            + M.stat("15", "SECONDS", 960, 110, dur * .12, 230))
+            + M.stat("4\u20138", "SECONDS", 960, 110, dur * .12, 230))
     return M.stage(body, vignette=True), css
 
 

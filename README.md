@@ -1,56 +1,46 @@
 # Held Together — production pipeline
 
-Turns an episode file (`episodes/ep01/episode.yaml`) into a finished long video, a
-captions file and three vertical cuts, using your cloned voice. Everything runs on
-GitHub Actions; nothing runs on your computer.
+Turns an episode file (`episodes/<ep>/episode.yaml`) plus its fact sheet into a finished long
+video, captions, a YouTube description and vertical cuts. Everything runs on GitHub Actions.
 
-## One-time setup
+Format and rules: `CLAUDE.md`. Look and studio: `docs/brand.md`. Hosts, studio, troupe:
+`cast/cast.yaml`.
 
-1. Create a **private** GitHub repository called `held-together` and upload this folder
-   (or let Claude push it for you).
-2. In the repository: **Settings → Secrets and variables → Actions → New repository secret**.
-   Add three secrets:
+## Secrets (Settings → Secrets and variables → Actions)
 
-   | Name | Where to find it |
-   | --- | --- |
-   | `GEMINI_API_KEY` | Google AI Studio → API keys |
-   | `ELEVENLABS_API_KEY` | ElevenLabs → Profile → API keys |
-   | `ELEVENLABS_VOICE_ID` | ElevenLabs → Voices → your clone → "ID" (copy button) |
+| Name | What |
+| --- | --- |
+| `GEMINI_API_KEY` | Google AI Studio → API keys (images and video; prepaid credit must be topped up) |
+| `ELEVENLABS_API_KEY` | ElevenLabs → Developers → API keys (the `sk_…` value, not the key ID) |
+| `ELEVENLABS_VOICE_ELIAS` | Voice ID for Elias: older English man, measured |
+| `ELEVENLABS_VOICE_MAYA` | Voice ID for Maya: younger woman, bright and quick |
 
-   Never paste these keys into chat or into files.
-3. Optional: put one royalty-free track from the YouTube Audio Library in `assets/music/`
-   as an `.mp3`. It is mixed quietly under the narration.
-4. Optional but recommended: save a public-domain archival photo for scene S18 as
-   `episodes/ep01/archival/S18.jpg` (Library and Archives Canada holds photographs of the
-   1907 collapse and the Kahnawake memorial). Without it, an illustration is used.
+Both host voices are required and must differ; the voice stage refuses to run otherwise.
 
 ## Making an episode
 
-Go to **Actions → Produce episode → Run workflow** and pick a stage. Run them in order;
-each takes a few minutes. You can do this from the GitHub mobile app.
+**Actions → Produce episode → Run workflow**, one stage at a time, waiting for green.
 
 | Stage | What it does | Check after |
 | --- | --- | --- |
-| `cast` | Draws the five cast reference sheets (once for the whole channel) | Download `review-cast` and check the faces |
-| `images` | Draws one illustration per scene using the cast sheets | Download `review-images` and check every scene |
-| `voice` | Narrates every scene in your cloned voice | Nothing to check yet |
-| `render` | Builds the videos | Download `videos-ep01` |
+| `check` | Validates everything and prints what each stage would generate. Free. | Read the "plan" lines |
+| `cast` | Draws missing cast sheets and the studio plate (rarely needed) | `review-cast` |
+| `images` | Draws every scene still | `review-images` |
+| `video` | Animates the hero moments from their stills (optional) | `review-video` (frames from each clip) |
+| `voice` | Voices Elias and Maya | The log prints each host's pitch |
+| `render` | Builds the videos and the description | `videos-<ep>` |
 
-Generated images and audio are committed back to the repository, so re-running a stage
-only fills gaps and you never pay twice. To redo one scene, delete its file
-(`episodes/ep01/images/S12.jpg`, or `audio/S12.mp3`) in GitHub and re-run that stage.
-To redo a cast face, delete `cast/sheets/<name>.jpg` and re-run `cast`.
+Every stage first runs the same checks as `check`, so nothing is spent if the episode is
+invalid, a secret is missing, or a narrated line is not in the fact sheet. After the stage
+it verifies what came back (valid 16:9 images, two distinct voices, clips long enough, an
+episode of 8:00 or more, cuts of 61 s or more). Bad paid output is deleted so the next run
+redoes it. Whatever was generated is committed back to the repo even if the stage fails,
+so you never pay twice. To redo one file, delete it in GitHub and re-run its stage.
 
 ## Outputs
 
-- `ep01_long.mp4` — 16:9 episode for YouTube
-- `ep01_long.srt` — captions to upload alongside it
-- `ep01_vertical_*.mp4` — 9:16 cuts for Shorts, TikTok, Reels and Facebook
+- `<ep>_long.mp4` and `<ep>_long.srt` — the YouTube episode and captions
+- `<ep>_description.txt` — disclosure, sources, and where sources disagree (rules 1, 10)
+- `<ep>_vertical_*.mp4` — 9:16 cuts for Shorts, TikTok, Reels and Facebook
 
-When uploading to YouTube, tick **Altered or synthetic content** (the narration is a
-cloned voice).
-
-## Approximate cost per episode
-
-About 30 AI images (a few cents each) and about 8,000 characters of narration.
-Check the Google AI Studio and ElevenLabs usage pages after the first run.
+Tick **Altered or synthetic content** on every YouTube upload.
