@@ -32,55 +32,63 @@ def studio_sheet(cast):
     return SHEETS_DIR / f"{cast['studio']['sheet']}.jpg"
 
 
+HOSTS = ("elias", "maya")
+
+
 def build_prompt(cast, scene, prompt, wardrobe=None):
     """The full text sent to the image model for one picture of one scene.
 
-    Studio scenes always get the permanent set and the hosts' signature wardrobe, so no
-    episode file can move the podcast to a different room or change what the hosts wear.
+    Studio scenes are assembled entirely from cast.yaml: the permanent room, who exists in
+    it (only Elias and Maya, both always referenced), the camera from the fixed rig, natural
+    podcast posture and the hosts' clothes. The episode only supplies the camera choice and
+    the expression or gesture, so no episode can move the hosts, invent a stranger in the
+    empty chair, or put the camera somewhere a real podcast would not.
     """
     world = world_of(cast, scene)
-    parts = [style_for(cast, world)]
-    if world == "host":
-        parts.append(clean(cast["studio"]["description"]))
-    parts.append(clean(prompt))
-    for actor_id in scene.get("actors", []):
-        # An episode may recolour a host's clothes (episode.yaml `wardrobe:`); otherwise
-        # the signature look from cast.yaml is used.
-        look = (wardrobe or {}).get(actor_id) or cast["actors"][actor_id].get("wardrobe")
-        if look and world == "host":
-            parts.append(clean(look))
-    if world == "host":
-        # The studio has two seats, so the model fills an empty one with a stranger unless
-        # told otherwise. Only the hosts named in the scene may appear (seen in ep01 S04).
-        people = [cast["actors"][a]["name"] for a in scene.get("actors", [])]
-        if not people:
-            parts.append("No people appear anywhere in the picture.")
-        elif len(people) == 1:
-            parts.append(f"{people[0]} is the only person in the picture: the camera is framed "
-                         f"on {people[0]} alone, the other seat is out of shot, and no other "
-                         f"person, shoulder, back of a head or silhouette appears anywhere.")
-        else:
-            parts.append(f"Only {' and '.join(people)} are in the picture; no third person "
-                         f"appears anywhere.")
-    if scene.get("actors"):
-        names = ", ".join(cast["actors"][a]["name"] for a in scene["actors"])
-        parts.append(f"The first reference images show {names}; keep each face, hair and build "
-                     "exactly as in the references.")
-    if world == "host":
-        parts.append("The last reference image is the studio: keep the room, the table, the "
-                     "microphones, the headphones, the shelves and the lighting exactly as in "
-                     "it, seen from this scene's camera angle.")
+    if world == "story":
+        parts = [style_for(cast, "story"), clean(prompt)]
+        if scene.get("actors"):
+            names = ", ".join(cast["actors"][a]["name"] for a in scene["actors"])
+            parts.append(f"The reference images show {names}; keep each face, hair and build "
+                         "exactly as in the references, only the costume and setting change.")
+        return clean(" ".join(parts))
+
+    studio = cast["studio"]
+    camera = scene.get("camera")
+    if camera not in studio["cameras"]:
+        raise SystemExit(f"{scene['id']}: studio scene needs camera: one of "
+                         f"{', '.join(studio['cameras'])}")
+    parts = [style_for(cast, "host"), clean(studio["description"]),
+             clean(studio["cameras"][camera])]
+    if camera == "insert":
+        parts += [clean(prompt), "No people appear anywhere in the picture.",
+                  "The reference image is the studio: keep the table, microphones and "
+                  "lighting exactly as in it."]
+        return clean(" ".join(parts))
+    parts += [clean(studio["people"]), clean(studio["posture"]), clean(prompt)]
+    for h in HOSTS:
+        # An episode may recolour a host's clothes (episode.yaml `wardrobe:`).
+        parts.append(clean((wardrobe or {}).get(h) or cast["actors"][h]["wardrobe"]))
+    parts.append("Reference images: the first is Elias, the second is Maya; keep each face, "
+                 "hair, glasses and build exactly as in them. The third is the studio: keep "
+                 "the room, table, microphones, headphones, shelves and lighting exactly as in "
+                 "it, seen from this camera position.")
     return clean(" ".join(parts))
 
 
 def refs_for(cast, scene):
+    world = world_of(cast, scene)
+    if world == "host":
+        names = [] if scene.get("camera") == "insert" else list(HOSTS)
+    else:
+        names = list(scene.get("actors", []))
     refs = []
-    for actor_id in scene.get("actors", []):
+    for actor_id in names:
         sheet = SHEETS_DIR / f"{actor_id}.jpg"
         if not sheet.exists():
             raise SystemExit(f"Missing cast sheet for {actor_id}. Run the 'cast' stage first.")
         refs.append(sheet)
-    if world_of(cast, scene) == "host":
+    if world == "host":
         plate = studio_sheet(cast)
         if not plate.exists():
             raise SystemExit("Missing studio plate cast/sheets/studio.jpg. Run 'cast' first.")

@@ -25,7 +25,9 @@ HOST_PITCH_GAP_HZ = 40             # Maya's median pitch must sit this far above
 # Words that would pull a scene into the wrong visual world (docs/brand.md).
 BANNED = {
     "host": [r"\b3d\b", r"pixar", r"cartoon", r"animated", r"animation", r"illustrat",
-             r"painting", r"painted", r"\bbob\b"],
+             r"painting", r"painted", r"\bbob\b", r"\bstand", r"leaning (forward|across)",
+             r"low angle", r"high angle", r"handheld", r"looks? (in|at) the camera",
+             r"\bstranger", r"\bguest"],
     "story": [r"photoreal", r"photograph", r"\b3d\b", r"pixar", r"cartoon", r"\bcgi\b"],
 }
 
@@ -111,7 +113,16 @@ def check_episode(cast, ep, p):
         if p and any(m.startswith(f"{sid}: actor") for m in p):
             continue
         world = _world(cast, s)
-        refs = len(s.get("actors", [])) + (1 if world == "host" else 0)
+        if world == "host":
+            cams = cast["studio"].get("cameras", {})
+            if s.get("camera") not in cams:
+                p.add(f"{sid}: studio scene needs camera: one of {', '.join(cams)}")
+            for a in s.get("actors", []):
+                if a not in HOSTS:
+                    p.add(f"{sid}: '{a}' cannot appear in the studio; only Elias and Maya")
+            refs = 1 if s.get("camera") == "insert" else len(HOSTS) + 1
+        else:
+            refs = len(s.get("actors", []))
         if kind in ("image", "archival") and refs > MAX_REFS:
             p.add(f"{sid}: {refs} reference images, limit {MAX_REFS}")
         if s.get("host_shot") and world != "host":

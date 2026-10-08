@@ -68,6 +68,49 @@ studio:
     table, both microphones and headphones in place, the whole room visible, eye-level
     camera. {description}
   sheet: studio
+  # Who exists in the studio. Sent with every studio shot, with BOTH host sheets attached,
+  # so the empty chair is never filled by an invented stranger.
+  people: >-
+    Exactly two people are ever in this studio: Elias, seated in the left chair, and Maya,
+    seated in the right chair. Anyone visible in the picture, even partly (a shoulder, the
+    back of a head, a hand), is Elias or Maya, exactly as in their reference images and in
+    their own clothes. There is never a third person, and no other face appears anywhere.
+  # How a real filmed podcast looks. Emotion comes from face and hands, not from poses.
+  posture: >-
+    Both sit naturally in their chairs at the table, upright or leaning back slightly, close
+    to their own microphones, exactly as in a real filmed podcast: no leaning across the
+    table, no standing, no lounging, no dramatic poses, nobody looking into the camera lens.
+    Expression and hand gestures at chest height carry the emotion.
+  # The fixed camera rig. Every studio scene picks one with `camera:`. All cameras are on
+  # tripods at seated eye level, as on a real podcast set; no high, low or handheld angles.
+  cameras:
+    wide: >-
+      Camera A, the wide shot: a locked-off camera at seated eye level directly in front of
+      the table, about three metres back, showing both hosts at their microphones, Elias on
+      the left and Maya on the right, the shelves behind them.
+    maya: >-
+      Camera B, Maya's single: a tripod camera at Maya's seated eye level, placed beside
+      Elias's chair and about thirty degrees off her eyeline, framing her from mid-chest up,
+      her microphone beside her mouth. She is talking to Elias, who is just out of frame on
+      the camera's side of the table.
+    elias: >-
+      Camera C, Elias's single: a tripod camera at Elias's seated eye level, placed beside
+      Maya's chair and about thirty degrees off his eyeline, framing him from mid-chest up,
+      his microphone beside his mouth. He is talking to Maya, who is just out of frame on the
+      camera's side of the table.
+    ots_maya: >-
+      Camera D, over Elias's shoulder: a tripod camera behind and slightly to the side of
+      Elias at seated eye level. The back of Elias's silver head and his waistcoated
+      shoulder are soft and out of focus in the left foreground; Maya is in sharp focus
+      across the table, facing him.
+    ots_elias: >-
+      Camera E, over Maya's shoulder: a tripod camera behind and slightly to the side of Maya
+      at seated eye level. The back of Maya's long black hair and her shoulder are soft and
+      out of focus in the right foreground; Elias is in sharp focus across the table, facing
+      her.
+    insert: >-
+      Camera F, the table insert: a close detail of the walnut table top from seated height.
+      No people and no parts of people are in the frame.
 
 actors:
   # ================= the studio: two hosts, every episode, photoreal =================
