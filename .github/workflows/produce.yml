@@ -90,6 +90,7 @@ jobs:
             episodes/${{ inputs.episode }}/clips_review.jpg
             cast/studio/_rejected_*.jpg
             episodes/${{ inputs.episode }}/images/_rejected_*.jpg
+            episodes/${{ inputs.episode }}/video/_rejected_*.mp4
           if-no-files-found: ignore
           retention-days: 7
 

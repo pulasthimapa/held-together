@@ -4,3 +4,4 @@ __pycache__/
 *.pyc
 episodes/*/images/_*
 cast/studio/_*
+episodes/*/video/_*

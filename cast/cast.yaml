@@ -150,6 +150,10 @@ actors:
     world: host
     host: true
     nationality: English
+    # One line that pins who he is in motion (video) and in the picture check. Veo once
+    # gave Elias glasses because the clip prompt said "keep the glasses".
+    identity: >-
+      Elias: clean-shaven, gaunt, silver-grey hair swept back, a bare face with no glasses.
     # Signature look in the studio. An episode may recolour it (episode.yaml `wardrobe:`).
     wardrobe: >-
       Elias wears his signature charcoal wool waistcoat over a white collarless shirt with
@@ -177,6 +181,8 @@ actors:
     world: host
     host: true
     nationality: Indian
+    identity: >-
+      Maya: long glossy black hair to the shoulders, round thin gold wire-rimmed glasses.
     wardrobe: >-
       Maya wears her signature warm amber linen overshirt, open, over a plain white T-shirt, and her
       round thin gold wire-rimmed glasses.

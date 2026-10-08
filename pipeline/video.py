@@ -28,9 +28,9 @@ from images import world_of
 # can never ask for the wrong look. Without it Veo drifts painted stills into photoreal
 # within four seconds, and invents faces where the still had none.
 CLIP_STYLE = {
-    "host": ("Photoreal live-action footage in a podcast studio. Keep the exact faces, hair, "
-             "glasses and clothing of the starting frame; do not change anyone's appearance "
-             "and never add anyone: only Elias and Maya exist in this studio. Both stay seated "
+    "host": ("Photoreal live-action footage in a podcast studio. Everyone keeps exactly the "
+             "face, hair and clothing of the starting frame from first frame to last, and no one "
+             "new enters: only Elias and Maya exist in this studio. Anyone seated stays seated "
              "at their microphones. Locked-off tripod camera; at most a very slow push in. "
              "The room, the table and the microphones stay exactly as in the starting frame. "
              "Not animation, not 3D, not cartoon."),
@@ -134,6 +134,10 @@ def make_hero_clips(ep_id):
               f"{' from our still' if seed else ' from the prompt alone'} …")
         world = world_of(cast, scene)
         prompt = " ".join(scene["hero_video"].split()) + " " + CLIP_STYLE[world]
+        if world == "host":
+            in_frame = cast["studio"]["cameras"][scene["camera"]]["in_frame"]
+            prompt += " " + " ".join(" ".join(cast["actors"][h]["identity"].split())
+                                     for h in in_frame)
         # Studio clips are checked frame by frame like studio stills: a clip that invents a
         # stranger or changes a host is thrown away. One redraw at most, as clips are costly.
         tries = STUDIO_CLIP_ATTEMPTS if world == "host" else 1
@@ -144,11 +148,13 @@ def make_hero_clips(ep_id):
             if not problems:
                 print(f"hero clip: {out.name}")
                 break
-            out.unlink()
+            out.rename(out.with_name(f"_rejected_{out.stem}_{attempt}.mp4"))
             print(f"  {out.name} attempt {attempt} rejected: {'; '.join(problems)}")
         else:
             failed.append(out.name)
     print(f"hero clips generated this run: {made} (existing files are never redone)")
+    from check import _clip_review
+    _clip_review(ep, episode_dir(ep_id))  # always, so a failed run can still be reviewed
     if failed:
         raise SystemExit(f"These studio clips failed the picture check and were not saved: "
                          f"{', '.join(failed)}. The render will use their stills instead.")

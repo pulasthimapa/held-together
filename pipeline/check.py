@@ -68,7 +68,7 @@ def check_cast(cast, p):
         if not a:
             p.add(f"cast: host '{h}' is missing")
             continue
-        for key in ("world", "description", "persona", "speech", "wardrobe"):
+        for key in ("world", "description", "persona", "speech", "wardrobe", "identity"):
             if not a.get(key):
                 p.add(f"cast: {h} has no '{key}'")
         if a.get("world") != "host":

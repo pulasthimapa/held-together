@@ -184,8 +184,9 @@ CHECK_SCHEMA = {
         "people": {"type": "array", "items": {"type": "object", "properties": {
             "where": {"type": "string"},
             "who": {"type": "string", "enum": ["elias", "maya", "someone_else"]},
-            "clothes_match": {"type": "boolean"}},
-            "required": ["where", "who", "clothes_match"]}},
+            "clothes_match": {"type": "boolean"},
+            "wears_glasses": {"type": "boolean"}},
+            "required": ["where", "who", "clothes_match", "wears_glasses"]}},
         "anyone_standing_or_leaning_across": {"type": "boolean"},
         "microphones_on_desk_stands": {"type": "boolean"},
         "summary": {"type": "string"}},
@@ -216,7 +217,11 @@ def check_studio_picture(cast, scene, picture, wardrobe=None):
                   "visible in image 3, even partly: a blurred foreground shoulder, the back of "
                   "a head, a hand at the edge. For each, judge by face, hair, build and skin "
                   "whether it is Elias, Maya, or someone_else; be strict, a different face or "
-                  "hair is someone_else. Say whether their clothes match: "
+                  "hair is someone_else. "
+                  f"{clean(cast['actors']['elias']['identity'])} "
+                  f"{clean(cast['actors']['maya']['identity'])} "
+                  "For each person say whether they wear glasses (false if you cannot see "
+                  "their face). Say whether their clothes match: "
                   f"{looks['elias']} {looks['maya']} Say whether anyone is standing or "
                   "leaning across the table, and whether every visible microphone stands on a "
                   "short desk stand on the table (not on a boom arm).")
@@ -231,6 +236,8 @@ def check_studio_picture(cast, scene, picture, wardrobe=None):
             problems.append(f"{person['who']} should not be in this camera ({person['where']})")
         elif not person["clothes_match"]:
             problems.append(f"{person['who']} in the wrong clothes ({person['where']})")
+        elif person["who"] == "elias" and person.get("wears_glasses"):
+            problems.append("Elias is wearing glasses; he never does")
     seen = {p["who"] for p in people}
     for h in expected:
         if h not in seen:
