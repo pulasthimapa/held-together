@@ -1,6 +1,11 @@
 id: ep01
-title: "75 Men Died Because a Telegram Stopped in Pennsylvania"
+title: "The Telegram That Could Have Saved 75 Men"
 accent: "crimson"
+
+# Optional per-episode change of the hosts' clothing COLOURS (cast.yaml has the default
+# signature look). Example:
+#   wardrobe:
+#     maya: "Maya wears her signature linen overshirt in deep green, open, over a plain white T-shirt, and her round thin gold wire-rimmed glasses."
 
 # FORMAT (see CLAUDE.md, rules F1-F5)
 #   Every episode is a conversation between ELIAS, an engineer of the period and a composite
@@ -617,7 +622,7 @@ scenes:
 cuts:
   - id: the_hook
     scenes: [S01, S02, S04, S14, S15]
-    hook: "75 men died because a telegram stopped moving"
+    hook: "One telegram could have saved 75 men"
   - id: buckling
     scenes: [S13, S14, S15, S15M, S16]
     hook: "Why steel bends instead of snapping"

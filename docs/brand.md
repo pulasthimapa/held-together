@@ -26,7 +26,8 @@ objects, a brass lamp. **Elias always sits left, Maya right.** Every studio imag
 with the studio reference plate (`cast/sheets/studio.jpg`) attached, so the room cannot
 drift. The hosts wear the same signature clothes every episode (`wardrobe:`): Elias a
 charcoal waistcoat over a white collarless shirt, Maya an amber linen overshirt over a
-white T-shirt. Only the troupe changes costume.
+white T-shirt. An episode may change the *colours* of those clothes (`wardrobe:` in
+`episode.yaml`); the garments and everything else stay. The troupe changes costume freely.
 
 The explainer layer belongs to Maya's world: it is the modern analysis laid over the past.
 That is why it is clean and bright rather than painted.

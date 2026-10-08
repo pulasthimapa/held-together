@@ -32,7 +32,7 @@ def studio_sheet(cast):
     return SHEETS_DIR / f"{cast['studio']['sheet']}.jpg"
 
 
-def build_prompt(cast, scene, prompt):
+def build_prompt(cast, scene, prompt, wardrobe=None):
     """The full text sent to the image model for one picture of one scene.
 
     Studio scenes always get the permanent set and the hosts' signature wardrobe, so no
@@ -44,9 +44,11 @@ def build_prompt(cast, scene, prompt):
         parts.append(clean(cast["studio"]["description"]))
     parts.append(clean(prompt))
     for actor_id in scene.get("actors", []):
-        wardrobe = cast["actors"][actor_id].get("wardrobe")
-        if wardrobe and world == "host":
-            parts.append(clean(wardrobe))
+        # An episode may recolour a host's clothes (episode.yaml `wardrobe:`); otherwise
+        # the signature look from cast.yaml is used.
+        look = (wardrobe or {}).get(actor_id) or cast["actors"][actor_id].get("wardrobe")
+        if look and world == "host":
+            parts.append(clean(look))
     if scene.get("actors"):
         names = ", ".join(cast["actors"][a]["name"] for a in scene["actors"])
         parts.append(f"The first reference images show {names}; keep each face, hair and build "
@@ -129,7 +131,8 @@ def make_scene_images(ep_id):
             out = img_dir / f"{scene['id']}{suffix}.jpg"
             if out.exists():
                 continue
-            out.write_bytes(gemini.generate(build_prompt(cast, scene, prompt), refs=refs,
+            out.write_bytes(gemini.generate(build_prompt(cast, scene, prompt,
+                                                         ep.get("wardrobe")), refs=refs,
                                             aspect="16:9"))
             total += 1
             print(f"scene image: {out.name}")

@@ -136,6 +136,11 @@ def check_episode(cast, ep, p):
                 p.add(f"{sid}: hero_video needs an image scene to seed from")
         if "elias" in s.get("actors", []) and first_elias is None:
             first_elias = s
+    for host, look in (ep.get("wardrobe") or {}).items():
+        if host not in HOSTS:
+            p.add(f"episode wardrobe: '{host}' is not a host (the troupe is costumed per scene)")
+        elif cast["actors"][host]["name"] not in str(look):
+            p.add(f"episode wardrobe: the {host} line must name {cast['actors'][host]['name']}")
     if hero > video.MAX_CLIPS:
         p.add(f"episode: {hero} hero clips, limit {video.MAX_CLIPS}")
     # F2: Elias is labelled as a composite character the first time he is seen.

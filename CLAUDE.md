@@ -20,8 +20,8 @@ F5. Tone follows the story. Sombre where people died, warmer for ingenuity and r
     Never flippant about deaths.
 F6. **The hosts and their studio are fixed, not costumes.** Their faces, nationalities,
     personas, speech, signature wardrobe and the podcast studio itself are defined in
-    `cast/cast.yaml` and never change between episodes. Only the troupe is recast and
-    recostumed per story. Write every line in the hosts' own voice:
+    `cast/cast.yaml` and never change between episodes, except that an episode may change
+    the colours of the hosts' clothes. The troupe is recast and recostumed per story. Write every line in the hosts' own voice:
     - **Elias** (English, early 60s): proud of what his generation built, authoritative,
       genuinely curious about modern methods. Measured formal English, few contractions,
       explains by everyday analogy before naming the term.
