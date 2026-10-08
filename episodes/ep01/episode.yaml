@@ -460,12 +460,13 @@ scenes:
     type: image
     speaker: elias
     prompt: >-
-      Mohawk ironworkers in silhouette walking a high steel beam against a vivid sunset over
-      a modern city skyline under construction, strong graphic shapes, warm amber and deep
-      teal.
+      Ironworkers as pure dark silhouettes, no faces visible, walking a high steel beam
+      against a vivid sunset over a city skyline under construction, strong graphic shapes,
+      warm amber and deep teal.
     shots:
       - >-
-        Low angle of ironworkers walking a narrow beam high above a city, arms out for
+        Low angle of small distant ironworkers as pure dark silhouettes against the sun, no
+        faces or features visible, walking a narrow beam high above a city, arms out for
         balance, vivid sunset behind.
       - >-
         Close-up of weathered hands gripping a steel cable, strong and sure, warm light, deep
