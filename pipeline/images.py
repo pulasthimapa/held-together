@@ -49,6 +49,19 @@ def build_prompt(cast, scene, prompt, wardrobe=None):
         look = (wardrobe or {}).get(actor_id) or cast["actors"][actor_id].get("wardrobe")
         if look and world == "host":
             parts.append(clean(look))
+    if world == "host":
+        # The studio has two seats, so the model fills an empty one with a stranger unless
+        # told otherwise. Only the hosts named in the scene may appear (seen in ep01 S04).
+        people = [cast["actors"][a]["name"] for a in scene.get("actors", [])]
+        if not people:
+            parts.append("No people appear anywhere in the picture.")
+        elif len(people) == 1:
+            parts.append(f"{people[0]} is the only person in the picture: the camera is framed "
+                         f"on {people[0]} alone, the other seat is out of shot, and no other "
+                         f"person, shoulder, back of a head or silhouette appears anywhere.")
+        else:
+            parts.append(f"Only {' and '.join(people)} are in the picture; no third person "
+                         f"appears anywhere.")
     if scene.get("actors"):
         names = ", ".join(cast["actors"][a]["name"] for a in scene["actors"])
         parts.append(f"The first reference images show {names}; keep each face, hair and build "
