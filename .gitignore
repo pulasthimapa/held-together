@@ -3,3 +3,4 @@ episodes/*/output/
 __pycache__/
 *.pyc
 episodes/*/images/_*
+cast/studio/_*

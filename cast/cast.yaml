@@ -10,14 +10,16 @@
 # Elias is a composite character, never a named real person (rule F2).
 
 # ---------------------------------------------------------------- the studio: now
+# Lens, aperture and framing are NOT here: they belong to each camera below. One lens for
+# every shot (it used to say 85mm) made the wide shots distort the hosts' proportions.
 style_host: >-
-  Photorealistic cinematic portrait photography. Shot on a full-frame camera with an 85mm
-  lens at f/1.8, shallow depth of field, softly blurred background. Real human skin with
-  visible pores, fine lines and natural subsurface translucency; individual flyaway hairs;
-  catchlights in the eyes; natural asymmetry. Soft directional key light with a gentle warm
-  rim, colour-graded like a premium documentary interview, deep teal and warm amber in the
-  frame. Absolutely photoreal — not illustration, not 3D render, not CGI, not airbrushed.
-  No text, no captions, no logos, no watermark.
+  Photorealistic documentary photograph, a frame from a professionally lit, filmed podcast
+  shot on a full-frame cinema camera. Real human skin with visible pores, fine lines and
+  natural subsurface translucency; individual flyaway hairs; catchlights in the eyes;
+  natural asymmetry; true-to-life human proportions. Soft directional key light with a gentle
+  warm rim, colour-graded like a premium documentary interview, deep teal and warm amber in
+  the frame. Absolutely photoreal, never illustration, 3D render or CGI. Every surface is
+  plain and unbranded, with no lettering anywhere.
 
 # ---------------------------------------------------------------- the story: the past
 style_story: >-
@@ -52,67 +54,94 @@ sheet_prompt_story: >-
 # stay identical. Change this only as a deliberate rebrand: it means redrawing every
 # studio shot of every future episode.
 studio:
+  # Physical layout in plain measurements, so every camera sees the same room.
   description: >-
-    Set in the Held Together podcast studio, which is always exactly the same room: an
-    intimate studio with dark walnut wall panelling and deep teal fabric acoustic panels; a
-    heavy round dark walnut table in the centre; two black broadcast dynamic microphones on
-    black articulated boom arms clamped to the table edge, one in front of each host at
-    mouth height; a pair of black closed-back studio headphones resting at each place;
-    Elias always sits on the left of the table and Maya on the right, facing each other at a
-    slight angle to camera; behind them a wall of shelves holding a small steel truss bridge
-    model, a slide rule, a glass jar of rivets, rolled drawings and a brass theodolite; a
-    brass desk lamp with a warm amber glow on the table; a soft teal backlight on the
-    acoustic panels.
+    The Held Together podcast studio, always exactly the same room: an intimate studio with
+    dark walnut wall panelling and deep teal fabric acoustic panels. In the centre stands a
+    heavy round dark walnut table, about 1.2 metres across. Elias always sits on the left
+    side of the table and Maya on the right side, facing each other across it, each turned
+    slightly towards the front of the room. In front of each of them, standing on the table
+    top, is a black broadcast dynamic microphone on a short, heavy, round-based black desk
+    stand, tilted up so the microphone head sits just below the speaker's chin, about 20
+    centimetres away, never covering the mouth. A brass banker's desk lamp with an amber
+    glass shade stands at the centre of the table, glowing warm. Behind them, a wall of
+    walnut shelves holds a steel truss bridge model, a slide rule, a glass jar of rivets,
+    rolled drawings and a brass theodolite, lit by a soft teal backlight. The table top is
+    otherwise clear.
   plate_prompt: >-
-    Wide establishing photograph of the empty studio, both chairs empty and pulled up to the
-    table, both microphones and headphones in place, the whole room visible, eye-level
-    camera. {description}
+    Camera A, the wide shot of the empty studio: 35mm lens at f/4, camera at seated eye
+    level, 1.2 metres high, on the centre line of the table, three metres back. Both chairs
+    are empty and pulled up to the table, both desk microphones in place, the lamp centred,
+    the whole shelf wall visible. Symmetrical, calm composition. {description}
   sheet: studio
-  # Who exists in the studio. Sent with every studio shot, with BOTH host sheets attached,
-  # so the empty chair is never filled by an invented stranger.
+  # Approved master frames, one per camera, live in cast/studio/<camera>.jpg (made by the
+  # cast stage). Every studio scene is an EDIT of its camera's master: only expression,
+  # hands and props change, so the room, seating, microphones, framing and the hosts'
+  # proportions cannot drift. This is what keeps re-draws, and their cost, near zero.
+  masters_dir: studio
+  # Who exists in the studio, said positively: listing what must not appear tends to make
+  # the image model draw it.
   people: >-
-    Exactly two people are ever in this studio: Elias, seated in the left chair, and Maya,
-    seated in the right chair. Anyone visible in the picture, even partly (a shoulder, the
-    back of a head, a hand), is Elias or Maya, exactly as in their reference images and in
-    their own clothes. There is never a third person, and no other face appears anywhere.
-  # How a real filmed podcast looks. Emotion comes from face and hands, not from poses.
+    Elias and Maya are the only two people in the studio.
   posture: >-
-    Both sit naturally in their chairs at the table, upright or leaning back slightly, close
-    to their own microphones, exactly as in a real filmed podcast: no leaning across the
-    table, no standing, no lounging, no dramatic poses, nobody looking into the camera lens.
-    Expression and hand gestures at chest height carry the emotion.
-  # The fixed camera rig. Every studio scene picks one with `camera:`. All cameras are on
-  # tripods at seated eye level, as on a real podcast set; no high, low or handheld angles.
+    They sit naturally in their chairs at the table, upright or leaning back slightly, each
+    speaking into their own desk microphone, the way people sit on a real filmed podcast,
+    with their eyes on each other. Faces and hands at chest height carry the emotion.
+  # The fixed camera rig. Each studio scene names one with `camera:`. Every camera is on a
+  # tripod at seated eye level. `in_frame` is who the master shows; `master` describes it.
   cameras:
-    wide: >-
-      Camera A, the wide shot: a locked-off camera at seated eye level directly in front of
-      the table, about three metres back, showing both hosts at their microphones, Elias on
-      the left and Maya on the right, the shelves behind them.
-    maya: >-
-      Camera B, Maya's single: a tripod camera at Maya's seated eye level, placed beside
-      Elias's chair and about thirty degrees off her eyeline, framing her from mid-chest up,
-      her microphone beside her mouth, looking across the table towards Elias. A clean
-      single: the frame holds only Maya, her chair, her microphone and the shelves behind
-      her; there is nothing and nobody in the foreground.
-    elias: >-
-      Camera C, Elias's single: a tripod camera at Elias's seated eye level, placed beside
-      Maya's chair and about thirty degrees off his eyeline, framing him from mid-chest up,
-      his microphone beside his mouth, looking across the table towards Maya. A clean single:
-      the frame holds only Elias, his chair, his microphone and the shelves behind him; there
-      is nothing and nobody in the foreground.
-    ots_maya: >-
-      Camera D, over Elias's shoulder: a tripod camera behind and slightly to the side of
-      Elias at seated eye level. The back of Elias's silver head and his waistcoated
-      shoulder are soft and out of focus in the left foreground; Maya is in sharp focus
-      across the table, facing him.
-    ots_elias: >-
-      Camera E, over Maya's shoulder: a tripod camera behind and slightly to the side of Maya
-      at seated eye level. The back of Maya's long black hair and her shoulder are soft and
-      out of focus in the right foreground; Elias is in sharp focus across the table, facing
-      her.
-    insert: >-
-      Camera F, the table insert: a close detail of the walnut table top from seated height.
-      No people and no parts of people are in the frame.
+    wide:
+      in_frame: [elias, maya]
+      master: >-
+        Camera A, the wide two-shot: 35mm lens at f/4, camera at seated eye level on the
+        centre line of the table, three metres back. Elias sits on the left of the frame and
+        Maya on the right, both seen from the top of the head to below the table edge, each
+        behind their own desk microphone, the lamp glowing between them, the shelves behind.
+        Both rest their hands on the table and listen to each other with calm, attentive
+        expressions. Symmetrical composition, both at the same scale.
+    maya:
+      in_frame: [maya]
+      master: >-
+        Camera B, Maya's single: 85mm lens at f/2.8, camera at Maya's seated eye level, 1.6
+        metres from her, on the front-left of the table and about thirty degrees off her
+        eyeline. Maya is framed from mid-chest to just above her head, placed on the right
+        two-thirds of the frame, looking across the table towards camera left. Her desk
+        microphone stands in front of her, its head just below her chin. The left third of
+        the frame is the softly blurred teal acoustic wall and shelves. Her hands rest on the
+        table edge; calm, attentive expression.
+    elias:
+      in_frame: [elias]
+      master: >-
+        Camera C, Elias's single: 85mm lens at f/2.8, camera at Elias's seated eye level, 1.6
+        metres from him, on the front-right of the table and about thirty degrees off his
+        eyeline. Elias is framed from mid-chest to just above his head, placed on the left
+        two-thirds of the frame, looking across the table towards camera right. His desk
+        microphone stands in front of him, its head just below his chin. The right third of
+        the frame is the softly blurred walnut panelling and shelves. His hands rest on the
+        table edge; calm, attentive expression.
+    ots_maya:
+      in_frame: [elias, maya]
+      master: >-
+        Camera D, over Elias's shoulder: 50mm lens at f/2.8, camera at seated eye level just
+        behind and to the left of Elias. The back of Elias's silver head and his
+        shoulder in his waistcoat fill the left quarter of the frame, soft and out of focus.
+        Across the table, Maya is in sharp focus from mid-chest up, facing him, behind her
+        desk microphone, the lamp glowing beside her. Calm, attentive expression.
+    ots_elias:
+      in_frame: [elias, maya]
+      master: >-
+        Camera E, over Maya's shoulder: 50mm lens at f/2.8, camera at seated eye level just
+        behind and to the right of Maya. The back of Maya's long black hair and her
+        shoulder in her overshirt fill the right quarter of the frame, soft and out of focus.
+        Across the table, Elias is in sharp focus from mid-chest up, facing her, behind his
+        desk microphone, the lamp glowing beside him. Calm, attentive expression.
+    insert:
+      in_frame: []
+      master: >-
+        Camera F, the table insert: 100mm macro lens at f/4, camera just above the walnut
+        table top, looking down at about thirty degrees. A close detail of an object on the
+        table, the base of a desk microphone stand and the lamp's warm glow softly blurred
+        behind it. An empty, quiet frame.
 
 actors:
   # ================= the studio: two hosts, every episode, photoreal =================

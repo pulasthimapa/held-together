@@ -25,7 +25,8 @@ HOST_PITCH_GAP_HZ = 40             # Maya's median pitch must sit this far above
 # Words that would pull a scene into the wrong visual world (docs/brand.md).
 BANNED = {
     "host": [r"\b3d\b", r"pixar", r"cartoon", r"animated", r"animation", r"illustrat",
-             r"painting", r"painted", r"\bbob\b", r"\bstand", r"leaning (forward|across)",
+             r"painting", r"painted", r"\bbob\b", r"\bstanding\b", r"\bstands? up", r"leaning (forward|across)",
+             r"boom arm", r"microphone arm", r"headphones",
              r"low angle", r"high angle", r"handheld", r"looks? (in|at) the camera",
              r"\bstranger", r"\bguest"],
     "story": [r"photoreal", r"photograph", r"\b3d\b", r"pixar", r"cartoon", r"\bcgi\b"],
@@ -73,7 +74,12 @@ def check_cast(cast, p):
         if a.get("world") != "host":
             p.add(f"cast: {h} must be world: host")
     st = cast.get("studio") or {}
-    for key in ("description", "plate_prompt", "sheet"):
+    for cam, v in (st.get("cameras") or {}).items():
+        if not isinstance(v, dict) or "in_frame" not in v or not v.get("master"):
+            p.add(f"cast: studio camera '{cam}' needs in_frame and master")
+        elif any(h not in HOSTS for h in v["in_frame"]):
+            p.add(f"cast: studio camera '{cam}' lists someone other than the hosts")
+    for key in ("description", "plate_prompt", "sheet", "masters_dir", "people", "posture"):
         if not st.get(key):
             p.add(f"cast: studio has no '{key}'")
     for key in ("style_host", "style_story", "sheet_prompt_host", "sheet_prompt_story"):
@@ -233,6 +239,10 @@ def check_inputs(stage, cast, ep_id, ep, p):
                 p.add(f"cast sheet {a}.jpg missing: run 'cast' first")
         if not (SHEETS_DIR / f"{cast['studio']['sheet']}.jpg").exists():
             p.add("studio plate missing: run 'cast' first")
+        from images import master_path
+        for cam in {s.get("camera") for s in ep["scenes"] if s.get("camera")} - {"insert"}:
+            if not master_path(cast, cam).exists():
+                p.add(f"studio master cast/studio/{cam}.jpg missing: run 'cast' first")
     if stage == "video":
         for s in ep["scenes"]:
             if s.get("hero_video") and not (base / "images" / f"{s['id']}.jpg").exists():
@@ -256,12 +266,15 @@ def plan(stage, cast, ep_id, ep):
     if stage == "cast":
         n = sum(1 for a in cast["actors"] if not (SHEETS_DIR / f"{a}.jpg").exists())
         n += 0 if (SHEETS_DIR / f"{cast['studio']['sheet']}.jpg").exists() else 1
-        return f"cast: {n} image(s) to generate"
+        from images import master_path
+        n += sum(1 for c, v in cast["studio"]["cameras"].items()
+                 if v["in_frame"] and not master_path(cast, c).exists())
+        return f"cast: {n} image(s) to generate (studio masters are checked, redrawn once)"
     if stage == "images":
         missing = [st for stems in _expected_images(ep).values() for st in stems
                    if not (base / "images" / f"{st}.jpg").exists()]
         return (f"images: {len(missing)} to generate: {', '.join(missing) or 'none'} "
-                f"(studio pictures are checked and may be redrawn up to 3 times)")
+                f"(each studio picture is an edit of its master, checked, redrawn once if it fails)")
     if stage == "video":
         todo = [(s["id"], min(float(s.get("hero_seconds", 6)), 8)) for s in ep["scenes"]
                 if s.get("hero_video") and not (base / "video" / f"{s['id']}.mp4").exists()]
@@ -372,11 +385,14 @@ def verify(stage, ep_id):
     base = episode_dir(ep_id)
     p = Problems()
     if stage == "cast":
-        for name in list(cast["actors"]) + [cast["studio"]["sheet"]]:
-            f = SHEETS_DIR / f"{name}.jpg"
+        from images import master_path
+        files = [SHEETS_DIR / f"{n}.jpg" for n in list(cast["actors"]) + [cast["studio"]["sheet"]]]
+        files += [master_path(cast, c) for c, v in cast["studio"]["cameras"].items()
+                  if v["in_frame"]]
+        for f in files:
             ok, info = _image_ok(f) if f.exists() else (False, "missing")
             if not ok:
-                p.add(f"cast sheet {f.name}: {info}")
+                p.add(f"{f.relative_to(f.parents[1])}: {info}")
     if stage == "images":
         for stems in _expected_images(ep).values():
             for st in stems:

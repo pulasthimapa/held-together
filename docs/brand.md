@@ -19,28 +19,33 @@ described here, add it here first.
 
 ### The studio is permanent
 
-The podcast room is as fixed as the hosts' faces, and is defined once in `cast/cast.yaml`
-(`studio:`): walnut panelling, deep teal acoustic panels, a round walnut table, two black
-broadcast microphones on boom arms, headphones at each place, a shelf of engineering
-objects, a brass lamp. **Elias always sits left, Maya right.** Every studio image is drawn
-with the studio reference plate (`cast/sheets/studio.jpg`) attached, so the room cannot
-drift. The hosts wear the same signature clothes every episode (`wardrobe:`): Elias a
-charcoal waistcoat over a white collarless shirt, Maya an amber linen overshirt over a
-white T-shirt. **Only Elias and Maya ever exist in the studio.** Every studio shot is drawn with both hosts'
-reference sheets and the studio plate attached, whoever is in frame, so the other chair can
-never be filled by an invented stranger. Every studio still and studio clip is then
-checked automatically by a vision model against both reference sheets and the wardrobe:
-any unknown person, wrong clothes, a host missing from their own shot, or anyone standing
-gets the picture thrown away and redrawn (stills up to 3 times, clips once).
+The podcast room is as fixed as the hosts' faces, defined once in `cast/cast.yaml`
+(`studio:`) in plain measurements: walnut panelling, deep teal acoustic panels, a round walnut
+table about 1.2 m across, **a black broadcast microphone on a short desk stand in front of
+each host** (no boom arms: fewer moving parts, less variation), a brass banker's lamp at the
+centre, a shelf of engineering objects. **Elias always sits left, Maya right.**
 
-**The camera rig is fixed, like a real filmed podcast.** Tripod cameras at seated eye level
-only: A wide (both hosts), B Maya's single, C Elias's single, D over Elias's shoulder,
-E over Maya's shoulder, F table insert. Each studio scene names one (`camera:`). The hosts
-sit naturally at their microphones; emotion comes from face and hands, never from poses,
-standing, leaning across the table or unusual angles. Dramatic angles belong to the painted
-past, not the studio.
+**Studio pictures are edits, not new drawings.** The cast stage draws the empty room once,
+then one approved *master frame* per camera with the hosts seated in it
+(`cast/studio/<camera>.jpg`). Every studio scene is an edit of its camera's master: only the
+expression, hands and any prop change. Room, seating, microphones, lens, framing and the
+hosts' proportions are copied, so they cannot drift and pictures rarely need redrawing.
 
-An episode may change the *colours* of those clothes (`wardrobe:` in
+**The camera rig is fixed, like a real filmed podcast.** Tripods at seated eye level, each
+with its own lens: A wide two-shot (35 mm), B Maya's single (85 mm), C Elias's single
+(85 mm), D over Elias's shoulder (50 mm), E over Maya's shoulder (50 mm), F table insert
+(100 mm macro). Each studio scene names one (`camera:`). The hosts sit naturally at their
+microphones; emotion comes from face and hands. Dramatic angles belong to the painted past.
+
+**Only Elias and Maya ever exist in the studio**, and prompts say so positively (listing
+what must not appear tends to make the model draw it). A vision model then checks every
+studio still and clip against both reference sheets, the wardrobe and the expected framing;
+an unknown person, wrong clothes, a missing host, anyone standing or a boom-arm microphone
+gets it thrown away and redrawn once, then reported.
+
+The hosts wear the same signature clothes every episode (`wardrobe:`): Elias a charcoal
+waistcoat over a white collarless shirt, Maya an amber linen overshirt over a white
+T-shirt. An episode may change the *colours* of those clothes (`wardrobe:` in
 `episode.yaml`); the garments and everything else stay. The troupe changes costume freely.
 
 The explainer layer belongs to Maya's world: it is the modern analysis laid over the past.

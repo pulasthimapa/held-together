@@ -89,8 +89,8 @@ scenes:
       blinking, breathing.
     hero_seconds: 8
     prompt: >-
-      Maya holds a small steel truss model at chest height and turns it in her fingers,
-      mid-question, eyebrows raised, half a smile, alert and amused.
+      Maya now holds a small steel truss bridge model at chest height, turning it in her
+      fingers, mid-question, eyebrows raised, half a smile, alert and amused.
     narration: >-
       Right, so every engineer I know has heard this one. It's the story they tell you
       to explain why we check things. In Canada, the ceremony where new engineers get
@@ -111,8 +111,8 @@ scenes:
       speaking. Subtle breathing and blinking, heavy with memory.
     hero_seconds: 8
     prompt: >-
-      Elias listens, weary and remembering, one hand resting on rolled drawings on the
-      table.
+      Elias now listens, weary and remembering, eyes lowered a little, one hand resting
+      on a rolled engineering drawing that lies on the table in front of him.
     narration: >-
       Then I will tell it that way. I was an engineer in those years, and I will tell you
       what we knew, what we measured, and exactly where it stopped being a question of steel
@@ -174,8 +174,8 @@ scenes:
     host_shot: true
     actors: [maya]
     prompt: >-
-      Maya mid-sentence with a wry look, one hand raised at chest height, talking to
-      Elias.
+      Maya is now mid-sentence with a wry look, one hand raised at chest height as she
+      talks to Elias.
     narration: >-
       And can I just say, no computer, no calculator, a slide rule and a very good
       memory. I'd have given up. But that's not the bit that still happens, is it? The
@@ -228,8 +228,8 @@ scenes:
     host_shot: true
     actors: [maya, elias]
     prompt: >-
-      Maya gestures a question across the table; Elias listens with his hands folded on
-      the table.
+      Maya now gestures a question across the table with one open hand; Elias listens
+      with his hands folded on the table.
     narration: >-
       Hold on. Before you tell me what he saw, tell them what it means. Because if you just
       say the steel was bending, everyone pictures a shelf with too many books on it. Slow,
@@ -291,9 +291,9 @@ scenes:
     host_shot: true
     actors: [maya]
     prompt: >-
-      Maya talks to Elias with a laptop open on the table beside her microphone, its
-      screen showing a colourful finite element stress plot of a steel member, one hand
-      gesturing towards it.
+      A slim silver laptop now stands open on the table beside Maya's microphone, its
+      screen showing a colourful finite element stress plot of a steel member; Maya
+      talks to Elias, one hand gesturing towards the screen.
     narration: >-
       And this is where it gets uncomfortable for us, because that failure mode hasn't
       gone anywhere. What's changed is that we can see it coming. A model of that chord
@@ -393,8 +393,8 @@ scenes:
     host_shot: true
     actors: [maya]
     prompt: >-
-      Maya sits back a little in her chair, one hand over her mouth, quiet dismay; the
-      small steel truss model rests on the table in front of her.
+      Maya now sits back a little, one hand over her mouth, quiet dismay in her eyes; a
+      small steel truss bridge model rests on the table in front of her.
     narration: >-
       Four hours. It sat there four hours. The chief engineer didn't see it till three,
       and he thought he had better news from the site, so he waited. The inquiry said it
@@ -539,8 +539,8 @@ scenes:
     host_shot: true
     actors: [maya, elias]
     prompt: >-
-      A quiet moment: neither speaking, both seated at their microphones, the small
-      steel truss model on the table between them.
+      A quiet moment: neither speaks; both look down at a small steel truss bridge model
+      now resting on the table between them, sombre.
     narration: >-
       Here's what has changed, and it isn't the physics. On complex highway bridges in
       the UK, the design is checked by a team from a separate organisation, so no single
@@ -557,8 +557,8 @@ scenes:
     host_shot: true
     actors: [elias]
     prompt: >-
-      Elias looks down at his own hands resting on the table, sombre, one warm highlight
-      on his face.
+      Elias now looks down at his own hands resting on the table, sombre, a warm
+      highlight on his face from the lamp.
     narration: >-
       And yet. The bend was seen. It was measured. A young man carried it by train to
       the one person who could stop the work, and that person acted. Then the warning
@@ -606,8 +606,8 @@ scenes:
       appear.
     hero_seconds: 6
     prompt: >-
-      A plain dark iron ring lying on an engineering drawing on the walnut table, beside
-      the base of a microphone arm, warm lamp light, crisp detail.
+      A plain dark iron ring lies on an engineering drawing on the walnut table, beside
+      the round base of a desk microphone stand.
     narration: >-
       In 1925, Canadian engineers held the first of a ceremony, with an obligation
       written by Rudyard Kipling. At the end of it, each new engineer receives an iron

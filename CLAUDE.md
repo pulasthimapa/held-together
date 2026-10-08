@@ -35,9 +35,10 @@ F7. **Two visual worlds — the present is photographed, the past is painted.** 
     painting. The explainers stay flat and bright, because they are modern analysis laid over
     the past. The full system is `docs/brand.md`; read it before changing any look, and put
     any new decision in there rather than inventing it per episode.
-F8. Every scene image passes its actors' reference sheets, and every studio image also passes
-    the studio plate. That is the only thing holding a photoreal face and room stable across
-    generations; never generate a host or the studio without them.
+F8. Every painted scene passes its actors' reference sheets. Every studio scene is an EDIT of
+    its camera's approved master frame (`cast/studio/`), with the hosts' sheets attached for
+    faces; studio pictures are never drawn from scratch. Masters change only by a deliberate
+    decision, and are re-approved by eye when they do.
 F9. Nothing reaches a paid API until `python pipeline/run.py check` passes (the workflow runs
     it first, automatically). If a check is wrong, fix the check in the open; never bypass it.
 
