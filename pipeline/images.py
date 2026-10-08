@@ -52,6 +52,18 @@ def master_path(cast, camera):
     return ROOT / "cast" / cast["studio"]["masters_dir"] / f"{camera}.jpg"
 
 
+def used_cameras(cast):
+    """Cameras that some episode actually uses. Masters are only drawn for these, so no
+    money is spent on an angle nobody has asked for yet."""
+    import yaml
+    used = set()
+    for f in sorted((ROOT / "episodes").glob("*/episode.yaml")):
+        for s in (yaml.safe_load(f.read_text()) or {}).get("scenes", []):
+            if s.get("camera"):
+                used.add(s["camera"])
+    return [c for c, v in cast["studio"]["cameras"].items() if v["in_frame"] and c in used]
+
+
 def camera_of(cast, scene):
     camera = scene.get("camera")
     if camera not in cast["studio"]["cameras"]:
@@ -244,7 +256,9 @@ def _generate_checked(prompt, refs, out, cast, scene, wardrobe=None, check=True)
         if not problems:
             trial.rename(out)
             return True, attempt
-        trial.unlink()
+        # Keep the rejected picture (gitignored, uploaded with the review images) so a
+        # rejection can be looked at instead of guessed at.
+        trial.rename(out.with_name(f"_rejected_{out.stem}_{attempt}.jpg"))
         print(f"  {out.name} attempt {attempt} rejected: {'; '.join(problems)}")
     return False, tries
 
@@ -280,8 +294,7 @@ def make_cast_sheets():
         print("studio plate: studio.jpg")
     # One master per camera with people in it. The insert has no master: it is a close-up
     # of whatever object the scene needs, drawn from the plate.
-    cams = [c for c, v in cast["studio"]["cameras"].items() if v["in_frame"]]
-    todo = [c for c in cams if not master_path(cast, c).exists()]
+    todo = [c for c in used_cameras(cast) if not master_path(cast, c).exists()]
     if todo:
         _prove_checker(cast)
         master_path(cast, todo[0]).parent.mkdir(parents=True, exist_ok=True)

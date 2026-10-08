@@ -267,8 +267,8 @@ def plan(stage, cast, ep_id, ep):
         n = sum(1 for a in cast["actors"] if not (SHEETS_DIR / f"{a}.jpg").exists())
         n += 0 if (SHEETS_DIR / f"{cast['studio']['sheet']}.jpg").exists() else 1
         from images import master_path
-        n += sum(1 for c, v in cast["studio"]["cameras"].items()
-                 if v["in_frame"] and not master_path(cast, c).exists())
+        from images import used_cameras
+        n += sum(1 for c in used_cameras(cast) if not master_path(cast, c).exists())
         return f"cast: {n} image(s) to generate (studio masters are checked, redrawn once)"
     if stage == "images":
         missing = [st for stems in _expected_images(ep).values() for st in stems
@@ -387,8 +387,8 @@ def verify(stage, ep_id):
     if stage == "cast":
         from images import master_path
         files = [SHEETS_DIR / f"{n}.jpg" for n in list(cast["actors"]) + [cast["studio"]["sheet"]]]
-        files += [master_path(cast, c) for c, v in cast["studio"]["cameras"].items()
-                  if v["in_frame"]]
+        from images import used_cameras
+        files += [master_path(cast, c) for c in used_cameras(cast)]
         for f in files:
             ok, info = _image_ok(f) if f.exists() else (False, "missing")
             if not ok:

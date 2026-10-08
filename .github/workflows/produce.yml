@@ -88,6 +88,8 @@ jobs:
             cast/cast_review.jpg
             episodes/${{ inputs.episode }}/images_review.jpg
             episodes/${{ inputs.episode }}/clips_review.jpg
+            cast/studio/_rejected_*.jpg
+            episodes/${{ inputs.episode }}/images/_rejected_*.jpg
           if-no-files-found: ignore
           retention-days: 7
 
