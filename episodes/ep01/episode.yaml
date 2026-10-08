@@ -24,8 +24,8 @@ scenes:
     speaker: elias
     hero_video: >-
       Slow cinematic push along a vast half-built steel cantilever bridge at golden hour,
-      tiny workers silhouetted on the trusses, deep teal river below, warm amber haze,
-      dust in the air. Photoreal, filmic, shallow depth of field.
+      tiny workers silhouetted on the trusses, deep teal river below, warm amber haze, dust
+      in the air.
     hero_seconds: 8
     prompt: >-
       Dramatic low angle looking up a vast half-built steel cantilever bridge at golden hour,
@@ -76,10 +76,9 @@ scenes:
     name: "Maya"
     role: "structural engineer, today"
     hero_video: >-
-      A woman in her early 30s with a short black bob and round glasses sits in a warm
-      study, turning a small steel model over in her hands, then looking up and asking a
-      question. Subtle natural movement, blinking, breathing. Soft key light, bokeh
-      background. Premium 3D animated feature look.
+      Maya sits in a warm modern study, turning a small steel truss model over in her hands,
+      then looking up and asking a question. Subtle natural movement, blinking, breathing.
+      Soft key light, softly blurred background.
     hero_seconds: 8
     prompt: >-
       Maya in a warm modern study at night, soft lamp light, a small steel truss model in her
@@ -99,10 +98,9 @@ scenes:
     name: "Elias"
     role: "engineer, 1907 — a composite character"
     hero_video: >-
-      A gaunt man in his early 60s with silver swept-back hair sits in a dim period study,
-      lit by one warm lamp, listening, then slowly nodding and beginning to speak. Subtle
-      breathing and blinking, heavy with memory. Soft key light, bokeh background. Premium
-      3D animated feature look.
+      Elias sits in a dim study lit by one warm lamp, listening, then slowly nodding and
+      beginning to speak. Subtle breathing and blinking, heavy with memory. Soft key light,
+      softly blurred background.
     hero_seconds: 8
     prompt: >-
       Elias in a dim 1900s study lit by a single warm lamp, waistcoat and loosened collar,
@@ -256,6 +254,16 @@ scenes:
       carries less. Carrying less, it bows further. Round and round, faster each turn. A beam
       that is slowly bending is not damaged. It is accelerating.
 
+  # Maya checks she has it (her `speech` field), over the same loop. Added for comprehension.
+  - id: S15M
+    type: diagram
+    speaker: maya
+    diagram: buckling_loop
+    narration: >-
+      Okay, let me check I've got this. Pull on steel and it just stretches. Push on it and
+      it's fine, right up until it isn't, and then it goes sideways all at once. So the bend
+      isn't a warning that something might fail. The bend is the failure, already happening.
+
   - id: S16
     type: diagram
     speaker: elias
@@ -378,9 +386,9 @@ scenes:
     speaker: elias
     actors: [sam]
     hero_video: >-
-      Close handheld shot of 1900s riveters working on open steel high above a river, glowing
-      orange rivets, flying sparks, sunlight flaring through the trusses, men moving
-      confidently and talking. Photoreal, warm, alive.
+      1900s riveters working on open steel high above a river, glowing orange rivets, flying
+      sparks, sunlight flaring through the trusses, men moving confidently. Gentle camera
+      drift.
     hero_seconds: 8
     prompt: >-
       Riveting crew working high on the open steel on a bright afternoon, Sam among them,
@@ -445,7 +453,8 @@ scenes:
     speaker: elias
     hero_video: >-
       Slow drift across twisted wrecked steel rising out of calm misty water at dawn, cold
-      blue light with one warm sliver of sunrise, utterly still. Photoreal, sombre, cinematic.
+      blue light with one warm sliver of sunrise, mourners still on the shore. Utterly still
+      and sombre.
     hero_seconds: 8
     prompt: >-
       A riverbank at dawn after the disaster, twisted steel rising from calm water, mist,
@@ -545,8 +554,8 @@ scenes:
     type: image
     speaker: elias
     hero_video: >-
-      Slow aerial orbit around a finished steel cantilever bridge at sunrise, a freight train
-      crossing, mirror-calm river reflecting an amber sky. Photoreal, majestic, cinematic.
+      Slow drift towards a finished steel cantilever bridge at sunrise, a steam train
+      crossing, mirror-calm river reflecting an amber sky. Majestic and calm.
     hero_seconds: 8
     prompt: >-
       The finished Quebec Bridge at sunrise, a freight train crossing, mirror-calm river,
@@ -562,9 +571,10 @@ scenes:
     host_shot: true
     actors: [maya]
     hero_video: >-
-      A woman in her early 30s turns a plain dark iron ring on her little finger, looking
-      down at it, then up towards camera. Subtle breathing and blinking, warm lamp light,
-      bokeh background. Premium 3D animated feature look.
+      Extreme close-up of two hands only: a thumb slowly turns a plain dark iron ring on the
+      little finger, resting over an engineering drawing. Warm lamp light. Only the hands
+      are ever in frame; no face appears at any point. The camera does not move away from
+      the hands.
     hero_seconds: 6
     prompt: >-
       Extreme close-up of Maya's hand turning a plain dark iron ring on her little finger

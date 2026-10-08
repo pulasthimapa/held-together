@@ -48,6 +48,8 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           ELEVENLABS_API_KEY: ${{ secrets.ELEVENLABS_API_KEY }}
           ELEVENLABS_VOICE_ID: ${{ secrets.ELEVENLABS_VOICE_ID }}
+          ELEVENLABS_VOICE_ELIAS: ${{ secrets.ELEVENLABS_VOICE_ELIAS }}
+          ELEVENLABS_VOICE_MAYA: ${{ secrets.ELEVENLABS_VOICE_MAYA }}
         run: python pipeline/run.py "${{ inputs.stage }}" --episode "${{ inputs.episode }}"
 
       # Save generated images and audio back to the repo so we never pay for them twice.

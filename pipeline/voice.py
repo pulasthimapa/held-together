@@ -6,8 +6,8 @@ Two speakers: Elias (the engineer of the period) and Maya (the modern engineer).
     ELEVENLABS_VOICE_ELIAS   older male, measured, weathered
     ELEVENLABS_VOICE_MAYA    younger female, clear, curious
 
-ELEVENLABS_VOICE_ID still works as a fallback for either, so a half-configured repo
-produces an episode in one voice rather than failing.
+Both host voices are REQUIRED. There is deliberately no fallback: a silent fallback once
+voiced the whole of ep01 in one voice, and nobody could tell from the log.
 """
 import os
 import time
@@ -28,10 +28,21 @@ DEFAULT_SPEAKER = "elias"
 
 
 def voice_id_for(speaker):
-    specific = os.environ.get(f"ELEVENLABS_VOICE_{speaker.upper()}")
-    if specific:
-        return specific
-    return env("ELEVENLABS_VOICE_ID")
+    name = f"ELEVENLABS_VOICE_{speaker.upper()}"
+    voice = os.environ.get(name, "").strip()
+    if not voice:
+        raise SystemExit(f"Secret {name} is missing or not passed to the workflow. "
+                         f"Each host needs their own voice; refusing to fall back.")
+    return voice
+
+
+def check_voices(speakers):
+    """Fail before spending anything if a voice is missing or two hosts share one."""
+    ids = {s: voice_id_for(s) for s in speakers}
+    if len(set(ids.values())) < len(ids):
+        raise SystemExit(f"Two hosts share one voice ID: {sorted(ids)}. Give each their own.")
+    for s, v in ids.items():
+        print(f"voice for {s}: …{v[-4:]}")
 
 
 def _tts(text, prev_text, next_text, speaker=DEFAULT_SPEAKER):
@@ -60,6 +71,7 @@ def make_narration(ep_id):
     audio_dir = episode_dir(ep_id) / "audio"
     audio_dir.mkdir(parents=True, exist_ok=True)
     spoken = [s for s in ep["scenes"] if s.get("narration")]
+    check_voices(sorted({s.get("speaker", DEFAULT_SPEAKER) for s in spoken}))
     chars = 0
     for i, scene in enumerate(spoken):
         out = audio_dir / f"{scene['id']}.mp3"

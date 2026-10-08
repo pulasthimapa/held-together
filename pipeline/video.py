@@ -21,7 +21,20 @@ import time
 
 import requests
 
-from common import env, episode_dir, load_episode
+from common import env, episode_dir, load_cast, load_episode
+from images import world_of
+
+# The brand rule (docs/brand.md) is appended to EVERY clip prompt here, so an episode file
+# can never ask for the wrong look. Without it Veo drifts painted stills into photoreal
+# within four seconds, and invents faces where the still had none.
+CLIP_STYLE = {
+    "host": ("Photoreal live-action footage. Keep the exact faces, hair, glasses and "
+             "clothing of the starting frame; do not change anyone's appearance. "
+             "Not animation, not 3D, not cartoon."),
+    "story": ("Keep the golden-age oil-painting look of the starting frame for the whole "
+              "clip: visible brushwork, canvas texture, painted light. The image stays a "
+              "moving painting from first frame to last. Not photoreal, not 3D, not CGI."),
+}
 
 BASE = "https://generativelanguage.googleapis.com/v1beta"
 MODEL = os.environ.get("VEO_MODEL", "veo-3.1-fast-generate-preview")
@@ -104,6 +117,7 @@ def make_hero_clips(ep_id):
         raise SystemExit(f"{len(wanted)} hero clips requested, limit is {MAX_CLIPS}. "
                          f"Remove some hero_video entries before running this stage.")
     key = env("GEMINI_API_KEY")
+    cast = load_cast()
     made = 0
     for scene in wanted:
         out = out_dir / f"{scene['id']}.mp4"
@@ -115,7 +129,8 @@ def make_hero_clips(ep_id):
         seed = seed if seed.exists() else None
         print(f"hero clip {scene['id']}: {seconds:.0f}s"
               f"{' from our still' if seed else ' from the prompt alone'} …")
-        out.write_bytes(_generate(" ".join(scene["hero_video"].split()), seconds, key, seed))
+        prompt = " ".join(scene["hero_video"].split()) + " " + CLIP_STYLE[world_of(cast, scene)]
+        out.write_bytes(_generate(prompt, seconds, key, seed))
         made += 1
         print(f"hero clip: {out.name}")
     print(f"hero clips generated this run: {made} (existing files are never redone)")
