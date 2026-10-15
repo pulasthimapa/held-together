@@ -1,0 +1,58 @@
+# Pilot: a two-shot technical test of the whole pipeline (about $1.50).
+# It proves the look, the no-talking guard and the face check before a real film is spent on.
+id: pilot
+title: Pipeline pilot
+approved:
+  script: true     # milestone 2: Indeepa approved the story and shot list
+  sheets: false    # milestone 3: set true after approving review_sheets.jpg
+budget_usd: 5      # the run stops before spending more than this
+
+characters:
+  nana:
+    name: Nana
+    age: 76
+    identity: >
+      a small 76-year-old woman with short silver-white hair pinned in a low bun with one wooden
+      knitting needle through it, round thin gold-rimmed glasses, a soft lined face, kind
+      grey-blue eyes, a cream cable-knit cardigan with three wooden toggle buttons over a
+      grey-blue collared shirt, a long dark grey skirt
+  ren:
+    name: Ren
+    age: 32
+    identity: >
+      a slim 32-year-old man with untidy short black hair, tired dark-brown eyes, faint stubble,
+      a navy wool coat over a grey hoodie, a worn brown leather bag on one shoulder
+
+locations:
+  kitchen: a small cottage kitchen with a wooden table, a window over the sink with potted herbs on the sill, an old kettle on a cream stove
+  platform: an empty rural train platform beside green rice fields, one wooden bench, overhead power lines against a wide sky, a small station sign with no readable text
+
+shots:
+  - id: S01
+    location: kitchen
+    mood: warm
+    framing: medium close-up
+    cast: [nana]
+    acting: nana
+    emotion: longing
+    intensity: soft
+    action: Nana sits at the kitchen table by the window with a half-knitted red scarf in her lap
+    motion: her knitting needles stop and rest in her lap
+    sound: a ticking clock and soft birdsong outside the window
+    seconds: 6
+    model: lite
+
+  - id: S02
+    location: platform
+    mood: cold
+    framing: wide
+    cast: [ren]
+    acting: ren
+    emotion: loneliness
+    intensity: strong
+    action: Ren stands alone near the edge of the platform, seen from behind, as a two-carriage train pulls away into the distance
+    motion: the train slides away down the line and the wind moves his coat
+    camera: locked-off wide shot
+    sound: a train fading into the distance and wind over the fields
+    seconds: 8
+    model: lite

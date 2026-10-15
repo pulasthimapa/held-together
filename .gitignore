@@ -5,3 +5,8 @@ __pycache__/
 episodes/*/images/_*
 cast/studio/_*
 episodes/*/video/_*
+
+# films: rejected tries go to a short-lived artifact, not git
+films/*/rejected/
+films/*/.tone.wav
+films/*/report.json

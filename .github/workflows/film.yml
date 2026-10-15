@@ -1,0 +1,87 @@
+name: Make film clips
+
+# Wordless anime shorts (separate channel from Held Together). See films/README.md.
+on:
+  workflow_dispatch:
+    inputs:
+      stage:
+        description: "check = free test | sheets = characters & places to approve | stills | clips | all = stills + clips"
+        required: true
+        default: check
+        type: choice
+        options: [check, sheets, stills, clips, all]
+      film:
+        description: "Film folder under films/"
+        required: true
+        default: pilot
+
+permissions:
+  contents: write
+
+concurrency:
+  group: film-${{ inputs.film }}
+  cancel-in-progress: false
+
+jobs:
+  film:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    env:
+      FILM: ${{ inputs.film }}
+      STAGE: ${{ inputs.stage }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install ffmpeg
+        run: sudo apt-get update && sudo apt-get install -y ffmpeg
+
+      # silero-vad is installed without its torch dependency: only its ONNX model file is used.
+      - name: Install Python packages
+        run: |
+          pip install -r requirements.txt onnxruntime
+          pip install --no-deps silero-vad
+
+      # The engine always lints and prices the run first; nothing is spent if that fails.
+      - name: Run stage
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: python films/engine/film.py "$STAGE" --film "$FILM"
+
+      # Paid pictures and clips are committed so a later run never pays for them twice.
+      - name: Save paid assets
+        if: always() && inputs.stage != 'check'
+        run: |
+          git config user.name "film-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add -A "films/$FILM"
+          git diff --cached --quiet || git commit -m "Film assets: $STAGE ($FILM)"
+          for i in 1 2 3 4 5; do
+            git push && break
+            git pull --rebase origin main
+            sleep 3
+          done
+
+      - name: Upload clips and review pictures
+        if: always() && inputs.stage != 'check'
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ inputs.film }}-${{ inputs.stage }}
+          path: |
+            films/${{ inputs.film }}/clips/
+            films/${{ inputs.film }}/report.md
+            films/${{ inputs.film }}/review_*.jpg
+          if-no-files-found: ignore
+          retention-days: 14
+
+      - name: Upload rejected tries (for diagnosis)
+        if: always() && inputs.stage != 'check'
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ inputs.film }}-${{ inputs.stage }}-rejected
+          path: films/${{ inputs.film }}/rejected/
+          if-no-files-found: ignore
+          retention-days: 3

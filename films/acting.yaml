@@ -1,0 +1,119 @@
+# Acting library: how each emotion is shown with no words.
+#
+# Rules this file follows (and the linter enforces in shot lists):
+#  1. The expression is DRAWN INTO THE STILL. The clip only adds one small movement (the beat).
+#     Asking Veo to travel from calm to tears inside a clip is what makes faces go strange.
+#  2. One beat per clip, described as a small physical action, never as an emotion word.
+#  3. Mouths stay closed. A smile is a closed-mouth smile.
+#  4. At "strong" intensity the face is hidden (back to camera, profile, hair shadow over the
+#     eyes, hands, distance) and the body carries the feeling. A hidden face cannot distort,
+#     and it is the classic anime way of showing the peak of grief.
+#  5. Close-ups last 4-6 seconds; 8-second clips are for wide shots, places and backs.
+#
+# `still` describes the actor in the start frame. `beat` is the movement, written to follow
+# the character's name ("Nana ...").
+
+grief:
+  soft:
+    still: eyes lowered, brows drawn slightly together, lips pressed gently closed, shoulders sunk a little
+    beat: slowly lowers the gaze further as the shoulders sink with one long breath out
+  strong:
+    still: head bowed so the hair falls forward and the eyes are hidden in shadow, one hand pressed flat against the chest
+    beat: shoulders tremble once, very slightly, then go still
+
+regret:
+  soft:
+    still: looking down at an object held in both hands, a small tight frown, jaw set, mouth closed
+    beat: slowly runs a thumb over the object, then closes the eyes
+  strong:
+    still: seen in profile, forehead resting against a door, one hand flat on it
+    beat: the hand on the door slowly curls into a loose fist
+
+guilt:
+  soft:
+    still: eyes turned away to one side, lips pressed thin, chin lowered
+    beat: glances up toward the other person, then quickly looks away and down
+  strong:
+    still: seen from behind, standing at a distance from the others, head down, hands in pockets
+    beat: turns slightly away and takes one slow step back
+
+longing:
+  soft:
+    still: gazing into the distance, face calm, eyes slightly glossy, mouth closed
+    beat: blinks slowly once as a soft breeze moves the hair
+  strong:
+    still: small figure seen from behind, standing still and looking into the distance, one hand resting on a railing
+    beat: the fingers on the railing tighten very gently, then relax
+
+loneliness:
+  soft:
+    still: sitting alone with hands in the lap, gaze resting on the empty seat beside them
+    beat: pulls the coat a little tighter around the body
+  strong:
+    still: a tiny figure in a wide empty frame, seen from behind, everything around them still
+    beat: stays still while only the wind, light or weather moves around them
+
+love:
+  soft:
+    still: soft eyes, the faintest closed-mouth smile, head tilted slightly toward the other person
+    beat: gently straightens the other person's collar with both hands
+  strong:
+    still: holding the other person close, cheek resting on the top of their head, eyes closed
+    beat: hand slowly strokes the other person's back once
+
+quiet_joy:
+  soft:
+    still: a small closed-mouth smile that reaches the eyes, cheeks lifted
+    beat: smiles a little more with the mouth closed, and the eyes crinkle
+  strong:
+    still: eyes shining, a warm closed-mouth smile, both hands pressed together at the chest
+    beat: lets out a breath through the nose and the shoulders relax with happiness
+
+nostalgia:
+  soft:
+    still: a soft unfocused gaze and a faint closed-mouth smile, holding an old photograph
+    beat: fingertips slowly trace the edge of the photograph
+  strong:
+    still: seen from behind looking at a familiar place, one hand lifted slightly as if to touch it
+    beat: lowers the hand slowly to the side
+
+hope:
+  soft:
+    still: chin lifted slightly, eyes looking up toward the light, mouth closed
+    beat: breathes in slowly and the shoulders lift a little
+  strong:
+    still: standing in the open with light falling on the face, eyes closed, face turned up to the sky
+    beat: opens the eyes slowly as the light grows
+
+relief:
+  soft:
+    still: eyes closed, brows smoothing out, face softening
+    beat: one long slow breath out and the shoulders drop
+  strong:
+    still: sitting down heavily, both hands covering the face
+    beat: lowers the hands slowly from the face, eyes still closed
+
+worry:
+  soft:
+    still: brows raised in the middle, eyes fixed on something off-screen, fingers fidgeting with a sleeve
+    beat: twists the hem of the sleeve between the fingers
+  strong:
+    still: standing with arms wrapped around the body, seen in profile
+    beat: takes one small step forward and looks into the distance
+
+resolve:
+  soft:
+    still: steady gaze forward, jaw set, hands closing at the sides, mouth closed
+    beat: takes one firm step forward
+  strong:
+    still: seen from behind facing the way ahead, shoulders squared
+    beat: starts walking forward without looking back
+
+tears:
+  # For close-ups only: the tear is already drawn in the still; the clip only lets it fall.
+  soft:
+    still: eyes glistening with a single tear line on one cheek, mouth closed and steady, face otherwise calm
+    beat: the tear slides slowly down the cheek while the face stays still
+  strong:
+    still: head turned away from camera in profile, hair hiding the eyes, a single tear catching the light on the cheek
+    beat: the tear falls from the chin and the face stays still

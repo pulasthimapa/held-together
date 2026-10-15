@@ -1,0 +1,54 @@
+# The channel's locked look and the safeguards added to every prompt.
+# Change only by a deliberate decision; every film reads this file.
+
+# Opens every picture prompt. Reference: the luminous hand-drawn anime feature-film look
+# (detailed painted skies, glowing light, soft faces). Never name a film or studio in a prompt.
+look: >
+  Japanese anime feature-film style: clean hand-drawn characters with soft cel shading and
+  natural proportions, richly detailed painted backgrounds, luminous skies, glowing light and
+  gentle lens flare. Widescreen 16:9. No text, no captions, no logos, no watermark.
+
+# Colour grade for each act. A shot names one; the edit then flows warm -> cold -> warm.
+moods:
+  warm: golden late-afternoon light, warm amber and honey tones
+  memory: soft hazy summer light, slightly faded, dreamlike glow at the edges
+  cold: overcast blue-grey light, muted desaturated colours
+  rain: grey rain light, wet reflections, cool blue tones with one warm window
+  night: deep blue night, warm lamp and window light
+  dawn: pale pink and gold dawn light, fresh and hopeful
+
+# --- Safeguard 1: nobody talks ------------------------------------------------------------
+# Evidence (Held Together ep01, checked 15 Oct 2026): 3 of 7 Veo clips came back with voices.
+# S04 and S05 were asked to "ask a question" / "begin speaking"; S31 described mourners as
+# "utterly still" and Veo still made them gesture and talk for 6.5 seconds. So: no speaking
+# words anywhere (the linter blocks them), this clause on every clip, and a speech detector
+# on every clip's soundtrack.
+silence: >
+  A silent, wordless moment: nobody speaks, sings or mouths words, and every mouth stays
+  gently closed and still from the first frame to the last.
+
+# --- Safeguard 2: faces stay natural ------------------------------------------------------
+face: >
+  Faces stay on-model and natural for the whole clip: the same face, hair and clothes as the
+  starting frame, small realistic eye and breathing movements, no sudden or exaggerated
+  expression changes.
+
+# Added when more than one person is in frame: only the actor named in `acting` performs.
+crowd: >
+  Anyone else in the frame stays quiet and nearly still in the background, faces small or
+  turned away, and no new person enters the frame.
+
+still_mouths: Every mouth is gently closed.
+
+camera_default: locked-off camera with a very slow push in
+
+# Prompt sentence for character reference sheets (milestone 3).
+sheet: >
+  Anime character design sheet for a feature film on a plain off-white background: full-body
+  turnaround (front, three-quarter, side, back) in the top row, and four head-and-shoulders
+  close-ups in the bottom row showing calm, a small closed-mouth smile, quiet sadness with
+  glistening eyes, and eyes closed. Same character in every view. Mouth closed in every view.
+
+# Prompt sentence for location plates (milestone 3).
+plate: >
+  Establishing background painting for an anime feature film, no people anywhere in the frame.
